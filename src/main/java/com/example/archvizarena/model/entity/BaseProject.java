@@ -4,10 +4,10 @@ import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import jakarta.persistence.*;
 
 import java.util.List;
-
-@Entity
-@Table(name = "projects")
-public class Project extends BaseEntity{
+@MappedSuperclass
+//@Entity
+//@Table(name = "projects")
+public abstract class BaseProject extends BaseEntity{
     @Column(nullable = false)
     private String title;
     @Column(columnDefinition = "TEXT")
@@ -18,16 +18,10 @@ public class Project extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private List<ProjectCategoryEnum> categories;
 
-    @ManyToOne
-    private UserEntity author;
-
-    @OneToMany(mappedBy = "project",
-    fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "project",
-            fetch = FetchType.EAGER)
-    private List<Picture> pictures;
+
 
 
 

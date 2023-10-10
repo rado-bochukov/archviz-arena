@@ -12,10 +12,10 @@ public class Picture extends BaseEntity {
     private String url;
 
     @ManyToOne
-    private Project project;
+    private PortfolioProject project;
 
     @ManyToOne
-    private UserEntity author;
+    private Creator author;
 
     public Picture() {
     }
@@ -28,19 +28,19 @@ public class Picture extends BaseEntity {
         this.url = url;
     }
 
-    public Project getProject() {
+    public PortfolioProject getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+    public void setProject(PortfolioProject project) {
         this.project = project;
     }
 
-    public UserEntity getAuthor() {
+    public Creator getAuthor() {
         return author;
     }
 
-    public void setAuthor(UserEntity author) {
+    public void setAuthor(Creator author) {
         this.author = author;
     }
 }

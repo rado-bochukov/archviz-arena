@@ -17,11 +17,7 @@ public class Comment extends BaseEntity{
             nullable = false)
     private String textContent;
 
-    @ManyToOne
-    private UserEntity author;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Project project;
 
     public Comment() {
     }
@@ -50,19 +46,5 @@ public class Comment extends BaseEntity{
         this.textContent = textContent;
     }
 
-    public UserEntity getAuthor() {
-        return author;
-    }
 
-    public void setAuthor(UserEntity author) {
-        this.author = author;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
 }
