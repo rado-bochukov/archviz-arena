@@ -4,8 +4,6 @@ public enum ProjectCategoryEnum {
     EXTERIOR,
     INTERIOR,
     LANDSCAPE,
-    RESIDENTIAL,
-    COMMERCIAL,
     PRODUCT_DESIGN
 
 

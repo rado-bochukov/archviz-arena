@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+
+<div class="container">
+    <h2 class="text-center text-topics">Job Description</h2>
+
+    <form method="POST"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+        <div class="form-group col-md-whole_row mb-3">
+
+            <label for="title" class="text-white font-weight-bold">Title</label>
+            <input id="title" type="text" min="2" max="20" class="form-control"
+                   placeholder="Project title"/>
+            <p class="errors alert alert-danger">
+                Project title is required.
+            </p>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label for="inputDescription" class="text-white font-weight-bold">Description</label>
+            <div class="form-group">
+                    <textarea
+                            id="inputDescription"
+                            name="inputDescription"
+                            class="form-control"
+                            aria-describedby="inputDescriptionError"></textarea>
+                <p
+                        class="errors alert alert-danger">Description length must be more than 5
+                    characters</p>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-6 mb-3">
+                <label class="text-center text-white font-weight-bold" for="category">Category</label>
+                <select id="category" class="form-control">
+                    <option value="">- Select a model -</option>
+                    <optgroup label="Category name">
+                        <option>Category</option>
+                    </optgroup>
+                </select>
+                <p class="errors alert alert-danger">
+                    Category is required.
+                </p>
+            </div>
+            <div class="form-group col-md-6 mb-3">
+                <label for="budget" class="text-white font-weight-bold">Budget</label>
+                <input id="budget" type="number" min="0" step="100" class="form-control"
+                       placeholder="Suggested budget"/>
+                <p  class="errors alert alert-danger">
+                    Suggested Budget is required.
+                </p>
+            </div>
+        </div>
+
+        <!--        <div class="form-group">-->
+        <!--            <label class="text-white font-weight-bold" for="imageUrl">Image URL</label>-->
+        <!--            <input id="imageUrl" type="url" class="form-control"-->
+        <!--                   placeholder="Put vehicle image URL here">-->
+        <!--            <p class="errors alert alert-danger">-->
+        <!--                Vehicle image URL is required.-->
+        <!--            </p>-->
+        <!--        </div>-->
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info btn-lg" value="Publish Job"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <footer> </footer>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+<div class="container">
+    <h2 class="text-center text-topics">Register User</h2>
+    <form method="POST"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+        <th:block th:insert="~{fragments/base-register-form}"></th:block>
+
+
+        <!--        <div class="form-check">-->
+        <!--            <input class="form-check-input" type="checkbox" name="is_artist" id="is_artist" onclick="enableCreateUser()">-->
+        <!--            <label class="form-check-label" for="is_artist">-->
+        <!--                3D Artist-->
+        <!--            </label>-->
+        <!--        </div>-->
+        <!--        <div class="form-check">-->
+        <!--            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">-->
+        <!--            <label class="form-check-label" for="defaultCheck2">-->
+        <!--                Buyer-->
+        <!--            </label>-->
+        <!--        </div>-->
+        <div class="row">
+            <div class="form-group col-md-6 mb-3">
+                <label class="text-center text-white font-weight-bold" for="model">Creator type</label>
+                <select id="model" class="form-control">
+                    <option value="">- Select a model -</option>
+                    <optgroup label="Brand name">
+                        <option>Model</option>
+                    </optgroup>
+                </select>
+                <p class="errors alert alert-danger">
+                    Vechicle model is required.
+                </p>
+            </div>
+            <div class="form-group col-md-6 mb-3 ">
+                <label for="price_per_image disable_section" class="text-white font-weight-bold">Price</label>
+                <input id="price_per_image disable_section" type="number" min="0" step="100" class="form-control"
+                       placeholder="Suggested price"/>
+                <p class=" errors alert alert-danger">
+                    Suggested price is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info btn-lg" value="Register"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--<script>-->
+<!--    function enableCreateUser() {-->
+<!--        if (document.getElementById("is_artist").checked) {-->
+<!--            document.getElementById("creator_type").classList.remove('disable_section')-->
+<!--            document.getElementById("price_per_image").classList.remove('disable_section')-->
+<!--        } else {-->
+<!--            document.getElementById("creator_type").classList.add('disable_section')-->
+<!--            document.getElementById("price_per_image").classList.add('disable_section')-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+
+<div>
+    <footer></footer>
+</div>
+
+</body>
+</html>

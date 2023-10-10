@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+
+<th:block th:insert="~{fragments/head}"/>
+
+<body>
+<header>
+    <div th:replace="~{fragments/navbar}">Navbar</div>
+</header>
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h1 class="display-4">Wellcome to ArchVizArena!</h1>
+        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+            featured content or information.</p>
+        <hr class="my-4">
+        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+        <p class="lead">
+            <a class="btn btn-info btn-lg" href="#" role="button">Browse 3D Artists</a>
+        </p>
+    <!--    <h5 class="text-center text-white mt-5">Welcome to MobiLeLeLe</h5>-->
+</div>
+    </div>
+
+    <div class="container" id="container" >
+        <img id=`flag`>
+
+    </div>
+<script >
+    function fetchData(){
+        fetch('https://restcountries.com/v3.1/name/Bulgaria?fullText=true')
+            .then(response=>response.json())
+            .then(data=>{
+                console.log(data)
+                flag=data[0].flags.png
+                let code = data[0].cca2
+
+
+                container.innerHTML=`<img class="zname" src=${data[0].flags.png} width="32"
+  height="28" alt="flag">`
+                // container.innerHTML=`<span >Area:  </span>${data[0].area}`
+            })
+    }
+    fetchData()
+
+</script>
+
+<div>
+    <footer></footer>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+<div class="container">
+    <h2 class="text-center text-topics" >Register User</h2>
+    <form method="POST"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
+
+        <th:block th:insert="~{fragments/base-register-form}"></th:block>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info btn-lg" value="Register"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+    <footer></footer>
+</div>
+
+</body>
+</html>
