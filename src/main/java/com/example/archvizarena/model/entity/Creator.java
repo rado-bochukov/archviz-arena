@@ -10,12 +10,19 @@ import java.util.List;
 @Table(name = "creators")
 public class Creator extends BaseUser{
 
+<<<<<<< HEAD
     @Column(name = "price_per_image"
     ,nullable = false)
     private BigDecimal pricePerImage;
 
     @Column(name = "creator_type",
     nullable = false)
+=======
+    @Column(name = "price_per_image")
+    private BigDecimal pricePerImage;
+
+    @Column(name = "creator_type")
+>>>>>>> origin/main
     @Enumerated(EnumType.STRING)
     private CreatorTypeEnum creatorType;
     @OneToMany(mappedBy = "author")

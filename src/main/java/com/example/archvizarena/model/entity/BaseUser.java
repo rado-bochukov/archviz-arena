@@ -1,15 +1,16 @@
 package com.example.archvizarena.model.entity;
 
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
+import com.example.archvizarena.model.entity.enums.UserTypeEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
-@MappedSuperclass
-//@Entity
-//@Table(name = "users")
-public abstract class BaseUser extends BaseEntity {
+@Entity
+@Table(name = "users")
+public class UserEntity extends BaseEntity {
 
     @Column (nullable = false)
     private String name;
@@ -17,26 +18,24 @@ public abstract class BaseUser extends BaseEntity {
     private String email;
     @Column(unique = true,nullable = false)
     private String password;
-
-    @Column(unique = true,nullable = false)
-    private String username;
     @Column
     private String description;
+    @Column(name = "price_per_image")
+    private BigDecimal pricePerImage;
+    @Column(name = "user_type",
+    nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserTypeEnum userType;
+    @Column(name = "creator_type")
+    @Enumerated(EnumType.STRING)
+    private CreatorTypeEnum creatorType;
+    @OneToMany(mappedBy = "author")
+    private List<Project> projects;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Comment> commentsSend;
 
-
-    public BaseUser() {
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public UserEntity() {
     }
 
     public String getName() {
@@ -71,6 +70,38 @@ public abstract class BaseUser extends BaseEntity {
         this.description = description;
     }
 
+    public BigDecimal getPricePerImage() {
+        return pricePerImage;
+    }
+
+    public void setPricePerImage(BigDecimal pricePerImage) {
+        this.pricePerImage = pricePerImage;
+    }
+
+    public UserTypeEnum getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserTypeEnum userType) {
+        this.userType = userType;
+    }
+
+    public CreatorTypeEnum getCreatorType() {
+        return creatorType;
+    }
+
+    public void setCreatorType(CreatorTypeEnum creatorType) {
+        this.creatorType = creatorType;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     public List<Role> getRoles() {
         return roles;
     }
@@ -78,14 +109,4 @@ public abstract class BaseUser extends BaseEntity {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-
-    public List<Comment> getCommentsSend() {
-        return commentsSend;
-    }
-
-    public void setCommentsSend(List<Comment> commentsSend) {
-        this.commentsSend = commentsSend;
-    }
-
-
 }
