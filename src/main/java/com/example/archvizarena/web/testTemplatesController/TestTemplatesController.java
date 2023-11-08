@@ -50,4 +50,14 @@ public class TestTemplatesController {
     public String getAllArtists(){
         return "3d-artists";
     }
+
+    @GetMapping("/ex")
+    public String getEx(){
+        return "profileexample";
+    }
+
+    @GetMapping("/artists/5")
+    public String getArtist(){
+        return "artist-profile";
+    }
 }
