@@ -22,26 +22,12 @@
 </div>
     </div>
 
-    <div class="container" id="container" >
-        <img id=`flag`>
+<div class="container" id="container">
+    <img id="flag" src="" width="32">
+    <span id="countryName">Romania</span>
+</div>
 
-    </div>
-<script >
-    function fetchData(){
-        fetch('https://restcountries.com/v3.1/name/Bulgaria?fullText=true')
-            .then(response=>response.json())
-            .then(data=>{
-                console.log(data)
-                flag=data[0].flags.png
-                let code = data[0].cca2
-
-
-                container.innerHTML=`<img class="zname" src=${data[0].flags.png} width="32"
-  height="28" alt="flag">`
-                // container.innerHTML=`<span >Area:  </span>${data[0].area}`
-            })
-    }
-    fetchData()
+<script src="/js/countriesAPI.js" >
 
 </script>
 

@@ -45,4 +45,9 @@ public class TestTemplatesController {
     public String getAddJob(){
         return "job-add";
     }
+
+    @GetMapping("/artists/all")
+    public String getAllArtists(){
+        return "3d-artists";
+    }
 }

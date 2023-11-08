@@ -115,3 +115,24 @@ form.main-form {
     width: 20px;
     position: relative;
 }
+
+.container .bg-3d-artists{
+   background-color: #5A7272;
+}
+
+.card-body .badge-secondary-2 {
+    color: #d1ecf1;
+    background-color: #2F4F4F;
+}
+
+.card-body .badge-2 {
+    display: inline;
+    padding: 0.25em 0.45em;
+    font-size: 70%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+}

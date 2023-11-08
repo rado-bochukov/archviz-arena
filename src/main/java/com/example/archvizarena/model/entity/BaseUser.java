@@ -1,41 +1,44 @@
 package com.example.archvizarena.model.entity;
 
+
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
-import com.example.archvizarena.model.entity.enums.UserTypeEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
-public class UserEntity extends BaseEntity {
+//@Entity
+//@Table(name = "users")
+@MappedSuperclass
+public class BaseUser extends BaseEntity {
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String name;
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
-    @Column(unique = true,nullable = false)
+    @Column(unique = true, nullable = false)
     private String password;
     @Column
     private String description;
-    @Column(name = "price_per_image")
-    private BigDecimal pricePerImage;
-    @Column(name = "user_type",
-    nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserTypeEnum userType;
-    @Column(name = "creator_type")
-    @Enumerated(EnumType.STRING)
-    private CreatorTypeEnum creatorType;
-    @OneToMany(mappedBy = "author")
-    private List<Project> projects;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 
-    public UserEntity() {
+    @OneToOne
+    private Picture profilePicture;
+
+
+
+    public BaseUser() {
+    }
+
+    public Picture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Picture profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getName() {
@@ -70,37 +73,6 @@ public class UserEntity extends BaseEntity {
         this.description = description;
     }
 
-    public BigDecimal getPricePerImage() {
-        return pricePerImage;
-    }
-
-    public void setPricePerImage(BigDecimal pricePerImage) {
-        this.pricePerImage = pricePerImage;
-    }
-
-    public UserTypeEnum getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserTypeEnum userType) {
-        this.userType = userType;
-    }
-
-    public CreatorTypeEnum getCreatorType() {
-        return creatorType;
-    }
-
-    public void setCreatorType(CreatorTypeEnum creatorType) {
-        this.creatorType = creatorType;
-    }
-
-    public List<Project> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(List<Project> projects) {
-        this.projects = projects;
-    }
 
     public List<Role> getRoles() {
         return roles;

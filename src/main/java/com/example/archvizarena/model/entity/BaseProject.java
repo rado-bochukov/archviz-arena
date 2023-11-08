@@ -3,21 +3,18 @@ package com.example.archvizarena.model.entity;
 import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import jakarta.persistence.*;
 
-<<<<<<< HEAD
 import java.time.LocalDateTime;
-=======
->>>>>>> origin/main
 import java.util.List;
+
 @MappedSuperclass
 //@Entity
 //@Table(name = "projects")
-public abstract class BaseProject extends BaseEntity{
+public abstract class BaseProject extends BaseEntity {
     @Column(nullable = false)
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
 
-<<<<<<< HEAD
     @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
@@ -33,17 +30,12 @@ public abstract class BaseProject extends BaseEntity{
     @Column(name = "categories")
     @Enumerated(EnumType.STRING)
     private ProjectCategoryEnum category;
-=======
 //    private int likeCount;
-    @Column(name = "categories")
-    @Enumerated(EnumType.STRING)
-    private List<ProjectCategoryEnum> categories;
->>>>>>> origin/main
+
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 
-<<<<<<< HEAD
     public BaseProject() {
     }
 
@@ -78,11 +70,6 @@ public abstract class BaseProject extends BaseEntity{
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-=======
 
 
-
-
-
->>>>>>> origin/main
 }

@@ -14,7 +14,18 @@ public class Buyer extends BaseUser {
     fetch = FetchType.EAGER)
     private List<JobPublication> jobPublications;
 
+    @OneToMany
+    private List<Comment> commentsSent;
+
     public Buyer() {
+    }
+
+    public List<Comment> getSent() {
+        return commentsSent;
+    }
+
+    public void setSent(List<Comment> sent) {
+        this.commentsSent = sent;
     }
 
     public List<JobPublication> getJobPublications() {

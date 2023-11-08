@@ -10,25 +10,28 @@ import java.util.List;
 @Table(name = "creators")
 public class Creator extends BaseUser{
 
-<<<<<<< HEAD
     @Column(name = "price_per_image"
     ,nullable = false)
     private BigDecimal pricePerImage;
 
-    @Column(name = "creator_type",
-    nullable = false)
-=======
-    @Column(name = "price_per_image")
-    private BigDecimal pricePerImage;
-
     @Column(name = "creator_type")
->>>>>>> origin/main
     @Enumerated(EnumType.STRING)
     private CreatorTypeEnum creatorType;
     @OneToMany(mappedBy = "author")
     private List<PortfolioProject> projects;
 
+    @OneToMany
+    private List<Comment> commentsSent;
+
     public Creator() {
+    }
+
+    public List<Comment> getSent() {
+        return commentsSent;
+    }
+
+    public void setSent(List<Comment> sent) {
+        this.commentsSent = sent;
     }
 
     public BigDecimal getPricePerImage() {
