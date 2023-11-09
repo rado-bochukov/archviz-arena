@@ -5,13 +5,14 @@ import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 //@Entity
 //@Table(name = "users")
 @MappedSuperclass
-public class BaseUser extends BaseEntity {
+public abstract class BaseUser extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
@@ -28,7 +29,15 @@ public class BaseUser extends BaseEntity {
     @OneToOne
     private Picture profilePicture;
 
+    private Set<Long> likedProjectsId;
 
+    public Set<Long> getLikedProjectsId() {
+        return likedProjectsId;
+    }
+
+    public void setLikedProjectsId(Set<Long> likedProjectsId) {
+        this.likedProjectsId = likedProjectsId;
+    }
 
     public BaseUser() {
     }

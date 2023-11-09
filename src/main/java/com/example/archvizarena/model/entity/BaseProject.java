@@ -18,19 +18,13 @@ public abstract class BaseProject extends BaseEntity {
     @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
-    public LocalDateTime getPublishedOn() {
-        return publishedOn;
-    }
 
-    public void setPublishedOn(LocalDateTime publishedOn) {
-        this.publishedOn = publishedOn;
-    }
-
-    //    private int likeCount;
     @Column(name = "categories")
     @Enumerated(EnumType.STRING)
     private ProjectCategoryEnum category;
-//    private int likeCount;
+
+    @Column(name = "likes_count")
+    private int likeCount;
 
 
     @OneToMany(fetch = FetchType.EAGER)
@@ -39,8 +33,23 @@ public abstract class BaseProject extends BaseEntity {
     public BaseProject() {
     }
 
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
     public String getTitle() {
         return title;
+    }
+    public LocalDateTime getPublishedOn() {
+        return publishedOn;
+    }
+
+    public void setPublishedOn(LocalDateTime publishedOn) {
+        this.publishedOn = publishedOn;
     }
 
     public void setTitle(String title) {

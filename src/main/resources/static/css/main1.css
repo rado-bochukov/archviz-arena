@@ -139,8 +139,9 @@ form.main-form {
 
 .card-deck .card .card-img-top-2{
     border-radius: 50%;
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
+    align-items: center;
 }
 .profile-info {
     display: inline-block;
@@ -161,4 +162,8 @@ form.main-form {
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start
+}
+
+.container .bg-custom{
+    background-color: #5A7272;
 }

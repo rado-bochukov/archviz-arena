@@ -60,4 +60,13 @@ public class TestTemplatesController {
     public String getArtist(){
         return "artist-profile";
     }
+
+    @GetMapping("/projects/all")
+    public String getAllProjects(){
+        return "projects-browse";
+    }
+    @GetMapping("/projects/1")
+    public String getProjectDetail(){
+        return "project-detail";
+    }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "buyers")
@@ -16,6 +17,8 @@ public class Buyer extends BaseUser {
 
     @OneToMany
     private List<Comment> commentsSent;
+
+
 
     public Buyer() {
     }
