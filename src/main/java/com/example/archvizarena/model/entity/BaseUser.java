@@ -5,9 +5,7 @@ import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 //@Entity
 //@Table(name = "users")
@@ -40,6 +38,7 @@ public abstract class BaseUser extends BaseEntity {
     }
 
     public BaseUser() {
+        likedProjectsId=new TreeSet<>();
     }
 
     public Picture getProfilePicture() {

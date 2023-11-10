@@ -1,0 +1,123 @@
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="~{fragments/head}">
+
+</head>
+<body>
+<header>
+    <div th:replace="~{fragments/navbar}">Navbar</div>
+</header>
+
+<div class="container ">
+    <!-- Content here -->
+    <h2 class="text-left text-topics">Job publications</h2>
+
+    <form method="POST"
+          class="form-inline">
+
+        <!--        <div class="row">-->
+
+        <div class="form-group mb-2 mr-sm-2">
+            <label class="sr-only " for="budget">Budget</label>
+            <select id="budget" class="form-control">
+                <option value="">- Select budget range -</option>
+                <optgroup label="Price range">
+                    <option>0-1000</option>
+                    <option>1001-3000</option>
+                    <option>3000+</option>
+                </optgroup>
+            </select>
+
+        </div>
+        <div class="form-group mb-2 mr-sm-2">
+            <label class="sr-only " for="category">Category</label>
+            <select id="category" class="form-control">
+                <option value="">- Select category -</option>
+                <optgroup label="Project category">
+                    <option>Exterior</option>
+                    <option>Interior</option>
+                    <option>Landscape</option>
+                    <option>Product design</option>
+                </optgroup>
+            </select>
+
+        </div>
+        <div th:replace="~{/fragments/countries-dropdown}">
+        </div>
+        <button type="submit" class="btn btn-info mb-2">Submit</button>
+
+        <!--        </div>-->
+
+        <!--        <div class="row">-->
+        <!--            <div class="mb-2 mr-sm-2">-->
+        <!--                <div class="button-holder d-flex mb-2 mr-sm-2">-->
+        <!--                    <input type="submit" class="btn btn-info " value="Search"/>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </form>
+    <div class="card-deck">
+        <div class="card mt-5" style="width: 18rem;">
+            <div class="card-header"><h4>Need 4 exterior images</h4></div>
+            <div class="card-body">
+
+                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
+                <div class="mt-2">
+                    <img class="flags" src="" width="26">
+                    <span class="countryName">United States</span>
+                </div>
+                <div class="text-left mt-2">Category: <b>Exterior</b></div>
+                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
+                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+                <button type="button" href="#" class="btn btn-info  mt-3" data-toggle="modal"
+                        data-target="#exampleModalCenter">Details
+                </button>
+                <div th:replace="~{fragments/job-info-modal}"></div>
+            </div>
+        </div>
+        <div class="card mt-5" style="width: 18rem;">
+            <div class="card-header"><h4>Need 4 exterior images</h4></div>
+            <div class="card-body">
+
+                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
+                <div class="mt-2">
+                    <img class="flags" src="" width="26">
+                    <span class="countryName">United States</span>
+                </div>
+                <div class="text-left mt-2">Category: <b>Exterior</b></div>
+                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
+                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+                <button type="button" href="#" class="btn btn-info  mt-3" data-toggle="modal"
+                        data-target="#exampleModalCenter">Details
+                </button>
+            </div>
+            <div th:replace="~{fragments/job-info-modal}"></div>
+        </div>
+        <div class="card mt-5" style="width: 18rem;">
+            <div class="card-header"><h4>Need 4 exterior images</h4></div>
+            <div class="card-body">
+
+                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
+                <div class="mt-2">
+                    <img class="flags" src="" width="26">
+                    <span class="countryName">United States</span>
+                </div>
+                <div class="text-left mt-2">Category: <b>Exterior</b></div>
+                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
+                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+                <a href="#" class="btn btn-info  mt-3">Details</a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!--<div id="overlay1" style="display: none;"><div class="cv-spinner1"><span class="spinner1"></span></div></div>-->
+
+
+</body>
+<script src="/js/countriesAPI-2.js">
+
+</script>
+</html>

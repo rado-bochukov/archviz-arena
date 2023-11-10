@@ -61,6 +61,11 @@ public class TestTemplatesController {
         return "artist-profile";
     }
 
+    @GetMapping("/buyers/1")
+    public String getBuyer(){
+        return "buyer-profile";
+    }
+
     @GetMapping("/projects/all")
     public String getAllProjects(){
         return "projects-browse";
@@ -68,5 +73,10 @@ public class TestTemplatesController {
     @GetMapping("/projects/1")
     public String getProjectDetail(){
         return "project-detail";
+    }
+
+    @GetMapping("/jobs/all")
+    public String getJobs(){
+        return "jobs-browse";
     }
 }

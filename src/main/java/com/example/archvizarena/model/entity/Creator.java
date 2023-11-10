@@ -23,7 +23,28 @@ public class Creator extends BaseUser{
     @OneToMany
     private List<Comment> commentsSent;
 
+    @OneToMany
+    private List<ApplicationMessage> applicationMessagesSent;
+
+
+
     public Creator() {
+    }
+
+    public List<Comment> getCommentsSent() {
+        return commentsSent;
+    }
+
+    public void setCommentsSent(List<Comment> commentsSent) {
+        this.commentsSent = commentsSent;
+    }
+
+    public List<ApplicationMessage> getApplicationMessagesSent() {
+        return applicationMessagesSent;
+    }
+
+    public void setApplicationMessagesSent(List<ApplicationMessage> applicationMessagesSent) {
+        this.applicationMessagesSent = applicationMessagesSent;
     }
 
     public List<Comment> getSent() {

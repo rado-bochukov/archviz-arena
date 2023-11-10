@@ -19,7 +19,7 @@ public abstract class BaseProject extends BaseEntity {
     private LocalDateTime publishedOn;
 
 
-    @Column(name = "categories")
+    @Column(name = "categories",nullable = false)
     @Enumerated(EnumType.STRING)
     private ProjectCategoryEnum category;
 
@@ -27,8 +27,7 @@ public abstract class BaseProject extends BaseEntity {
     private int likeCount;
 
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Comment> comments;
+
 
     public BaseProject() {
     }
@@ -72,13 +71,7 @@ public abstract class BaseProject extends BaseEntity {
         this.category = category;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
 
 }

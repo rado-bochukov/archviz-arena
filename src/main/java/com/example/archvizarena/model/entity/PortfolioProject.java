@@ -15,8 +15,19 @@ public class PortfolioProject extends BaseProject{
             fetch = FetchType.EAGER)
     private List<Picture> pictures;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Comment> comments;
+
 
     public PortfolioProject() {
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public Creator getAuthor() {
