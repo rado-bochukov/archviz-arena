@@ -26,19 +26,19 @@ public abstract class BaseUser extends BaseEntity {
 
     @OneToOne
     private Picture profilePicture;
+    @ManyToMany
+    private Set<PortfolioProject> likedProjectsId;
 
-    private Set<Long> likedProjectsId;
-
-    public Set<Long> getLikedProjectsId() {
+    public Set<PortfolioProject> getLikedProjectsId() {
         return likedProjectsId;
     }
 
-    public void setLikedProjectsId(Set<Long> likedProjectsId) {
+    public void setLikedProjectsId(Set<PortfolioProject> likedProjectsId) {
         this.likedProjectsId = likedProjectsId;
     }
 
     public BaseUser() {
-        likedProjectsId=new TreeSet<>();
+
     }
 
     public Picture getProfilePicture() {

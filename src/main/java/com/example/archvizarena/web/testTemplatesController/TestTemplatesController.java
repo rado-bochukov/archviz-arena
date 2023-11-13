@@ -79,4 +79,8 @@ public class TestTemplatesController {
     public String getJobs(){
         return "jobs-browse";
     }
+    @GetMapping("/users/edit-profile")
+    public String getUserEdit(){
+        return "edit-user";
+    }
 }
