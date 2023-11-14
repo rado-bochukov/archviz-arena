@@ -23,8 +23,7 @@ public abstract class BaseProject extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProjectCategoryEnum category;
 
-    @Column(name = "likes_count")
-    private int likeCount;
+
 
 
 
@@ -32,13 +31,7 @@ public abstract class BaseProject extends BaseEntity {
     public BaseProject() {
     }
 
-    public int getLikeCount() {
-        return likeCount;
-    }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
-    }
 
     public String getTitle() {
         return title;

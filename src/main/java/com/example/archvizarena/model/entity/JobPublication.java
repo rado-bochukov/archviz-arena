@@ -12,10 +12,10 @@ public class JobPublication extends BaseProject{
     private BigDecimal budget;
 
     @ManyToOne
-    private Buyer buyer;
+    private User buyer;
 
     @ManyToMany
-    private List<Creator> applicants;
+    private List<User> applicants;
 
     @OneToMany
     private List<ApplicationMessage> receivedMessages;
@@ -23,11 +23,11 @@ public class JobPublication extends BaseProject{
     public JobPublication() {
     }
 
-    public List<Creator> getApplicants() {
+    public List<User> getApplicants() {
         return applicants;
     }
 
-    public void setApplicants(List<Creator> applicants) {
+    public void setApplicants(List<User> applicants) {
         this.applicants = applicants;
     }
 
@@ -47,11 +47,11 @@ public class JobPublication extends BaseProject{
         this.budget = budget;
     }
 
-    public Buyer getBuyer() {
+    public User getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(Buyer buyer) {
+    public void setBuyer(User buyer) {
         this.buyer = buyer;
     }
 }

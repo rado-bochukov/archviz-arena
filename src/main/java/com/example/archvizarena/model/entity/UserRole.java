@@ -1,6 +1,6 @@
 package com.example.archvizarena.model.entity;
 
-import com.example.archvizarena.model.entity.enums.RoleEnum;
+import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,19 +8,19 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity{
+public class UserRole extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private UserRoleEnum role;
 
-    public Role() {
+    public UserRole() {
     }
 
-    public RoleEnum getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 }

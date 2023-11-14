@@ -14,8 +14,15 @@ public class ApplicationMessage extends BaseEntity {
             nullable = false)
     private String textContent;
 
+    public ApplicationMessage() {
 
+    }
 
+    public String getTextContent() {
+        return textContent;
+    }
 
-
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
 }

@@ -14,8 +14,8 @@ public class Picture extends BaseEntity {
     @ManyToOne
     private PortfolioProject project;
 
-    @ManyToOne
-    private Creator author;
+//    @ManyToOne
+//    private User author;
 
     public Picture() {
     }
@@ -36,11 +36,11 @@ public class Picture extends BaseEntity {
         this.project = project;
     }
 
-    public Creator getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Creator author) {
-        this.author = author;
-    }
+//    public User getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(User author) {
+//        this.author = author;
+//    }
 }

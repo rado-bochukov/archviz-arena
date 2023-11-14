@@ -9,7 +9,7 @@ import java.util.List;
 public class PortfolioProject extends BaseProject{
 
     @ManyToOne
-    private Creator author;
+    private User author;
 
     @OneToMany(mappedBy = "project",
             fetch = FetchType.EAGER)
@@ -18,8 +18,19 @@ public class PortfolioProject extends BaseProject{
     @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 
+    @Column(name = "likes_count")
+    private int likeCount;
+
 
     public PortfolioProject() {
+    }
+
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
     }
 
     public List<Comment> getComments() {
@@ -30,11 +41,11 @@ public class PortfolioProject extends BaseProject{
         this.comments = comments;
     }
 
-    public Creator getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(Creator author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
