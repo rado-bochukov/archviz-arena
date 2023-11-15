@@ -1,7 +1,6 @@
 package com.example.archvizarena.service;
 
-import com.example.archvizarena.model.entity.User;
-import com.example.archvizarena.model.entity.UserRole;
+import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,11 +28,13 @@ public class ArchVizArenaUserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found!"));
     }
 
-    private UserDetails map(User user) {
+    private UserDetails map(UserEntity user) {
 
         List<String> userRoles = user.getRoles().stream().map(r -> r.getRole().name()).collect(Collectors.toList());
-        userRoles.add(user.getUserOccupation().name());
 
+        if(user.getUserOccupation()!=null){
+        userRoles.add(user.getUserOccupation().name());
+        }
          return new ArchVizArenaUserDetails(
                 user.getName(),
                 user.getEmail(),

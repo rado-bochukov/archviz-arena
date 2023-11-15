@@ -64,17 +64,17 @@ public class UserRegisterController {
             return "redirect:/users/register";
         }
 
-        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getCreatorType() == null) {
-            redirectAttributes.addAttribute("creator_type_error", "Bad");
-            return "redirect:/users/register";
-        }
-        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getPricePerImage() == null) {
-            redirectAttributes.addAttribute("price_per_image_error", true);
-            return "redirect:/users/register";
-        }
+//        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getCreatorType() == null) {
+//            redirectAttributes.addAttribute("creator_type_error", "Bad");
+//            return "redirect:/users/register";
+//        }
+//        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getPricePerImage() == null) {
+//            redirectAttributes.addAttribute("price_per_image_error", true);
+//            return "redirect:/users/register";
+//        }
         userService.register(modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class));
 
-        return "redirect:/login";
+        return "redirect:/users/login";
     }
 
 }

@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "application_messages")
-public class ApplicationMessage extends BaseEntity {
+public class ApplicationMessageEntity extends BaseEntity {
 
 
     @Column(name = "text_content",
@@ -14,7 +14,7 @@ public class ApplicationMessage extends BaseEntity {
             nullable = false)
     private String textContent;
 
-    public ApplicationMessage() {
+    public ApplicationMessageEntity() {
 
     }
 

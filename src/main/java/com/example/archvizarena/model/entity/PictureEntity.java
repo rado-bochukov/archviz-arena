@@ -7,17 +7,17 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pictures")
-public class Picture extends BaseEntity {
+public class PictureEntity extends BaseEntity {
     @Column(name = "picture_url")
     private String url;
 
     @ManyToOne
-    private PortfolioProject project;
+    private PortfolioProjectEntity project;
 
 //    @ManyToOne
 //    private User author;
 
-    public Picture() {
+    public PictureEntity() {
     }
 
     public String getUrl() {
@@ -28,11 +28,11 @@ public class Picture extends BaseEntity {
         this.url = url;
     }
 
-    public PortfolioProject getProject() {
+    public PortfolioProjectEntity getProject() {
         return project;
     }
 
-    public void setProject(PortfolioProject project) {
+    public void setProject(PortfolioProjectEntity project) {
         this.project = project;
     }
 

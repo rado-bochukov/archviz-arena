@@ -6,23 +6,23 @@ import java.util.List;
 
 @Entity
 @Table(name = "portfolio_projects")
-public class PortfolioProject extends BaseProject{
+public class PortfolioProjectEntity extends BaseProject{
 
     @ManyToOne
-    private User author;
+    private UserEntity author;
 
     @OneToMany(mappedBy = "project",
             fetch = FetchType.EAGER)
-    private List<Picture> pictures;
+    private List<PictureEntity> pictureEntities;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private List<Comment> comments;
+    private List<CommentEntity> comments;
 
     @Column(name = "likes_count")
     private int likeCount;
 
 
-    public PortfolioProject() {
+    public PortfolioProjectEntity() {
     }
 
     public int getLikeCount() {
@@ -33,27 +33,27 @@ public class PortfolioProject extends BaseProject{
         this.likeCount = likeCount;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentEntity> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
-    public List<Picture> getPictures() {
-        return pictures;
+    public List<PictureEntity> getPictures() {
+        return pictureEntities;
     }
 
-    public void setPictures(List<Picture> pictures) {
-        this.pictures = pictures;
+    public void setPictures(List<PictureEntity> pictureEntities) {
+        this.pictureEntities = pictureEntities;
     }
 }

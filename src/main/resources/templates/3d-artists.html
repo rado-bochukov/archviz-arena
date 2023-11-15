@@ -42,7 +42,7 @@
         </div>
         <div th:replace="~{/fragments/countries-dropdown}">
         </div>
-        <button type="submit" class="btn btn-info mb-2">Submit</button>
+        <button type="submit" class="btn btn-info mb-2">Search</button>
 
         <!--        </div>-->
 
@@ -54,54 +54,54 @@
         <!--            </div>-->
         <!--        </div>-->
     </form>
-    <div class="card-deck">
-        <div class="card mt-5">
-            <a href="" class="artist-link">
-                <img class="card-img-top" src="/img/house.JPG" alt="Card image cap">
+
+    <h3  class="text-left text-topics mt-5"
+     th:text="'Found artists: '+${countArtists}">Found artists</h3>
+    <div class="card-deck text-center mt-0">
+        <div class="card mt-3" th:each="a : ${allArtists}" th:object="${a}" >
+            <a th:href="@{/artists/details/{id}(id=*{id})}" class="artist-link">
+                <img th:if="*{pictureUrl==null}" class="card-img-top" th:src="@{/images/default_avatar.jpg}" alt="Card image cap"
+                     width="160">
+                <img th:unless="*{pictureUrl==null}" class="card-img-top" th:src="*{pictureUrl}" alt="Card image cap">
             </a>
             <div class="card-body mt-0">
-                <h4 class="card-title">Radostin Bochukov </h4>
-                <div class="badge-2 badge-secondary-2 mt-0 mb-2">Freelancer</div>
+                <h4 class="card-title" th:text="*{name}">Radostin Bochukov </h4>
+                <div class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="*{creatorTypeEnum.name()}">Freelancer</div>
                 <div class="mt-2">
                     <img class="flags" src="" width="26">
-                    <span class="countryName">Brazil</span>
+                    <span class="countryName ml-1" th:text="*{country}">Brazil</span>
                 </div>
-                <div class="text-left mt-2">Prices from <b>€350 / image</b></div>
+                <div class="mt-2" th:value="'Prices from <b>€'+*{pricePerImage}+' / image</b>'">Prices from
+                    <strong th:text="'€'+*{pricePerImage}+' / image'" /></div>
             </div>
             <!--            <div class="card-footer">-->
             <!--                <button type="submit" class="btn btn-info mb-2 text-right">Visit profile</button>-->
             <!--            </div>-->
         </div>
+    </div>
 
-        <div class="card mt-5">
-            <a href="" class="artist-link">
-                <img class="card-img-top" src="/img/house.JPG" alt="Card image cap">
-            </a>
-            <div class="card-body mt-0 pl-1">
+    <div class="card mt-5">
+        <a href="" class="artist-link">
+            <img class="card-img-top" src="/images/house.JPG" alt="Card image cap">
+        </a>
+        <div class="card-body mt-0 pl-1">
                 <span class="media mt-1">
-                    <img class="mr-2 ml-2" src="/img/1.jpg" width="68" height="68" alt="Generic placeholder image">
+                    <img class="mr-2 ml-2 mt-2" src="/img/1.jpg" width="68" height="74" alt="Generic placeholder image">
             <span class="media-body">
                 <h4 class="card-title mt-0">Radostin Bochukov </h4>
-                <div class="badge-2 badge-secondary-2 mt-0 mb-2">Freelancer</div>
-                <div class="mt-2">
+                <div class="badge-2 badge-secondary-2 mt-0 mb-3">Freelancer</div>
+                <span>  | </span>
+                <span class="mt-0">
                     <img class="flags" src="" width="26">
                     <span class="countryName">Italy</span>
-                     <span class="text-left mt-2"> | Prices from <b>€350 / image</b></span>
-                </div>
-<!--                <div class="text-left mt-2">Prices from <b>€350 / image</b></div>-->
+                </span>
+                     <div class="text-left mt-0">Prices from <b>€350 / image</b></div>
+                <!--                <div class="text-left mt-2">Prices from <b>€350 / image</b></div>-->
             </span>
             </span>
-            </div>
-
-        </div>
-        <div class="card mt-5  ">
-            <img class="card-img-top" src="/img/house.JPG" alt="Card image cap">
-            <div class="card-body mt-2">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                    card's content.</p>
-            </div>
         </div>
     </div>
+</div>
 </div>
 
 <!--<div id="overlay1" style="display: none;"><div class="cv-spinner1"><span class="spinner1"></span></div></div>-->

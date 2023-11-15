@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 @Entity
 @Table(name = "comments")
-public class Comment extends BaseEntity{
+public class CommentEntity extends BaseEntity{
 
     @Column(nullable = false)
     private boolean approved;
@@ -19,7 +19,7 @@ public class Comment extends BaseEntity{
 
 
 
-    public Comment() {
+    public CommentEntity() {
     }
 
     public boolean isApproved() {

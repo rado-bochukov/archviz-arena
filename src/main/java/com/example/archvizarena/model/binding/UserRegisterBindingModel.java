@@ -2,6 +2,7 @@ package com.example.archvizarena.model.binding;
 
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
+import com.example.archvizarena.util.validation.UniqueEmail;
 import com.example.archvizarena.util.validation.UniqueUserName;
 import jakarta.validation.constraints.*;
 
@@ -12,10 +13,12 @@ public class UserRegisterBindingModel {
     @NotEmpty
     private String name;
     @Email
+    @UniqueEmail(message = "User with this Email already exists!")
+    @NotEmpty(message = "Email must be provided!")
     private String email;
     @Size(min = 2, max = 20,
-            message = "Username should be between 2 and 20 symbols")
-    @NotEmpty(message = "Username should be provided")
+            message = "Username should be between 2 and 20 symbols!")
+    @NotEmpty(message = "Username should be provided!")
     @UniqueUserName(message = "Username already exists!")
     private String username;
     @Size(min = 2, max = 20)
@@ -27,10 +30,8 @@ public class UserRegisterBindingModel {
     private String country;
     @NotNull
     private UserOccupationEnum userOccupation;
-    @NotNull
+
     private CreatorTypeEnum creatorType;
-    @Positive
-    @NotNull
     private BigDecimal pricePerImage;
 
     public UserRegisterBindingModel() {

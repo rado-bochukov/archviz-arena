@@ -67,7 +67,7 @@ public class UserRegisterServiceModel {
     }
 
     public void setDescription(String description) {
-        description = description;
+        this.description = description;
     }
 
     public String getCountry() {
@@ -75,7 +75,7 @@ public class UserRegisterServiceModel {
     }
 
     public void setCountry(String country) {
-        country = country;
+        this.country = country;
     }
 
     public UserOccupationEnum getUserOccupation() {

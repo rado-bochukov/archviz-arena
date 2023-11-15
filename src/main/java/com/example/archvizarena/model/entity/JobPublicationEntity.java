@@ -7,35 +7,35 @@ import java.util.List;
 
 @Entity
 @Table(name = "job_publications")
-public class JobPublication extends BaseProject{
+public class JobPublicationEntity extends BaseProject{
     @Column(nullable = false)
     private BigDecimal budget;
 
     @ManyToOne
-    private User buyer;
+    private UserEntity buyer;
 
     @ManyToMany
-    private List<User> applicants;
+    private List<UserEntity> applicants;
 
     @OneToMany
-    private List<ApplicationMessage> receivedMessages;
+    private List<ApplicationMessageEntity> receivedMessages;
 
-    public JobPublication() {
+    public JobPublicationEntity() {
     }
 
-    public List<User> getApplicants() {
+    public List<UserEntity> getApplicants() {
         return applicants;
     }
 
-    public void setApplicants(List<User> applicants) {
+    public void setApplicants(List<UserEntity> applicants) {
         this.applicants = applicants;
     }
 
-    public List<ApplicationMessage> getReceivedMessages() {
+    public List<ApplicationMessageEntity> getReceivedMessages() {
         return receivedMessages;
     }
 
-    public void setReceivedMessages(List<ApplicationMessage> receivedMessages) {
+    public void setReceivedMessages(List<ApplicationMessageEntity> receivedMessages) {
         this.receivedMessages = receivedMessages;
     }
 
@@ -47,11 +47,11 @@ public class JobPublication extends BaseProject{
         this.budget = budget;
     }
 
-    public User getBuyer() {
+    public UserEntity getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(User buyer) {
+    public void setBuyer(UserEntity buyer) {
         this.buyer = buyer;
     }
 }

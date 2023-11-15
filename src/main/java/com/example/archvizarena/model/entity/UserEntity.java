@@ -11,7 +11,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class UserEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
@@ -38,29 +38,29 @@ public class User extends BaseEntity {
     private CreatorTypeEnum creatorType;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<UserRole> userRoles;
+    private List<UserRoleEntity> roles;
 
     @OneToOne
-    private Picture profilePicture;
+    private PictureEntity profilePictureEntity;
     @ManyToMany
-    private Set<PortfolioProject> likedProjectsId;
+    private Set<PortfolioProjectEntity> likedProjectsId;
 
     @OneToMany(mappedBy = "buyer",
             fetch = FetchType.EAGER)
-    private List<JobPublication> jobPublications;
+    private List<JobPublicationEntity> jobPublicationEntities;
     @OneToMany(mappedBy = "author")
-    private List<PortfolioProject> projects;
+    private List<PortfolioProjectEntity> projects;
 
     @OneToMany
-    private List<Comment> commentsSent;
+    private List<CommentEntity> commentsSent;
 
     @OneToMany
-    private List<ApplicationMessage> applicationMessagesSent;
+    private List<ApplicationMessageEntity> applicationMessagesSentEntity;
 
 
 
 
-    public User() {
+    public UserEntity() {
 
     }
 
@@ -112,12 +112,12 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-    public List<UserRole> getUserRoles() {
-        return userRoles;
+    public List<UserRoleEntity> getUserRoles() {
+        return roles;
     }
 
-    public void setUserRoles(List<UserRole> userRoles) {
-        this.userRoles = userRoles;
+    public void setUserRoles(List<UserRoleEntity> userRoleEntities) {
+        this.roles = userRoleEntities;
     }
 
     public String getDescription() {
@@ -152,59 +152,59 @@ public class User extends BaseEntity {
         this.creatorType = creatorType;
     }
 
-    public List<UserRole> getRoles() {
-        return userRoles;
+    public List<UserRoleEntity> getRoles() {
+        return roles;
     }
 
-    public void setRoles(List<UserRole> userRoles) {
-        this.userRoles = userRoles;
+    public void setRoles(List<UserRoleEntity> userRoleEntities) {
+        this.roles = userRoleEntities;
     }
 
-    public Picture getProfilePicture() {
-        return profilePicture;
+    public PictureEntity getProfilePicture() {
+        return profilePictureEntity;
     }
 
-    public void setProfilePicture(Picture profilePicture) {
-        this.profilePicture = profilePicture;
+    public void setProfilePicture(PictureEntity profilePictureEntity) {
+        this.profilePictureEntity = profilePictureEntity;
     }
 
-    public Set<PortfolioProject> getLikedProjectsId() {
+    public Set<PortfolioProjectEntity> getLikedProjectsId() {
         return likedProjectsId;
     }
 
-    public void setLikedProjectsId(Set<PortfolioProject> likedProjectsId) {
+    public void setLikedProjectsId(Set<PortfolioProjectEntity> likedProjectsId) {
         this.likedProjectsId = likedProjectsId;
     }
 
-    public List<JobPublication> getJobPublications() {
-        return jobPublications;
+    public List<JobPublicationEntity> getJobPublications() {
+        return jobPublicationEntities;
     }
 
-    public void setJobPublications(List<JobPublication> jobPublications) {
-        this.jobPublications = jobPublications;
+    public void setJobPublications(List<JobPublicationEntity> jobPublicationEntities) {
+        this.jobPublicationEntities = jobPublicationEntities;
     }
 
-    public List<PortfolioProject> getProjects() {
+    public List<PortfolioProjectEntity> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<PortfolioProject> projects) {
+    public void setProjects(List<PortfolioProjectEntity> projects) {
         this.projects = projects;
     }
 
-    public List<Comment> getCommentsSent() {
+    public List<CommentEntity> getCommentsSent() {
         return commentsSent;
     }
 
-    public void setCommentsSent(List<Comment> commentsSent) {
+    public void setCommentsSent(List<CommentEntity> commentsSent) {
         this.commentsSent = commentsSent;
     }
 
-    public List<ApplicationMessage> getApplicationMessagesSent() {
-        return applicationMessagesSent;
+    public List<ApplicationMessageEntity> getApplicationMessagesSent() {
+        return applicationMessagesSentEntity;
     }
 
-    public void setApplicationMessagesSent(List<ApplicationMessage> applicationMessagesSent) {
-        this.applicationMessagesSent = applicationMessagesSent;
+    public void setApplicationMessagesSent(List<ApplicationMessageEntity> applicationMessagesSentEntity) {
+        this.applicationMessagesSentEntity = applicationMessagesSentEntity;
     }
 }

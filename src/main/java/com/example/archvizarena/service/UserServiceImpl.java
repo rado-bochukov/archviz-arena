@@ -1,9 +1,11 @@
 package com.example.archvizarena.service;
 
-import com.example.archvizarena.model.entity.User;
-import com.example.archvizarena.model.entity.UserRole;
+import com.example.archvizarena.model.entity.PictureEntity;
+import com.example.archvizarena.model.entity.UserEntity;
+import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
+import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,17 +38,17 @@ public class UserServiceImpl implements UserService {
     public void init() {
 
         if (userRepository.count() == 0 && userRoleRepository.count() == 0) {
-            UserRole adminRole = new UserRole();
+            UserRoleEntity adminRole = new UserRoleEntity();
             adminRole.setRole(UserRoleEnum.ADMIN);
             userRoleRepository.save(adminRole);
 
-            UserRole moderatorRole = new UserRole();
+            UserRoleEntity moderatorRole = new UserRoleEntity();
             moderatorRole.setRole(UserRoleEnum.MODERATOR);
             userRoleRepository.save(moderatorRole);
 
-            UserRole userRole = new UserRole();
-            userRole.setRole(UserRoleEnum.USER);
-            userRoleRepository.save(userRole);
+            UserRoleEntity userRoleEntity = new UserRoleEntity();
+            userRoleEntity.setRole(UserRoleEnum.USER);
+            userRoleRepository.save(userRoleEntity);
 
 
             initAdmin(List.of(adminRole, moderatorRole));
@@ -57,17 +60,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserRegisterServiceModel userRegisterDto) {
-        User newUser = modelMapper.map(userRegisterDto, User.class);
+        UserEntity newUser = modelMapper.map(userRegisterDto, UserEntity.class);
         newUser.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        UserRole userRole=userRoleRepository.findByRole(UserRoleEnum.USER);
-        newUser.setUserRoles(List.of(userRole));
-        newUser.setProfilePicture(pictureRepository.findById(1L).orElse(null));
+        UserRoleEntity userRoleEntity =userRoleRepository.findByRole(UserRoleEnum.USER);
+        newUser.setUserRoles(List.of(userRoleEntity));
+
         userRepository.save(newUser);
 
     }
 
-    private void initAdmin(List<UserRole> roles) {
-        User admin = new User();
+    @Override
+    public List<ArtistViewModel> findAllArtists() {
+        return userRepository.findAll().stream()
+                .filter(u->u.getUserOccupation()!=null)
+                .filter(u->u.getUserOccupation().name().equals("ARTIST"))
+                .map(artist->{
+                    ArtistViewModel artistViewModel= modelMapper.map(artist, ArtistViewModel.class);
+                    if(artist.getProfilePicture()!=null){
+                    String profilePicUrl=artist.getProfilePicture().getUrl();
+                    artistViewModel.setPictureUrl(profilePicUrl);
+                    }
+                    return artistViewModel;
+                })
+                .collect(Collectors.toList());
+    }
+
+    private void initAdmin(List<UserRoleEntity> roles) {
+        UserEntity admin = new UserEntity();
         admin.setRoles(roles);
         admin.setName("Admin");
         admin.setUsername("Admin");
@@ -78,8 +97,8 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    private void initModerator(List<UserRole> roles) {
-        User moderator = new User();
+    private void initModerator(List<UserRoleEntity> roles) {
+        UserEntity moderator = new UserEntity();
         moderator.setRoles(roles);
         moderator.setName("Moderator");
         moderator.setEmail("moderator@mod.com");
