@@ -11,11 +11,11 @@ public class PortfolioProjectEntity extends BaseProject{
     @ManyToOne
     private UserEntity author;
 
-    @OneToMany(mappedBy = "project",
-            fetch = FetchType.EAGER)
+    @OneToMany(
+            fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<PictureEntity> pictureEntities;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
 
     @Column(name = "likes_count")

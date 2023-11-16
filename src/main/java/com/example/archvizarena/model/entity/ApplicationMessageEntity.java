@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 @Table(name = "application_messages")
 public class ApplicationMessageEntity extends BaseEntity {
 
-
     @Column(name = "text_content",
             columnDefinition = "TEXT",
             nullable = false)

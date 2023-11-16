@@ -2,13 +2,10 @@ package com.example.archvizarena.model.entity;
 
 import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @MappedSuperclass
-//@Entity
-//@Table(name = "projects")
+
 public abstract class BaseProject extends BaseEntity {
     @Column(nullable = false)
     private String title;
@@ -24,14 +21,8 @@ public abstract class BaseProject extends BaseEntity {
     private ProjectCategoryEnum category;
 
 
-
-
-
-
     public BaseProject() {
     }
-
-
 
     public String getTitle() {
         return title;
@@ -63,8 +54,5 @@ public abstract class BaseProject extends BaseEntity {
     public void setCategory(ProjectCategoryEnum category) {
         this.category = category;
     }
-
-
-
 
 }

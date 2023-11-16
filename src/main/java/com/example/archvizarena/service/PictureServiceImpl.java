@@ -23,4 +23,11 @@ public class PictureServiceImpl implements PictureService {
 
 
     }
+
+    @Override
+    public void savePicture(String imageUrl) {
+        PictureEntity picture=new PictureEntity();
+        picture.setUrl(imageUrl);
+        pictureRepository.save(picture);
+    }
 }

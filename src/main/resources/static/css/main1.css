@@ -167,3 +167,7 @@ form.main-form {
 .container .bg-custom{
     background-color: #5A7272;
 }
+
+.upload-image{
+    width: 120px;
+}

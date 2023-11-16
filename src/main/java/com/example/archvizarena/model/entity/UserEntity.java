@@ -4,7 +4,6 @@ package com.example.archvizarena.model.entity;
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -17,7 +16,6 @@ public class UserEntity extends BaseEntity {
     private String name;
     @Column(unique = true, nullable = false)
     private String email;
-
     @Column(unique = true, nullable = false)
     private String username;
     @Column(nullable = false)
