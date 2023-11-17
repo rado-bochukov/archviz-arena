@@ -2,6 +2,7 @@ package com.example.archvizarena.model.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Entity
 @Table(name = "comments")
@@ -10,16 +11,27 @@ public class CommentEntity extends BaseEntity{
     @Column(nullable = false)
     private boolean approved;
     @Column(nullable = false)
-    private Date created;
+    private LocalDateTime created;
 
     @Column(name = "text_content",
             columnDefinition = "TEXT",
             nullable = false)
     private String textContent;
 
+    @ManyToOne
+    private UserEntity commentAuthor;
+
 
 
     public CommentEntity() {
+    }
+
+    public UserEntity getCommentAuthor() {
+        return commentAuthor;
+    }
+
+    public void setCommentAuthor(UserEntity commentAuthor) {
+        this.commentAuthor = commentAuthor;
     }
 
     public boolean isApproved() {
@@ -30,11 +42,11 @@ public class CommentEntity extends BaseEntity{
         this.approved = approved;
     }
 
-    public Date getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Date created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 

@@ -171,3 +171,32 @@ form.main-form {
 .upload-image{
     width: 120px;
 }
+
+.media-projects {
+    background-color: #B1B9B9;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    border-radius: 5px;
+}
+
+img.w-1001{
+
+    max-height: 620px;
+    /*width: 100%;*/
+    height: auto;
+}
+
+.card-projects {
+    background-color:  #B1B9B9;
+
+}
+.carousel-inner {
+    background-color: #51636342;
+    position: relative;
+    width: 100%;
+    overflow: hidden
+}

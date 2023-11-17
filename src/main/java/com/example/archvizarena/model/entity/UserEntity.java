@@ -40,8 +40,7 @@ public class UserEntity extends BaseEntity {
 
     @OneToOne
     private PictureEntity profilePictureEntity;
-    @ManyToMany
-    private Set<PortfolioProjectEntity> likedProjectsId;
+
 
     @OneToMany(mappedBy = "buyer",
             fetch = FetchType.EAGER)
@@ -49,11 +48,11 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "author")
     private List<PortfolioProjectEntity> projects;
 
-    @OneToMany
+    @OneToMany(mappedBy = "commentAuthor")
     private List<CommentEntity> commentsSent;
 
     @OneToMany
-    private List<ApplicationMessageEntity> applicationMessagesSentEntity;
+    private List<ApplicationMessageEntity> applicationMessagesSent;
 
 
 
@@ -166,13 +165,7 @@ public class UserEntity extends BaseEntity {
         this.profilePictureEntity = profilePictureEntity;
     }
 
-    public Set<PortfolioProjectEntity> getLikedProjectsId() {
-        return likedProjectsId;
-    }
 
-    public void setLikedProjectsId(Set<PortfolioProjectEntity> likedProjectsId) {
-        this.likedProjectsId = likedProjectsId;
-    }
 
     public List<JobPublicationEntity> getJobPublications() {
         return jobPublicationEntities;
@@ -199,10 +192,10 @@ public class UserEntity extends BaseEntity {
     }
 
     public List<ApplicationMessageEntity> getApplicationMessagesSent() {
-        return applicationMessagesSentEntity;
+        return applicationMessagesSent;
     }
 
     public void setApplicationMessagesSent(List<ApplicationMessageEntity> applicationMessagesSentEntity) {
-        this.applicationMessagesSentEntity = applicationMessagesSentEntity;
+        this.applicationMessagesSent = applicationMessagesSentEntity;
     }
 }

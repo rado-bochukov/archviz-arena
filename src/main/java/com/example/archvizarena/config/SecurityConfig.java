@@ -31,7 +31,8 @@ public class SecurityConfig {
                                         requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
-                                                "/users/login-error","/artists/all","/projects/all")
+                                                "/users/login-error","/artists/all","/projects/all",
+                                                "/projects/details/{id}")
                                         .permitAll().
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).
                                         requestMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name()).

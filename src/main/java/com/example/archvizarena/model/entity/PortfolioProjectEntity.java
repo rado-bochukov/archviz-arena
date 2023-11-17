@@ -3,6 +3,7 @@ package com.example.archvizarena.model.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "portfolio_projects")
@@ -13,7 +14,7 @@ public class PortfolioProjectEntity extends BaseProject{
 
     @OneToMany(
             fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<PictureEntity> pictureEntities;
+    private List<PictureEntity> pictures;
 
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
@@ -21,8 +22,19 @@ public class PortfolioProjectEntity extends BaseProject{
     @Column(name = "likes_count")
     private int likeCount;
 
+    @ManyToMany
+    private Set<UserEntity> usersLikedTheProject;
+
 
     public PortfolioProjectEntity() {
+    }
+
+    public Set<UserEntity> getUsersLikedTheProject() {
+        return usersLikedTheProject;
+    }
+
+    public void setUsersLikedTheProject(Set<UserEntity> usersLikedTheProject) {
+        this.usersLikedTheProject = usersLikedTheProject;
     }
 
     public int getLikeCount() {
@@ -50,10 +62,10 @@ public class PortfolioProjectEntity extends BaseProject{
     }
 
     public List<PictureEntity> getPictures() {
-        return pictureEntities;
+        return pictures;
     }
 
     public void setPictures(List<PictureEntity> pictureEntities) {
-        this.pictureEntities = pictureEntities;
+        this.pictures = pictureEntities;
     }
 }

@@ -5811,6 +5811,7 @@ button.close {
 }
 
 .carousel-inner {
+    background-color: #B1B9B9;
     position: relative;
     width: 100%;
     overflow: hidden
@@ -7485,8 +7486,17 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     max-width: 100% !important
 }
 
+.mw-1100px {
+    max-width: 1110px !important
+    max-height: 620px !important
+
+}
+
 .mh-100 {
     max-height: 100% !important
+}
+.mh-620px {
+    max-height: 620px !important
 }
 
 .m-0 {

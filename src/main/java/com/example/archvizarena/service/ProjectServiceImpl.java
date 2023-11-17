@@ -5,7 +5,9 @@ import com.example.archvizarena.model.entity.PortfolioProjectEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
+import com.example.archvizarena.model.view.CommentViewModel;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
+import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -13,7 +15,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +29,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final PictureRepository pictureRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository) {
+    private final CommentService commentService;
+
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.pictureRepository = pictureRepository;
+        this.commentService = commentService;
     }
 
     @Override
@@ -45,9 +49,56 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectBrowsingViewModel> findAll() {
-        List<PortfolioProjectEntity>result=projectRepository.findAll();
-        return projectRepository.findAll().stream().map(p->modelMapper.map(p, ProjectBrowsingViewModel.class))
+
+        return projectRepository.findAll().stream().map(this::mapToViewModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProjectDetailsViewModel findById(Long id, ArchVizArenaUserDetails userDetails) {
+        PortfolioProjectEntity project = projectRepository.findById(id).orElseThrow();
+
+        ProjectDetailsViewModel projectToView = this.mapToDetailsViewModel(project, userDetails);
+        return projectToView;
+    }
+
+    private ProjectDetailsViewModel mapToDetailsViewModel(PortfolioProjectEntity project, ArchVizArenaUserDetails userDetails) {
+        ProjectDetailsViewModel projectToView = modelMapper.map(project, ProjectDetailsViewModel.class);
+        List<String> picturesUrls = project.getPictures().stream()
+                .map(PictureEntity::getUrl)
+                .toList();
+        projectToView.setImagesUrls(picturesUrls);
+        projectToView.setAuthorName(project.getAuthor().getName());
+
+        if (userDetails == null) {
+            projectToView.setLikedFromCurrentUser(false);
+        } else {
+            List<String> usernamesLikedTheProject = project.getUsersLikedTheProject()
+                    .stream()
+                    .map(UserEntity::getUsername)
+                    .toList();
+
+            projectToView.setLikedFromCurrentUser(usernamesLikedTheProject.contains(userDetails.getUsername()));
+        }
+
+        List<CommentViewModel> comments = project.getComments().stream()
+                .map(commentService::mapToCommentViewModel)
+                .toList();
+        projectToView.setProjectComments(comments);
+
+        return projectToView;
+    }
+
+    private ProjectBrowsingViewModel mapToViewModel(PortfolioProjectEntity portfolioProjectEntity) {
+        ProjectBrowsingViewModel projectBrowsingViewModel = modelMapper.map(portfolioProjectEntity, ProjectBrowsingViewModel.class);
+        List<String> picturesUrls = portfolioProjectEntity.getPictures().stream()
+                .map(p -> p.getUrl())
+                .collect(Collectors.toList());
+        projectBrowsingViewModel.setImagesUrls(picturesUrls);
+        projectBrowsingViewModel.setAuthorName(portfolioProjectEntity.getAuthor().getName());
+        projectBrowsingViewModel.setPricePerImage(portfolioProjectEntity.getAuthor().getPricePerImage());
+
+        return projectBrowsingViewModel;
     }
 
     private PortfolioProjectEntity fromPortfolioServiceModel(PortfolioProjectServiceModel portfolioProjectToBeSaved, ArchVizArenaUserDetails userDetails) {

@@ -5,11 +5,12 @@ import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProjectBrowsingViewModel {
-
+public class ProjectDetailsViewModel {
     private Long id;
 
     private String title;
+
+    private String description;
 
     private String authorName;
 
@@ -21,8 +22,27 @@ public class ProjectBrowsingViewModel {
 
     private ProjectCategoryEnum category;
 
+   private boolean isLikedFromCurrentUser;
 
-    public ProjectBrowsingViewModel() {
+   private List<CommentViewModel>projectComments;
+
+    public ProjectDetailsViewModel() {
+    }
+
+    public List<CommentViewModel> getProjectComments() {
+        return projectComments;
+    }
+
+    public void setProjectComments(List<CommentViewModel> projectComments) {
+        this.projectComments = projectComments;
+    }
+
+    public boolean isLikedFromCurrentUser() {
+        return isLikedFromCurrentUser;
+    }
+
+    public void setLikedFromCurrentUser(boolean likedFromCurrentUser) {
+        isLikedFromCurrentUser = likedFromCurrentUser;
     }
 
     public Long getId() {
@@ -39,6 +59,14 @@ public class ProjectBrowsingViewModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAuthorName() {
@@ -80,4 +108,6 @@ public class ProjectBrowsingViewModel {
     public void setCategory(ProjectCategoryEnum category) {
         this.category = category;
     }
+
+
 }
