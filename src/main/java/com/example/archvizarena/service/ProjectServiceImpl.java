@@ -62,6 +62,20 @@ public class ProjectServiceImpl implements ProjectService {
         return projectToView;
     }
 
+    @Override
+    public ProjectDetailsViewModel likeTheProject(Long id, ArchVizArenaUserDetails userDetails) {
+
+        PortfolioProjectEntity project = projectRepository.findById(id).orElseThrow();
+        project.setLikesCount(project.getLikesCount()+1);
+        project.getUsersLikedTheProject().add(userRepository.findByUsername(userDetails.getUsername()).orElseThrow());
+        projectRepository.save(project);
+
+        PortfolioProjectEntity updatedProject = projectRepository.findById(id).orElseThrow();
+        ProjectDetailsViewModel projectToView = this.mapToDetailsViewModel(updatedProject, userDetails);
+        projectToView.setLikedFromCurrentUser(true);
+        return projectToView;
+    }
+
     private ProjectDetailsViewModel mapToDetailsViewModel(PortfolioProjectEntity project, ArchVizArenaUserDetails userDetails) {
         ProjectDetailsViewModel projectToView = modelMapper.map(project, ProjectDetailsViewModel.class);
         List<String> picturesUrls = project.getPictures().stream()
@@ -110,7 +124,7 @@ public class ProjectServiceImpl implements ProjectService {
                 .toList();
 
         project.setPublishedOn(LocalDateTime.now());
-        project.setLikeCount(0);
+        project.setLikesCount(0);
         project.setPictures(projectPictures);
         project.setAuthor(author);
 

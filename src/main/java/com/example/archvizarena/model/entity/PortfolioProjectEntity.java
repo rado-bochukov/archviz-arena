@@ -16,11 +16,11 @@ public class PortfolioProjectEntity extends BaseProject{
             fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<PictureEntity> pictures;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "project")
     private List<CommentEntity> comments;
 
     @Column(name = "likes_count")
-    private int likeCount;
+    private int likesCount;
 
     @ManyToMany
     private Set<UserEntity> usersLikedTheProject;
@@ -37,12 +37,12 @@ public class PortfolioProjectEntity extends BaseProject{
         this.usersLikedTheProject = usersLikedTheProject;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getLikesCount() {
+        return likesCount;
     }
 
-    public void setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public void setLikesCount(int likesCount) {
+        this.likesCount = likesCount;
     }
 
     public List<CommentEntity> getComments() {

@@ -64,6 +64,8 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+
     @Bean
     //енкодър за пароли за да не се запазват като плейн текст
     public PasswordEncoder passwordEncoder() {

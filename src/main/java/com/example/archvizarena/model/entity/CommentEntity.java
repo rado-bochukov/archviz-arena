@@ -21,9 +21,20 @@ public class CommentEntity extends BaseEntity{
     @ManyToOne
     private UserEntity commentAuthor;
 
+    @ManyToOne
+    private PortfolioProjectEntity project;
+
 
 
     public CommentEntity() {
+    }
+
+    public PortfolioProjectEntity getProject() {
+        return project;
+    }
+
+    public void setProject(PortfolioProjectEntity project) {
+        this.project = project;
     }
 
     public UserEntity getCommentAuthor() {

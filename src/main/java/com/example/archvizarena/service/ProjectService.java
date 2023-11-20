@@ -13,4 +13,7 @@ public interface ProjectService {
     List<ProjectBrowsingViewModel> findAll();
 
     ProjectDetailsViewModel findById(Long id, ArchVizArenaUserDetails userDetails);
+
+    ProjectDetailsViewModel likeTheProject(Long id, ArchVizArenaUserDetails userDetails);
+
 }

@@ -1,5 +1,5 @@
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="~{fragments/head}">
 
 </head>
@@ -9,29 +9,34 @@
 </header>
 
 
-<div class="container" th:object="${project}" >
+<div class="container" th:object="${project}">
 
     <th:block th:if="*{imagesUrls.size()==2}">
-    <div  th:replace="~{fragments/carousel-2-elements}"></div>
+        <div th:replace="~{fragments/carousel-2-elements}"></div>
     </th:block>
     <th:block th:if="*{imagesUrls.size()==3}">
-        <div  th:replace="~{fragments/carousel-3-elements}"></div>
+        <div th:replace="~{fragments/carousel-3-elements}"></div>
     </th:block>
     <th:block th:if="*{imagesUrls.size()==4}">
-        <div  th:replace="~{fragments/carousel-4-elements}"></div>
+        <div th:replace="~{fragments/carousel-4-elements}"></div>
     </th:block>
 
 
     <span class="media mt-1">
     <span class="media-body">
-        <h3 class="text-left text-topics  mt-2" th:text="*{title}" >Residential building in Sliven</h3>
-         <span class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="'Category: '+*{category}+' | ' " >Category: Exterior | </span>
+        <h3 class="text-left text-topics  mt-2" th:text="*{title}">Residential building in Sliven</h3>
+         <span class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="'Category: '+*{category}+' | ' ">Category: Exterior | </span>
         <!--                <div class="badge-2 badge-secondary-2 mt-0 mb-2">Freelancer</div>-->
-            <span class="text-left mt-2">Author: <th:strong th:text="*{authorName}" /></span>
+            <span class="text-left mt-2">Author: <th:strong th:text="*{authorName}"/></span>
     </span>
-    <span class="mr-2 mt-3" th:text="'Likes: '+*{likesCount}" >Likes: 56</span>
-    <button th:if="*{isLikedFromCurrentUser()}" type="submit" class="btn btn-info mb-0 mt-2 " id="like" onclick="like() ">Like</button>
+    <span class="mr-2 mt-3" th:text="'Likes: '+*{likesCount}">Likes: 56</span>
+         <form th:method="post"
+               th:action="@{/projects/details/like/{id}(id=*{id})}">
+    <button th:unless="*{isLikedFromCurrentUser()}" type="submit" class="btn btn-info mb-0 mt-2 "
+            id="like">Like</button>
+        <button th:if="*{isLikedFromCurrentUser()}" type="submit" class="btn btn-info mt-2 ml-2" id="liked" disabled>Liked!</button>
         <button type="submit" class="btn btn-info mt-2 ml-2" id="comment">Leave a comment</button>
+        </form>
     </span>
     <div class="container mt-0">
         <h5 class="text-center mt-0 ">Description</h5>
@@ -47,15 +52,18 @@
     </span>
 </div>
 
-<div class="container " th:object="${project}" >
+<div class="container " th:object="${project}">
     <h5 class="text-center  ">Comments</h5>
-    <div class="card mt-4 " th:each="c : ${project.projectComments}" >
-        <div class="card-header" th:text="'Published on: '+*{c.created}">
+    <div class="card mt-4 " th:each="c : *{projectComments}">
+        <div class="card-header" th:text="'Published on: '+${c.created}">
             Published on: 23/04/2024
         </div>
         <div class="card-body">
-            <h6 class="card-title">by <th:strong th:text="*{c.authorName}" /></h6>
-            <p class="card-text" th:text="*{c.textContent}" >Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
+            <h6 class="card-title">by
+                <th:strong th:text="${c.authorName}"/>
+            </h6>
+            <p class="card-text" th:text="${c.textContent}">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus
+                scelerisque ante
                 sollicitudin. Cras purus odio,
                 vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
                 Donec
@@ -65,14 +73,16 @@
 
 </div>
 
-<div class="container">
-    <form>
+<div class="container" >
+    <form th:method="post"
+          th:action="@{/projects/details/comment/add/{id}(id=${project.id})}"
+          th:object="${commentToBeAdded}">
         <div class="form-group ml-3 mr-3">
             <label for="exampleFormControlTextarea1">Leave a comment</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea th:field="*{textContent}"  class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
+        <button type="submit" class="btn btn-info ml-3">Leave a comment</button>
     </form>
-    <button type="submit" class="btn btn-info ml-3">Leave a comment</button>
 </div>
 
 
