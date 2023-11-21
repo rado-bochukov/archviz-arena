@@ -14,28 +14,19 @@ public class JobPublicationEntity extends BaseProject{
     @ManyToOne
     private UserEntity buyer;
 
-    @ManyToMany
-    private List<UserEntity> applicants;
 
-    @OneToMany
-    private List<ApplicationMessageEntity> receivedMessages;
+
+    @OneToMany(mappedBy = "jobPublication" ,fetch = FetchType.EAGER)
+    private List<ApplicationEntity> receivedMessages;
 
     public JobPublicationEntity() {
     }
 
-    public List<UserEntity> getApplicants() {
-        return applicants;
-    }
-
-    public void setApplicants(List<UserEntity> applicants) {
-        this.applicants = applicants;
-    }
-
-    public List<ApplicationMessageEntity> getReceivedMessages() {
+    public List<ApplicationEntity> getReceivedMessages() {
         return receivedMessages;
     }
 
-    public void setReceivedMessages(List<ApplicationMessageEntity> receivedMessages) {
+    public void setReceivedMessages(List<ApplicationEntity> receivedMessages) {
         this.receivedMessages = receivedMessages;
     }
 

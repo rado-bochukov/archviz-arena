@@ -39,7 +39,7 @@ public class UserEntity extends BaseEntity {
     private List<UserRoleEntity> roles;
 
     @OneToOne
-    private PictureEntity profilePictureEntity;
+    private PictureEntity profilePicture;
 
 
     @OneToMany(mappedBy = "buyer",
@@ -51,8 +51,8 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "commentAuthor")
     private List<CommentEntity> commentsSent;
 
-    @OneToMany
-    private List<ApplicationMessageEntity> applicationMessagesSent;
+    @OneToMany(mappedBy = "applicant",fetch = FetchType.EAGER)
+    private List<ApplicationEntity> applicationMessagesSent;
 
 
 
@@ -158,11 +158,11 @@ public class UserEntity extends BaseEntity {
     }
 
     public PictureEntity getProfilePicture() {
-        return profilePictureEntity;
+        return profilePicture;
     }
 
-    public void setProfilePicture(PictureEntity profilePictureEntity) {
-        this.profilePictureEntity = profilePictureEntity;
+    public void setProfilePicture(PictureEntity profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
 
@@ -191,11 +191,11 @@ public class UserEntity extends BaseEntity {
         this.commentsSent = commentsSent;
     }
 
-    public List<ApplicationMessageEntity> getApplicationMessagesSent() {
+    public List<ApplicationEntity> getApplicationMessagesSent() {
         return applicationMessagesSent;
     }
 
-    public void setApplicationMessagesSent(List<ApplicationMessageEntity> applicationMessagesSentEntity) {
+    public void setApplicationMessagesSent(List<ApplicationEntity> applicationMessagesSentEntity) {
         this.applicationMessagesSent = applicationMessagesSentEntity;
     }
 }

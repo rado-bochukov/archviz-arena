@@ -22,7 +22,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http
-                                           ) throws Exception {
+    ) throws Exception {
 
         http
                 .authorizeHttpRequests(
@@ -31,8 +31,9 @@ public class SecurityConfig {
                                         requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
-                                                "/users/login-error","/artists/all","/projects/all",
-                                                "/projects/details/{id}")
+                                                "/users/login-error", "/artists/all",
+                                                "/projects/all", "/projects/details/{id}",
+                                                "jobs/all", "jobs/details/{id}")
                                         .permitAll().
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).
                                         requestMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name()).
@@ -65,7 +66,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     //енкодър за пароли за да не се запазват като плейн текст
     public PasswordEncoder passwordEncoder() {
@@ -76,6 +76,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return new ArchVizArenaUserDetailService(userRepository);
     }
+
     //Така се справяме с редиректа след логин заради грешка 999
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

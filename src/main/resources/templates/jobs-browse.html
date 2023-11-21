@@ -1,5 +1,6 @@
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head}">
 
 </head>
@@ -56,58 +57,159 @@
         <!--            </div>-->
         <!--        </div>-->
     </form>
+</div>
+<div class="container">
     <div class="card-deck">
-        <div class="card mt-5" style="width: 18rem;">
-            <div class="card-header"><h4>Need 4 exterior images</h4></div>
+        <div class="card mt-5" style="width: 18rem;" th:each="j: ${allJobs}"
+             th:object="${j}">
+            <div class="card-header"><h4><strong th:text="*{title}"/></h4></div>
             <div class="card-body">
 
-                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
+                <div class="text-left mt-2">From: <strong th:text="*{authorName}"/></div>
                 <div class="mt-2">
                     <img class="flags" src="" width="26">
-                    <span class="countryName">United States</span>
+                    <span class="countryName" th:text="*{authorCountry}">United States</span>
                 </div>
-                <div class="text-left mt-2">Category: <b>Exterior</b></div>
-                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
+                <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
+                <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
                 <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
                 <button type="button" href="#" class="btn btn-info  mt-3" data-toggle="modal"
                         data-target="#exampleModalCenter">Details
                 </button>
-                <div th:replace="~{fragments/job-info-modal}"></div>
-            </div>
-        </div>
-        <div class="card mt-5" style="width: 18rem;">
-            <div class="card-header"><h4>Need 4 exterior images</h4></div>
-            <div class="card-body">
-
-                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
-                <div class="mt-2">
-                    <img class="flags" src="" width="26">
-                    <span class="countryName">United States</span>
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true" th:fragment="job-modal">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle" th:text="*{title}">Job publication
+                                    name</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-left mt-2">From: <strong th:text="*{authorName}"/></div>
+                                <div class="mt-2">
+                                    <img class="flags" src="" width="26">
+                                    <span class="countryName" th:text="*{authorCountry}">United States</span>
+                                </div>
+                                <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
+                                <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
+                                <div class="text-left mt-2">Description:</div>
+                                <p th:text="*{description}"></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button sec:authorize="hasRole('ARTIST')"
+                                        th:unless="${j.applicantsId.contains(currentUser.id)}" type="button"
+                                        class="btn btn-info" data-toggle="modal" id="apply" data-dismiss="modal"
+                                        data-target="#exampleModal" data-whatever="@mdo">Apply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-left mt-2">Category: <b>Exterior</b></div>
-                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
-                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-                <button type="button" href="#" class="btn btn-info  mt-3" data-toggle="modal"
-                        data-target="#exampleModalCenter">Details
-                </button>
-            </div>
-            <div th:replace="~{fragments/job-info-modal}"></div>
-        </div>
-        <div class="card mt-5" style="width: 18rem;">
-            <div class="card-header"><h4>Need 4 exterior images</h4></div>
-            <div class="card-body">
-
-                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>
-                <div class="mt-2">
-                    <img class="flags" src="" width="26">
-                    <span class="countryName">United States</span>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel"
+                                    th:text="'Send a message to: '+*{authorName}">Send a message to: Nicolas</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div  sec:authorize="hasRole('ARTIST')"
+                                  th:unless="${j.applicantsId.contains(currentUser.id)}" class="modal-body">
+                                <form th:method="post"
+                                      th:action="@{/jobs/detail/application/add/{id}(id=${j.id})}"
+                                      th:object="${newApplication}"
+                                      id="application-form">
+                                    <div class="form-group ">
+                                        <label for="staticEmail" class="col-sm-2 col-form-label">From</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" readonly class="form-control-plaintext" id="staticEmail"
+                                                   th:value="${currentUser.name}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="col-form-label">Message:</label>
+                                        <textarea th:field="*{textContent}" class="form-control" id="message-text" maxlength="700"></textarea>
+                                        <small class="form-text text-muted">
+                                            <span id="charCount">0</span> / 700 characters remaining
+                                        </small>
+                                        <div id="errorMessage" style="color: red;"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-info"  onclick="submitForm()">Apply
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-left mt-2">Category: <b>Exterior</b></div>
-                <div class="text-left mt-2">Budget: <b>€1500 </b></div>
-                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
-                <a href="#" class="btn btn-info  mt-3">Details</a>
+
+<!--                <div class="modal fade" id="application-message" tabindex="-1" role="dialog"-->
+<!--                     aria-labelledby="applicationSuccessful" aria-hidden="true">-->
+<!--                    <div class="modal-dialog" role="document">-->
+<!--                        <div class="modal-content">-->
+<!--                            <div class="modal-header">-->
+<!--                                <h5 class="modal-title" id="applicationSuccessful">Successful application</h5>-->
+<!--                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                    <span aria-hidden="true">&times;</span>-->
+<!--                                </button>-->
+<!--                            </div>-->
+<!--                            <div class="modal-body">-->
+
+<!--                                <div class="form-group ">-->
+<!--                                    Congratulations, your application was sent! Good luck!-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+<!--                            <div class="modal-footer">-->
+<!--                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
+        <!--        <div class="card mt-5" style="width: 18rem;">-->
+        <!--            <div class="card-header"><h4>Need 4 exterior images</h4></div>-->
+        <!--            <div class="card-body">-->
+
+        <!--                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>-->
+        <!--                <div class="mt-2">-->
+        <!--                    <img class="flags" src="" width="26">-->
+        <!--                    <span class="countryName">United States</span>-->
+        <!--                </div>-->
+        <!--                <div class="text-left mt-2">Category: <b>Exterior</b></div>-->
+        <!--                <div class="text-left mt-2">Budget: <b>€1500 </b></div>-->
+        <!--                &lt;!&ndash;        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
+        <!--                <button type="button" href="#" class="btn btn-info  mt-3" data-toggle="modal"-->
+        <!--                        data-target="#exampleModalCenter">Details-->
+        <!--                </button>-->
+        <!--            </div>-->
+        <!--            <div th:replace="~{fragments/job-info-modal}"></div>-->
+        <!--        </div>-->
+        <!--        <div class="card mt-5" style="width: 18rem;">-->
+        <!--            <div class="card-header"><h4>Need 4 exterior images</h4></div>-->
+        <!--            <div class="card-body">-->
+
+        <!--                <div class="text-left mt-2">From: <b>Nicolas Cage</b></div>-->
+        <!--                <div class="mt-2">-->
+        <!--                    <img class="flags" src="" width="26">-->
+        <!--                    <span class="countryName">United States</span>-->
+        <!--                </div>-->
+        <!--                <div class="text-left mt-2">Category: <b>Exterior</b></div>-->
+        <!--                <div class="text-left mt-2">Budget: <b>€1500 </b></div>-->
+        <!--                &lt;!&ndash;        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>&ndash;&gt;-->
+        <!--                <a href="#" class="btn btn-info  mt-3">Details</a>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
     </div>
 
@@ -119,5 +221,43 @@
 </body>
 <script src="/js/countriesAPI-2.js">
 
+</script>
+<script>
+    $(document).ready(function () {
+        var maxChars = 700;
+
+        function validateForm() {
+            var message = $('#message-text').val();
+
+            if (!message.trim()) {
+                $('#errorMessage').text('Message cannot be empty!');
+                return false;
+            }
+
+            if (message.length > maxChars) {
+                $('#errorMessage').text('Message cannot exceed 700 characters!');
+                return false;
+            }
+
+            $('#errorMessage').text('');
+            return true;
+        }
+
+        window.submitForm = function () {
+            if (validateForm()) {
+                // If validation passes, submit the form
+                $('#application-form').submit();
+            }else {
+                // If validation fails, keep the modal open
+                $('#application-form').modal('show');
+            }
+        };
+
+        $('#message-text').keyup(function () {
+            var length = $(this).val().length;
+            var remainingChars = maxChars - length;
+            $('#charCount').text(remainingChars);
+        });
+    });
 </script>
 </html>

@@ -15,27 +15,33 @@
 <div class="container">
     <h2 class="text-center text-topics">Job Description</h2>
 
-    <form method="POST"
+    <form th:method="post"
+          th:action="@{/jobs/add}"
+          th:object="${jobPublicationAddBindingModel}"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center">
         <div class="form-group col-md-whole_row mb-3">
 
             <label for="title" class="text-white font-weight-bold">Title</label>
-            <input id="title" type="text" min="2" max="20" class="form-control"
-                   placeholder="Project title"/>
-            <p class="errors alert alert-danger">
-                Project title is required.
+            <input th:field="*{title}"
+                   th:errorclass="is-invalid"
+                   id="title" type="text" class="form-control"
+                   placeholder="Job title"/>
+            <p class="invalid-feedback errors alert alert-danger">
+                Project title must be between 2 and 50 characters.
             </p>
         </div>
         <div class="form-group col-md-whole_row mb-3">
             <label for="inputDescription" class="text-white font-weight-bold">Description</label>
             <div class="form-group">
                     <textarea
+                            th:field="*{description}"
+                            th:errorclass="is-invalid"
                             id="inputDescription"
                             name="inputDescription"
                             class="form-control"
                             aria-describedby="inputDescriptionError"></textarea>
                 <p
-                        class="errors alert alert-danger">Description length must be more than 5
+                        class="invalid-feedback errors alert alert-danger">Description length must be between 5 and 700
                     characters</p>
             </div>
         </div>
@@ -43,22 +49,27 @@
 
             <div class="form-group col-md-6 mb-3">
                 <label class="text-center text-white font-weight-bold" for="category">Category</label>
-                <select id="category" class="form-control">
-                    <option value="">- Select a model -</option>
-                    <optgroup label="Category name">
-                        <option>Category</option>
-                    </optgroup>
+                <select  th:field="*{category}"
+                         th:errorclass="is-invalid"
+                        id="category" class="form-control">
+                    <option value="">- Select category -</option>
+                        <option th:each="c : ${T(com.example.archvizarena.model.entity.enums.ProjectCategoryEnum).values()}"
+                                th:text="${c}"
+                                th:value="${c}"
+                                th:selected="${c}==*{category}">Category</option>
                 </select>
-                <p class="errors alert alert-danger">
+                <p class="invalid-feedback errors alert alert-danger">
                     Category is required.
                 </p>
             </div>
             <div class="form-group col-md-6 mb-3">
                 <label for="budget" class="text-white font-weight-bold">Budget</label>
-                <input id="budget" type="number" min="0" step="100" class="form-control"
+                <input th:field="*{budget}"
+                       th:errorclass="is-invalid"
+                        id="budget" type="number"  class="form-control"
                        placeholder="Suggested budget"/>
-                <p  class="errors alert alert-danger">
-                    Suggested Budget is required.
+                <p  class="invalid-feedback errors alert alert-danger">
+                    Suggested Budget is required and must be positive value.
                 </p>
             </div>
         </div>

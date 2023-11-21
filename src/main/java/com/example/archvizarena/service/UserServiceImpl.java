@@ -6,6 +6,7 @@ import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.view.ArtistViewModel;
+import com.example.archvizarena.model.view.CurrentApplicantViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -83,6 +84,15 @@ public class UserServiceImpl implements UserService {
                     return artistViewModel;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CurrentApplicantViewModel findCurrentApplicantInfo(String username) {
+        CurrentApplicantViewModel applicant=new CurrentApplicantViewModel();
+        UserEntity user=userRepository.findByUsername(username).orElseThrow();
+        applicant.setName(user.getName());
+        applicant.setId(user.getId());
+        return applicant;
     }
 
     private void initAdmin(List<UserRoleEntity> roles) {
