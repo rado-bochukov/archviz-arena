@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+
+<div class="container " style="align-content: center; max-width: 760px">
+    <div class="card mt-5 p3 align-content-center text-center">
+        <div class=" mt-1">
+
+            <h3 class="mt-1 mb-0 ">Your application has been submitted!</h3>
+            <h3 class="mt-1 mb-0 ">Good luck!</h3>
+
+        </div>
+        <span class="mt-2 mb-2">
+        <a th:href="@{/jobs/all}" type="button" class="btn btn-info">Back to jobs</a>
+    </span>
+
+    </div>
+</div>
+<div>
+    <footer></footer>
+</div>
+</body>
+</html>

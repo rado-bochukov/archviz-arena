@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobPublicationBrowseViewModel {
+public class JobPublicationViewModel {
 
     private Long id;
 
@@ -19,7 +19,7 @@ public class JobPublicationBrowseViewModel {
 
     private List<Long> applicantsId;
 
-    public JobPublicationBrowseViewModel() {
+    public JobPublicationViewModel() {
         this.applicantsId=new ArrayList<>();
     }
 

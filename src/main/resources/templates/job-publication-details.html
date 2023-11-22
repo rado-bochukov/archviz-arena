@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{/fragments/head}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+
+<div class="container " style="align-content: center; max-width: 760px">
+    <div class="card mt-5 p3 align-content-center text-center" th:object="${jobPublication}" >
+        <div class=" mt-1" >
+
+            <h3 class="mt-1 mb-0 " th:text="*{title}">Full name</h3>
+
+            <div class=" mt-2 ">From: <strong th:text="*{authorName}"/></div>
+            <div class="mt-2 ">
+                <img class="flags" src="" width="26">
+                <span class="countryName" th:text="*{authorCountry}">United States</span>
+            </div>
+            <div class="mt-2 ">Category: <strong th:text="*{category}"/></div>
+            <div class="mt-2 ">Budget: <strong th:text="'€'+*{budget}"/></div>
+            <div class="mt-2 ">Description:</div>
+            <p th:text="*{description}"></p>
+        </div>
+
+    </div>
+    <div class="mt-2"></div>
+    <span class="mt-2" >
+        <a th:href="@{/jobs/all}" type="button" class="btn btn-info">Back to jobs</a>
+    </span>
+    <span class="text-right ml-2">
+        <span sec:authorize="hasRole('ARTIST')"
+              th:if="${jobPublication.applicantsId.contains(currentUser.id)}" >You have already applied for this job</span>
+        <a sec:authorize="hasRole('ARTIST')"
+           th:unless="${jobPublication.applicantsId.contains(currentUser.id)}"
+           th:href="@{/jobs/details/application/add/{id}(id=*{id})}"
+           class="btn btn-info">Apply
+        </a>
+    </span>
+</div>
+
+
+<div>
+    <footer></footer>
+</div>
+
+</body>
+<script src="/js/countriesAPI-2.js">
+
+</script>
+</html>

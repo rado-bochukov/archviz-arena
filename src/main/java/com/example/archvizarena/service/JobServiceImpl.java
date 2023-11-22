@@ -3,7 +3,7 @@ package com.example.archvizarena.service;
 import com.example.archvizarena.model.entity.JobPublicationEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
-import com.example.archvizarena.model.view.JobPublicationBrowseViewModel;
+import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -27,9 +27,9 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<JobPublicationBrowseViewModel> findAllJobs() {
+    public List<JobPublicationViewModel> findAllJobs() {
         return jobPublicationRepository.findAll().stream()
-                .map(this::mapToBrowseViewModel)
+                .map(this::mapToJobViewModel)
                 .collect(Collectors.toList());
     }
 
@@ -44,11 +44,21 @@ public class JobServiceImpl implements JobService {
 
     }
 
-    private JobPublicationBrowseViewModel  mapToBrowseViewModel(JobPublicationEntity jobPublicationEntity) {
+    @Override
+    public JobPublicationViewModel findJobById(Long id) {
+        JobPublicationEntity job=jobPublicationRepository.findById(id).orElseThrow();
+        return this.mapToJobViewModel(job);
+    }
 
-        JobPublicationBrowseViewModel job=modelMapper.map(jobPublicationEntity, JobPublicationBrowseViewModel.class);
+    private JobPublicationViewModel mapToJobViewModel(JobPublicationEntity jobPublicationEntity) {
+
+        JobPublicationViewModel job=modelMapper.map(jobPublicationEntity, JobPublicationViewModel.class);
         job.setAuthorName(jobPublicationEntity.getBuyer().getName());
         job.setAuthorCountry(jobPublicationEntity.getBuyer().getCountry());
+        List<Long> applicantsIds = jobPublicationEntity.getApplications().stream()
+                .map(applicationEntity -> applicationEntity.getApplicant().getId())
+                .toList();
+        job.setApplicantsId(applicantsIds);
 
         return job;
 

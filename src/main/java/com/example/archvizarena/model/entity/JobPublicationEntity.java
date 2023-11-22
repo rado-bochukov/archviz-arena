@@ -17,17 +17,17 @@ public class JobPublicationEntity extends BaseProject{
 
 
     @OneToMany(mappedBy = "jobPublication" ,fetch = FetchType.EAGER)
-    private List<ApplicationEntity> receivedMessages;
+    private List<ApplicationEntity> applications;
 
     public JobPublicationEntity() {
     }
 
-    public List<ApplicationEntity> getReceivedMessages() {
-        return receivedMessages;
+    public List<ApplicationEntity> getApplications() {
+        return applications;
     }
 
-    public void setReceivedMessages(List<ApplicationEntity> receivedMessages) {
-        this.receivedMessages = receivedMessages;
+    public void setApplications(List<ApplicationEntity> receivedMessages) {
+        this.applications = receivedMessages;
     }
 
     public BigDecimal getBudget() {

@@ -12,7 +12,7 @@ public class JobPublicationAddBindingModel {
     @Size(min=2, max=50)
     @NotEmpty
     private String title;
-    @Size( min=5, max = 700)
+    @Size( min=5)
     @NotEmpty
     private String description;
     @NotNull

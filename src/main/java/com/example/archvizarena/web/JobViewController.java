@@ -1,16 +1,15 @@
 package com.example.archvizarena.web;
 
-import com.example.archvizarena.model.binding.ApplicationAddBindingModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.CurrentApplicantViewModel;
-import com.example.archvizarena.model.view.JobPublicationBrowseViewModel;
+import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,23 +26,30 @@ public class JobViewController {
         this.userService = userService;
     }
 
-    @ModelAttribute(name= "newApplication")
-    public ApplicationAddBindingModel applicationAddBindingModel(){
-        return new ApplicationAddBindingModel();
-    }
     @GetMapping("/all")
-    public String getAllJobs(Model model,
-                             @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
+    public String getAllJobs(Model model) {
 
-        List<JobPublicationBrowseViewModel> allJobs = jobService.findAllJobs();
+        List<JobPublicationViewModel> allJobs = jobService.findAllJobs();
         model.addAttribute("allJobs", allJobs);
 
+        return "jobs-browse";
+    }
+
+    @GetMapping("/details/{id}")
+    public String getJobDetails(@PathVariable Long id,
+                                Model model,
+                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
+
+
+        JobPublicationViewModel jobPublication=jobService.findJobById(id);
+        model.addAttribute("jobPublication", jobPublication);
 
         if (userDetails != null) {
+
             CurrentApplicantViewModel currentUser = userService.findCurrentApplicantInfo(userDetails.getUsername());
             model.addAttribute("currentUser", currentUser);
-            return "jobs-browse";
+            return "job-publication-details";
         }
-        return "jobs-browse";
+        return "job-publication-details";
     }
 }
