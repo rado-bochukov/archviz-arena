@@ -37,9 +37,9 @@
     </span>
     <span class="text-right ml-2">
         <span sec:authorize="hasRole('ARTIST')"
-              th:if="${jobPublication.applicantsId.contains(currentUser.id)}" >You have already applied for this job</span>
+              th:if="${jobPublication.applicantsId.contains(principalId)}" >You have already applied for this job</span>
         <a sec:authorize="hasRole('ARTIST')"
-           th:unless="${jobPublication.applicantsId.contains(currentUser.id)}"
+           th:unless="${jobPublication.applicantsId.contains(principalId)}"
            th:href="@{/jobs/details/application/add/{id}(id=*{id})}"
            class="btn btn-info">Apply
         </a>

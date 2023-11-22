@@ -31,7 +31,8 @@ public class SecurityConfig {
                                         requestMatchers(PathRequest.toStaticResources().atCommonLocations())
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
-                                                "/users/login-error", "/artists/all",
+                                                "/users/login-error",
+                                                "/artists/all", "/artists/details/{id}",
                                                 "/projects/all", "/projects/details/{id}",
                                                 "jobs/all", "jobs/details/{id}")
                                         .permitAll().
@@ -58,10 +59,7 @@ public class SecurityConfig {
                                 logoutSuccessUrl("/").//go to homepage after logout
                                 invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID"));
-//                ).securityContext(
-//                        securityContext -> securityContext.
-//                                securityContextRepository(securityContextRepository)
-//                );
+
 
         return http.build();
     }
@@ -90,11 +88,5 @@ public class SecurityConfig {
         return new ModelMapper();
     }
 
-//    @Bean
-//    public SecurityContextRepository securityContextRepository() {
-//        return new DelegatingSecurityContextRepository(
-//                new RequestAttributeSecurityContextRepository(),
-//                new HttpSessionSecurityContextRepository()
-//        );
-//    }
+
 }

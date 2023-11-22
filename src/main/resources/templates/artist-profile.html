@@ -9,87 +9,29 @@
 </header>
 
 <div class="container ">
-<div class="media-2">
-    <img class="mr-3" src="/images/1.jpg" width="260" height="260" alt="Generic placeholder image">
-    <div class="media-body">
-        <h3 class="mt-0">Radostin Bochukov</h3>
-        <div class="badge-2 badge-secondary-2 mt-0 mb-2">Freelancer</div>
-        <div class="mt-2">
-            <img id="flag" src="" width="26" class="flags">
-            <span id="countryName" class="countryName">Italy</span>
-        </div>
-        <div class="text-left mt-2">Prices from <b>€350 / image</b></div>
-        <div class="mt-3">
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
-            vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec
-            lacinia congue felis in faucibus.
-
+    <div class="media-2" th:object="${artist}">
+        <img th:if="*{pictureUrl==null}" class="mr-3" th:src="@{/images/default_avatar.jpg}" width="260" height="260"
+             alt="Generic placeholder image">
+        <div class="media-body">
+            <h3 class="mt-0" th:text="*{name}">Radostin Bochukov</h3>
+            <div class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="*{creatorTypeEnum}">Freelancer</div>
+            <div class="mt-2">
+                <img id="flag" src="" width="26" class="flags">
+                <span id="countryName" class="countryName" th:text="*{country}">Italy</span>
+            </div>
+            <div class="text-left mt-2">Prices from <strong th:text="'€'+*{pricePerImage}+' / image'"/></div>
+            <div class="mt-3" th:text="*{description}">
+            </div>
 
         </div>
-
     </div>
 </div>
-</div>
-
-<div class="container">
-    <h3 class="text-left text-topics pl-3 mb-3">Projects</h3>
-    <div class="card-group">
-        <div class="card mr-1">
-            <img class="card-img-top" src="/images/house.JPG" alt="Card image cap">
-        </div>
-        <div class="card ">
-            <img class="card-img-top" src="/images/house.JPG" alt="Card image cap">
-        </div>
-        <div class="card ml-1">
-            <img class="card-img-top" src="/images/house.JPG" alt="Card image cap">
-        </div>
+<div class="container ">
+    <h3 class="text-center text-topics pl-3 mb-0 ">Projects</h3>
+    <div class="container mb-3" th:each="p:${artist.getProjects()}" th:insert="~{/fragments/project-card}">
     </div>
-    <span class="media mt-1">
-<!--            <img class="mr-3" src="/img/1.jpg" width="68" height="68" alt="Generic placeholder image">-->
-            <span class="media-body">
-                <h4 class="mt-0 text-topics"><b>Residential Building in Sliven</b> </h4>
-                <span class="badge-2 badge-secondary-2 mt-0 mb-2">Exterior | </span>
-                <!--                <div class="badge-2 badge-secondary-2 mt-0 mb-2">Freelancer</div>-->
-            <span class="text-left mt-2">By <b>Radostin Bochukov</b></span>
-                <span class="text-left mt-2">  | Prices from <b>€350 / image</b></span>
-            </span>
-            <button type="submit" class="btn btn-info mb-0">View project</button>
-            </span>
+
 </div>
-<!--<div class="container ">-->
-<!--    <div class="card text-center" >-->
-<!--        <div class="card-body">-->
-<!--        <span>-->
-<!--                    <img id="flag" src="/img/1.jpg" width="260" height="260">-->
-<!--                  </span>-->
-<!--            <h5 class="card-title">Card title</h5>-->
-<!--            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>-->
-<!--            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's-->
-<!--                content.</p>-->
-<!--            <a href="#" class="card-link">Card link</a>-->
-<!--            <a href="#" class="card-link">Another link</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-
-<!--<div class="container ">-->
-<!--    &lt;!&ndash; Content here &ndash;&gt;-->
-<!--    <div class="card mb-3">-->
-<!--        <img class="card-img-top" src="/img/house.JPG" width="789" height="180" alt="Card image cap">-->
-<!--        <div class="card-body">-->
-<!--      <span>-->
-<!--        <img id="flag" src="/img/1.jpg" width="200">-->
-<!--      </span>-->
-<!--            <h5 class="card-title">Card title</h5>-->
-<!--            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional-->
-<!--                content. This content is a little bit longer.</p>-->
-<!--            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-
 </body>
 <script src="/js/countriesAPI-2.js">
 

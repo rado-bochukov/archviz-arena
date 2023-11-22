@@ -46,8 +46,8 @@ public class JobViewController {
 
         if (userDetails != null) {
 
-            CurrentApplicantViewModel currentUser = userService.findCurrentApplicantInfo(userDetails.getUsername());
-            model.addAttribute("currentUser", currentUser);
+            Long principalId = userService.getPrincipalId(userDetails.getUsername());
+            model.addAttribute("principalId", principalId);
             return "job-publication-details";
         }
         return "job-publication-details";

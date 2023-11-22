@@ -1,0 +1,32 @@
+
+    <div class="card-group" th:fragment="project-card" >
+        <div class="card mr-1 text-center">
+            <img class="card-img-top" th:src="*{p.imagesUrls.get(0)}" alt="Card image cap"
+                 style="max-width: 356px;max-height: 200px; object-fit: cover">
+        </div>
+        <div class="card text-center ">
+            <img th:if="*{p.imagesUrls.size()>1}" class="card-img-top" th:src="*{p.getImagesUrls().get(1)}"
+                 alt="Card image cap"
+                 style="max-width: 356px;max-height: 200px;object-fit: cover">
+        </div>
+        <div class="card ml-1 text-center">
+            <img th:if="*{p.imagesUrls.size()>2}" class="card-img-top" th:src="*{p.getImagesUrls().get(2)}"
+                 alt="Card image cap"
+                 style="max-width: 356px;max-height: 200px; object-fit: cover">
+        </div>
+
+    </div>
+    <span class="media-projects mt-1">
+            <span class="media-body p-1">
+                <h4 class="mt-0 text-topics"> <strong th:text="*{p.title}"/> </h4>
+                <span class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="''+*{p.category}+' | '">Exterior | </span>
+            <span class="text-left mt-2">By <strong th:text="*{p.authorName}"/></span>
+                <span class="text-left mt-2">  | Prices from <strong
+                        th:text="'€'+*{p.pricePerImage}+' / image'"/></span>
+            </span>
+                <span class="mt-4">
+
+            <span class="mr-2 " th:text="'Likes: '+*{p.likesCount}">Likes: 56</span>
+            <a th:href="@{/projects/details/{id}(id=*{p.id})}" class="btn btn-info mb-0 mr-2 ">View project</a>
+                </span>
+            </span>

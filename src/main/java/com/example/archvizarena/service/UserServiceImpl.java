@@ -1,15 +1,18 @@
 package com.example.archvizarena.service;
 
-import com.example.archvizarena.model.entity.PictureEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
+import com.example.archvizarena.model.view.ArtistProfileViewModel;
 import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.model.view.CurrentApplicantViewModel;
+import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.util.mapper.CustomProjectMapper;
+import com.example.archvizarena.util.mapper.ProjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,14 +29,16 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final ModelMapper modelMapper;
-    private final PictureRepository pictureRepository;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, PictureRepository pictureRepository) {
+    private final CustomProjectMapper customProjectMapper;
+
+
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, CustomProjectMapper customProjectMapper) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
-        this.pictureRepository = pictureRepository;
+        this.customProjectMapper = customProjectMapper;
     }
 
     public void init() {
@@ -94,6 +99,30 @@ public class UserServiceImpl implements UserService {
         applicant.setId(user.getId());
         return applicant;
     }
+
+    @Override
+    public Long getPrincipalId(String username) {
+
+        UserEntity user = userRepository.findByUsername(username).orElseThrow();
+        return user.getId();
+    }
+
+    @Override
+    public ArtistProfileViewModel findUserById(Long id) {
+        UserEntity artist=userRepository.findById(id).orElseThrow();
+        ArtistProfileViewModel artistViewModel= modelMapper.map(artist, ArtistProfileViewModel.class);
+        if(artist.getProfilePicture()!=null){
+            String profilePicUrl=artist.getProfilePicture().getUrl();
+            artistViewModel.setPictureUrl(profilePicUrl);
+        }
+        List<ProjectBrowsingViewModel> artistProjects = artist.getProjects().stream()
+                .map(customProjectMapper::mapToViewModel)
+                .toList();
+        artistViewModel.setProjects(artistProjects);
+        return artistViewModel;
+    }
+
+
 
     private void initAdmin(List<UserRoleEntity> roles) {
         UserEntity admin = new UserEntity();

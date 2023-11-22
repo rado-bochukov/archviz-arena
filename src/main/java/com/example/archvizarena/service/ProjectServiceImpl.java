@@ -11,6 +11,8 @@ import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.util.mapper.CustomProjectMapper;
+import com.example.archvizarena.util.mapper.ProjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +24,19 @@ import java.util.stream.Collectors;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
-
     private final UserRepository userRepository;
-
     private final ModelMapper modelMapper;
-
     private final PictureRepository pictureRepository;
-
     private final CommentService commentService;
+    private final CustomProjectMapper customProjectMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService,  CustomProjectMapper customProjectMapper) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.pictureRepository = pictureRepository;
         this.commentService = commentService;
+        this.customProjectMapper = customProjectMapper;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectBrowsingViewModel> findAll() {
 
-        return projectRepository.findAll().stream().map(this::mapToViewModel)
+        return projectRepository.findAll().stream().map(customProjectMapper::mapToViewModel)
                 .collect(Collectors.toList());
     }
 
@@ -103,17 +103,6 @@ public class ProjectServiceImpl implements ProjectService {
         return projectToView;
     }
 
-    private ProjectBrowsingViewModel mapToViewModel(PortfolioProjectEntity portfolioProjectEntity) {
-        ProjectBrowsingViewModel projectBrowsingViewModel = modelMapper.map(portfolioProjectEntity, ProjectBrowsingViewModel.class);
-        List<String> picturesUrls = portfolioProjectEntity.getPictures().stream()
-                .map(p -> p.getUrl())
-                .collect(Collectors.toList());
-        projectBrowsingViewModel.setImagesUrls(picturesUrls);
-        projectBrowsingViewModel.setAuthorName(portfolioProjectEntity.getAuthor().getName());
-        projectBrowsingViewModel.setPricePerImage(portfolioProjectEntity.getAuthor().getPricePerImage());
-
-        return projectBrowsingViewModel;
-    }
 
     private PortfolioProjectEntity fromPortfolioServiceModel(PortfolioProjectServiceModel portfolioProjectToBeSaved, ArchVizArenaUserDetails userDetails) {
 

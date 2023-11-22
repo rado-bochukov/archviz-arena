@@ -8,7 +8,6 @@ import java.util.List;
 public interface JobService {
     List<JobPublicationViewModel> findAllJobs();
 
-
     void addJob(JobPublicationAddServiceModel jobToBeAdded, String username);
 
     JobPublicationViewModel findJobById(Long id);

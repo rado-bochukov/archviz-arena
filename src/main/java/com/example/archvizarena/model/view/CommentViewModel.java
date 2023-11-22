@@ -1,11 +1,13 @@
 package com.example.archvizarena.model.view;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDateTime;
 
 public class CommentViewModel {
 
     private String authorName;
-
+@DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm")
     private LocalDateTime created;
 
     private String textContent;
@@ -36,4 +38,6 @@ public class CommentViewModel {
     public void setTextContent(String textContent) {
         this.textContent = textContent;
     }
+
+    // TODO: 22.11.2023 г. Date format of the comments
 }

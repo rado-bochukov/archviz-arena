@@ -43,11 +43,11 @@ public class ApplicationController {
         model.addAttribute("jobPublication", jobPublication);
 
         if (userDetails != null) {
-            CurrentApplicantViewModel currentUser = userService.findCurrentApplicantInfo(userDetails.getUsername());
-            if(jobPublication.getApplicantsId().contains(currentUser.getId())){
+            Long principalId = userService.getPrincipalId(userDetails.getUsername());
+            if(jobPublication.getApplicantsId().contains(principalId)){
                 return "successful-application";
             }
-            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("principalId", principalId);
             return "job-application";
         }
         return "job-application";

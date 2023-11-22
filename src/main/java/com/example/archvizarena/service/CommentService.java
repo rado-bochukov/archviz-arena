@@ -6,7 +6,6 @@ import com.example.archvizarena.model.view.CommentViewModel;
 
 public interface CommentService {
     CommentViewModel mapToCommentViewModel(CommentEntity c);
-
     void saveAndAddComment(CommentAddServiceModel commentToBeAdded);
 
 }
