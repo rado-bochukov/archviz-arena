@@ -1,10 +1,8 @@
 package com.example.archvizarena.web;
 
 import com.example.archvizarena.model.binding.ApplicationAddBindingModel;
-import com.example.archvizarena.model.binding.UserRegisterBindingModel;
 import com.example.archvizarena.model.service.ApplicationAddServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
-import com.example.archvizarena.model.view.CurrentApplicantViewModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.service.ApplicationService;
 import com.example.archvizarena.service.JobService;
@@ -48,9 +46,9 @@ public class ApplicationController {
                 return "successful-application";
             }
             model.addAttribute("principalId", principalId);
-            return "job-application";
+            return "job-application-form";
         }
-        return "job-application";
+        return "job-application-form";
     }
 
     @ModelAttribute

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+<div class="container">
+    <h2 class="text-center text-topics" th:text="'Applicants for job #'+ ${job.id}">Apply for job #</h2>
+
+    <form th:method="post"
+          th:action="@{/jobs/details/application-approve/{id}(id=${job.id})}"
+          th:object="${job}"
+          enctype="multipart/form-data"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Job title: <strong th:text="*{title}"/></label>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Author: <strong th:text="*{authorName}"/></label>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Category: <strong th:text="*{category}"/></label>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Budget: <strong th:text="'€'+*{budget}"/></label>
+        </div>
+    </form>
+
+    <form th:method="post"
+          th:action="@{/jobs/details/application-approve/{id}(id=${job.id})}"
+          th:each="a, iterStat : ${applications}"
+          th:object="${a}"
+          enctype="multipart/form-data"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
+        <div class="mt-5 mb-1">
+                    <span class="media mt-1">
+                <img th:if="*{applicant.pictureUrl==null}" class="mr-3" th:src="@{/images/default_avatar.jpg}"
+                     width="50" height="50"
+                     alt="Generic placeholder image">
+                <span class="media-body">
+                <h5 class="mt-0 text-topics" th:text="*{applicant.name}">Radostin Bochukov </h5>
+                <span class="mt-2">
+                     <span class="candidateType" th:text="''+*{applicant.creatorTypeEnum}+' | '">Freelancer | </span>
+                    <img src="" width="22" class="flags">
+                    <span class="countryName" th:text="*{applicant.country}">Italy</span>
+                </span>
+                <span class="text-left mt-2">  | Prices from <strong
+                        th:text="'€'+*{applicant.pricePerImage}+' / image'"/></span>
+                </span>
+                </span>
+            <div>
+                <a th:href="@{/users/artists/details/{id}(id=*{applicant.id})}" class="btn btn-info btn-sm mt-1 mb-0">View Profile</a>
+                <button type="button" class="btn btn-info btn-sm mt-1 ml-2" data-toggle="modal"
+                        th:data-target="'#application-message-'+${iterStat.index}" data-whatever="@mdo">View message
+                </button>
+                <button type="submit" class="btn btn-info btn-sm mt-1 ml-2">Approve</button>
+            </div>
+        </div>
+        <div th:each="a, iterStat : ${applications}" th:object="${a}" class="modal fade"
+             th:id="'application-message-'+${iterStat.index}" tabindex="-1" role="dialog"
+             aria-labelledby="applicationSuccessful"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="applicationSuccessful">Message from Candidate: </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group " th:text="*{textContent}" style="white-space: pre-line;">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div>
+    <footer></footer>
+</div>
+</body>
+<script src="/js/countriesAPI-2.js">
+</script>
+</html>

@@ -5,13 +5,12 @@ import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
-import com.example.archvizarena.model.view.UserProfileViewModel;
-import com.example.archvizarena.model.view.ArtistViewModel;
-import com.example.archvizarena.model.view.CurrentApplicantViewModel;
-import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
+import com.example.archvizarena.model.view.*;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
+import com.example.archvizarena.util.mapper.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,14 +29,18 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     private final ProjectMapper projectMapper;
+    private final JobPublicationMapper jobPublicationMapper;
+    private final UserMapper userMapper;
 
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper, JobPublicationMapper jobPublicationMapper, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
         this.projectMapper = projectMapper;
+        this.jobPublicationMapper = jobPublicationMapper;
+        this.userMapper = userMapper;
     }
 
     public void init() {
@@ -79,14 +82,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .filter(u->u.getUserOccupation()!=null)
                 .filter(u->u.getUserOccupation().name().equals("ARTIST"))
-                .map(artist->{
-                    ArtistViewModel artistViewModel= modelMapper.map(artist, ArtistViewModel.class);
-                    if(artist.getProfilePicture()!=null){
-                    String profilePicUrl=artist.getProfilePicture().getUrl();
-                    artistViewModel.setPictureUrl(profilePicUrl);
-                    }
-                    return artistViewModel;
-                })
+                .map(userMapper::mapToArtistViewModel)
                 .collect(Collectors.toList());
     }
 
@@ -120,8 +116,12 @@ public class UserServiceImpl implements UserService {
                 .map(projectMapper::mapToViewModel)
                 .toList();
         userViewModel.setProjects(artistProjects);
+        }else if (user.getUserOccupation().equals(UserOccupationEnum.BUYER)){
+            List<JobPublicationViewModel> buyerJobs = user.getJobPublications().stream()
+                    .map(jobPublicationMapper::mapToJobViewModel)
+                    .toList();
+            userViewModel.setJobPublications(buyerJobs);
         }
-
         return userViewModel;
     }
 

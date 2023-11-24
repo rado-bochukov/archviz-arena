@@ -39,6 +39,7 @@ public class SecurityConfig {
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).
                                         requestMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name()).
                                         requestMatchers("/jobs/add").hasRole(UserOccupationEnum.BUYER.name()).
+                                        requestMatchers("/jobs/job-applicants/{id}").hasRole(UserOccupationEnum.BUYER.name()).
                                         requestMatchers("/users/myProfile").hasAnyRole(UserOccupationEnum.ARTIST.name(),UserOccupationEnum.BUYER.name()).
                                         requestMatchers("/projects/add",
                                                 "/jobs/details/application/add/{id}").hasRole(UserOccupationEnum.ARTIST.name()).

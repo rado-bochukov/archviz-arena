@@ -48,10 +48,10 @@
 
                 <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
                 <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
-                <div class="text-left mt-2">Candidates: 5</div>
-                <!--        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>-->
+                <div class="text-left mt-2" th:text="'Candidates: '+*{applicantsId.size()}">Candidates: 5</div>
+
                 <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details</a>
-                <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/jobs/job-candidates/{id}(id=${j.id})}" class="btn btn-info  mt-3">View candidates</a>
+                <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/jobs/job-applicants/{id}(id=${j.id})}" class="btn btn-info  mt-3">View candidates</a>
             </div>
         </div>
 

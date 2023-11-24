@@ -1,6 +1,7 @@
 package com.example.archvizarena.util.mapper;
 
 import com.example.archvizarena.model.entity.JobPublicationEntity;
+import com.example.archvizarena.model.view.JobPublicationBrowseCandidatesViewModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import org.springframework.stereotype.Component;
 
@@ -27,4 +28,6 @@ public class JobPublicationMapperImpl implements JobPublicationMapper {
 
         return job;
     }
+
+
 }

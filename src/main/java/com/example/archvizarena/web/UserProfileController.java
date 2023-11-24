@@ -64,10 +64,8 @@ public class UserProfileController {
         model.addAttribute("user",artist);
 
         if(userDetails.isArtist()){
-            return "artist-profile";
+            return "redirect:/users/artists/details/"+userId;
         }
-
-        return "buyer-profile";
-
+        return "redirect:/users/buyers/details/"+userId;
     }
 }
