@@ -6,6 +6,7 @@ import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +20,19 @@ public class JobServiceImpl implements JobService {
     private final JobPublicationRepository jobPublicationRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final JobPublicationMapper jobPublicationMapper;
 
-    public JobServiceImpl(JobPublicationRepository jobPublicationRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public JobServiceImpl(JobPublicationRepository jobPublicationRepository, UserRepository userRepository, ModelMapper modelMapper, JobPublicationMapper jobPublicationMapper) {
         this.jobPublicationRepository = jobPublicationRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.jobPublicationMapper = jobPublicationMapper;
     }
 
     @Override
     public List<JobPublicationViewModel> findAllJobs() {
         return jobPublicationRepository.findAll().stream()
-                .map(this::mapToJobViewModel)
+                .map(jobPublicationMapper::mapToJobViewModel)
                 .collect(Collectors.toList());
     }
 
@@ -47,20 +50,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobPublicationViewModel findJobById(Long id) {
         JobPublicationEntity job=jobPublicationRepository.findById(id).orElseThrow();
-        return this.mapToJobViewModel(job);
+        return jobPublicationMapper.mapToJobViewModel(job);
     }
 
-    private JobPublicationViewModel mapToJobViewModel(JobPublicationEntity jobPublicationEntity) {
-
-        JobPublicationViewModel job=modelMapper.map(jobPublicationEntity, JobPublicationViewModel.class);
-        job.setAuthorName(jobPublicationEntity.getBuyer().getName());
-        job.setAuthorCountry(jobPublicationEntity.getBuyer().getCountry());
-        List<Long> applicantsIds = jobPublicationEntity.getApplications().stream()
-                .map(applicationEntity -> applicationEntity.getApplicant().getId())
-                .toList();
-        job.setApplicantsId(applicantsIds);
-
-        return job;
-
-    }
 }

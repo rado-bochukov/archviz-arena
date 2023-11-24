@@ -55,7 +55,8 @@
                         Profile
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/">My Profile</a>
+                        <a class="dropdown-item" th:href="@{/users/myProfile}" sec:authorize="hasRole('ARTIST')" >My Profile</a>
+                        <a class="dropdown-item" th:href="@{/users/myProfile}" sec:authorize="hasRole('BUYER')" >My Profile</a>
                         <a class="dropdown-item" th:href="@{/users/edit-profile}">Edit Profile</a>
                         <a class="dropdown-item" th:href="@{/projects/add}" sec:authorize="hasRole('ARTIST')">Post a
                             project</a>

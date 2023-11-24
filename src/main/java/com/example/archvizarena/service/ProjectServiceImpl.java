@@ -11,7 +11,6 @@ import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
-import com.example.archvizarena.util.mapper.CustomProjectMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -28,15 +27,15 @@ public class ProjectServiceImpl implements ProjectService {
     private final ModelMapper modelMapper;
     private final PictureRepository pictureRepository;
     private final CommentService commentService;
-    private final CustomProjectMapper customProjectMapper;
+    private final ProjectMapper projectMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService,  CustomProjectMapper customProjectMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService,  ProjectMapper projectMapper) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.pictureRepository = pictureRepository;
         this.commentService = commentService;
-        this.customProjectMapper = customProjectMapper;
+        this.projectMapper = projectMapper;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectBrowsingViewModel> findAll() {
 
-        return projectRepository.findAll().stream().map(customProjectMapper::mapToViewModel)
+        return projectRepository.findAll().stream().map(projectMapper::mapToViewModel)
                 .collect(Collectors.toList());
     }
 
@@ -58,8 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDetailsViewModel findById(Long id, ArchVizArenaUserDetails userDetails) {
         PortfolioProjectEntity project = projectRepository.findById(id).orElseThrow();
 
-        ProjectDetailsViewModel projectToView = this.mapToDetailsViewModel(project, userDetails);
-        return projectToView;
+        return this.mapToDetailsViewModel(project, userDetails); 
     }
 
     @Override

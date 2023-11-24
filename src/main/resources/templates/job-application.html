@@ -13,7 +13,7 @@
 
 
 <div class="container">
-    <h2 class="text-center text-topics" th:text="'Apply for job #'+ ${jobPublication.id}" >Apply for job #</h2>
+    <h2 class="text-center text-topics" th:text="'Apply for job #'+ ${jobPublication.id}">Apply for job #</h2>
 
     <form th:method="post"
           th:action="@{/jobs/details/application/add/{id}(id=${jobPublication.id})}"
@@ -21,13 +21,16 @@
           enctype="multipart/form-data"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
         <div class="form-group col-md-whole_row mb-3">
-            <label  class="text-white font-weight-bold">Job title: <strong th:text="*{title}" /></label>
+            <label class="text-white font-weight-bold">Job title: <strong th:text="*{title}"/></label>
         </div>
         <div class="form-group col-md-whole_row mb-3">
-            <label  class="text-white font-weight-bold">Author: <strong th:text="*{authorName}" /></label>
+            <label class="text-white font-weight-bold">Author: <strong th:text="*{authorName}"/></label>
         </div>
         <div class="form-group col-md-whole_row mb-3">
-            <label  class="text-white font-weight-bold">Category: <strong th:text="*{category}" /></label>
+            <label class="text-white font-weight-bold">Category: <strong th:text="*{category}"/></label>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Budget: <strong th:text="'€'+*{budget}"/></label>
         </div>
         <div class="form-group col-md-whole_row mb-3">
             <label for="inputDescription" class="text-white font-weight-bold">Application message:</label>

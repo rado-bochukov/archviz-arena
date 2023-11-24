@@ -5,7 +5,7 @@ import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ArtistProfileViewModel {
+public class UserProfileViewModel {
 
     private Long id;
 
@@ -18,11 +18,31 @@ public class ArtistProfileViewModel {
 
     private BigDecimal pricePerImage;
 
-   private List<ProjectBrowsingViewModel> projects;
+    private List<ProjectBrowsingViewModel> projects;
 
-   private String description;
+    private  List<JobPublicationViewModel> jobPublications;
 
-    public ArtistProfileViewModel() {
+    private BigDecimal budget;
+
+    private String description;
+
+    public UserProfileViewModel() {
+    }
+
+    public List<JobPublicationViewModel> getJobPublications() {
+        return jobPublications;
+    }
+
+    public void setJobPublications(List<JobPublicationViewModel> jobPublications) {
+        this.jobPublications = jobPublications;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
     }
 
     public String getDescription() {

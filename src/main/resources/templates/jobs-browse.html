@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -73,8 +74,8 @@
                 <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
                 <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
 
-                <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details
-                </a>
+                <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details</a>
+                <a th:href="@{/users/buyers/details/{id}(id=${j.authorId})}" class="btn btn-info  ml-2 mt-3">View Buyer</a>
             </div>
         </div>
     </div>

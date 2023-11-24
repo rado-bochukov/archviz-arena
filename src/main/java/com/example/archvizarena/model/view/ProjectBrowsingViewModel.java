@@ -22,6 +22,8 @@ public class ProjectBrowsingViewModel {
     private ProjectCategoryEnum category;
 
 
+
+
     public ProjectBrowsingViewModel() {
     }
 

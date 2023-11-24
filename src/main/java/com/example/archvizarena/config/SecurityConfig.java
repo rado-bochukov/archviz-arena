@@ -32,13 +32,14 @@ public class SecurityConfig {
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
                                                 "/users/login-error",
-                                                "/artists/all", "/artists/details/{id}",
+                                                "/artists/all", "/users/artists/details/{id}","/users/buyers/details/{id}",
                                                 "/projects/all", "/projects/details/{id}",
                                                 "jobs/all", "jobs/details/{id}")
                                         .permitAll().
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).
                                         requestMatchers("/pages/admins").hasRole(UserRoleEnum.ADMIN.name()).
                                         requestMatchers("/jobs/add").hasRole(UserOccupationEnum.BUYER.name()).
+                                        requestMatchers("/users/myProfile").hasAnyRole(UserOccupationEnum.ARTIST.name(),UserOccupationEnum.BUYER.name()).
                                         requestMatchers("/projects/add",
                                                 "/jobs/details/application/add/{id}").hasRole(UserOccupationEnum.ARTIST.name()).
                                         anyRequest().authenticated()
@@ -80,7 +81,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
-                .requestMatchers("/resources/static", "/favicon.ico", "/error");
+                .requestMatchers("/resources/static", "/favicon.ico", "/error","/img/**");
     }
 
     @Bean

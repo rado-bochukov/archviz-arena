@@ -15,6 +15,8 @@ public abstract class BaseProject extends BaseEntity {
     @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
+    // TODO: 24.11.2023 г. isActive
+
 
     @Column(name = "categories",nullable = false)
     @Enumerated(EnumType.STRING)

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 
 @Component
-public class CustomProjectMapperImpl implements CustomProjectMapper {
+public class ProjectMapperImpl implements ProjectMapper {
     @Override
     public ProjectBrowsingViewModel mapToViewModel(PortfolioProjectEntity portfolioProjectEntity) {
         if(portfolioProjectEntity==null){

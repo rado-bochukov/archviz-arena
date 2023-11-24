@@ -19,8 +19,18 @@ public class JobPublicationViewModel {
 
     private List<Long> applicantsId;
 
+    private Long authorId;
+
     public JobPublicationViewModel() {
         this.applicantsId=new ArrayList<>();
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public Long getId() {

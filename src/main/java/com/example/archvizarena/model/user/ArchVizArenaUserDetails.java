@@ -12,7 +12,7 @@ public class ArchVizArenaUserDetails implements UserDetails {
     private final String username;
     private final String password;
     private final Collection<GrantedAuthority> authorities;
-    private UserOccupationEnum occupation;
+
 
     public ArchVizArenaUserDetails(String name,
                                    String email,
@@ -32,9 +32,7 @@ public class ArchVizArenaUserDetails implements UserDetails {
         return authorities;
     }
 
-    public UserOccupationEnum getOccupation() {
-        return occupation;
-    }
+
 
     @Override
     public String getPassword() {
@@ -44,6 +42,24 @@ public class ArchVizArenaUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public boolean isArtist(){
+        for (GrantedAuthority authority : this.authorities) {
+            if (authority.getAuthority().equals("ROLE_ARTIST")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isBuyer(){
+        for (GrantedAuthority authority : this.authorities) {
+            if (authority.getAuthority().equals("ROLE_BUYER")){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
