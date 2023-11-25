@@ -11,4 +11,10 @@ public interface JobService {
     void addJob(JobPublicationAddServiceModel jobToBeAdded, String username);
 
     JobPublicationViewModel findJobById(Long id);
+
+    void deactivateJob(Long id, Long userId);
+
+    void deleteJob(Long id, Long userId);
+
+    void activateJob(Long id, Long userId);
 }

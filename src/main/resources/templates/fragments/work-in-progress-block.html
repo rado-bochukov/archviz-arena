@@ -1,0 +1,23 @@
+<th:block th:if="${principalId!=null && principalId==user.id}" th:fragment="work-in-progress" >
+  <div class="container">
+    <h3 class="text-left text-topics pl-3 mb-0">Work in progress</h3>
+
+    <div class="card-deck" >
+      <div class="card mt-5"
+           th:each="wp:${user.workInProgress}"
+           th:object="${wp}">
+        <div class="card-header"  ><h4 th:text="*{job.title}" >Need 4 exterior images</h4></div>
+        <div class="card-body">
+
+          <div class="text-left mt-2">Category: <strong th:text="*{job.category}"/></div>
+          <div class="text-left mt-2">Budget: <strong th:text="'€'+*{job.budget}"/></div>
+          <div class="text-left mt-2">Buyer: <strong th:text="*{buyerName}"/></div>
+          <div class="text-left mt-2">Artist: <strong th:text="*{artistName}"/></div>
+
+          <a th:href="@{/work-in-progress/{id}(id=*{id})}" type="submit" class="btn btn-info  mt-3 ml-1">View messages</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</th:block>

@@ -31,7 +31,7 @@
     </form>
 
     <form th:method="post"
-          th:action="@{/jobs/details/application-approve/{id}(id=${job.id})}"
+          th:action="@{/jobs/approval/{jobId}/{applicantId}(jobId=${job.id},applicantId=*{applicant.id})}"
           th:each="a, iterStat : ${applications}"
           th:object="${a}"
           enctype="multipart/form-data"
@@ -57,6 +57,7 @@
                 <button type="button" class="btn btn-info btn-sm mt-1 ml-2" data-toggle="modal"
                         th:data-target="'#application-message-'+${iterStat.index}" data-whatever="@mdo">View message
                 </button>
+
                 <button type="submit" class="btn btn-info btn-sm mt-1 ml-2">Approve</button>
             </div>
         </div>

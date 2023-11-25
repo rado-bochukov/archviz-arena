@@ -20,7 +20,10 @@ public class UserProfileViewModel {
 
     private List<ProjectBrowsingViewModel> projects;
 
-    private  List<JobPublicationViewModel> jobPublications;
+    private  List<JobPublicationViewModel> activeJobPublications;
+    private  List<JobPublicationViewModel> inactiveJobPublications;
+
+    private List<WorkInProgressViewModel> workInProgress;
 
     private BigDecimal budget;
 
@@ -29,13 +32,30 @@ public class UserProfileViewModel {
     public UserProfileViewModel() {
     }
 
-    public List<JobPublicationViewModel> getJobPublications() {
-        return jobPublications;
+    public List<WorkInProgressViewModel> getWorkInProgress() {
+        return workInProgress;
     }
 
-    public void setJobPublications(List<JobPublicationViewModel> jobPublications) {
-        this.jobPublications = jobPublications;
+    public void setWorkInProgress(List<WorkInProgressViewModel> workInProgress) {
+        this.workInProgress = workInProgress;
     }
+
+    public List<JobPublicationViewModel> getActiveJobPublications() {
+        return activeJobPublications;
+    }
+
+    public void setActiveJobPublications(List<JobPublicationViewModel> activeJobPublications) {
+        this.activeJobPublications = activeJobPublications;
+    }
+
+    public List<JobPublicationViewModel> getInactiveJobPublications() {
+        return inactiveJobPublications;
+    }
+
+    public void setInactiveJobPublications(List<JobPublicationViewModel> inactiveJobPublications) {
+        this.inactiveJobPublications = inactiveJobPublications;
+    }
+
 
     public BigDecimal getBudget() {
         return budget;

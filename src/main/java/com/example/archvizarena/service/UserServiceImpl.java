@@ -1,5 +1,6 @@
 package com.example.archvizarena.service;
 
+import com.example.archvizarena.model.entity.JobPublicationEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
@@ -32,8 +33,10 @@ public class UserServiceImpl implements UserService {
     private final JobPublicationMapper jobPublicationMapper;
     private final UserMapper userMapper;
 
+    private final WorkInProgressService workInProgressService;
 
-    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper, JobPublicationMapper jobPublicationMapper, UserMapper userMapper) {
+
+    public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper, JobPublicationMapper jobPublicationMapper, UserMapper userMapper, WorkInProgressService workInProgressService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
         this.projectMapper = projectMapper;
         this.jobPublicationMapper = jobPublicationMapper;
         this.userMapper = userMapper;
+        this.workInProgressService = workInProgressService;
     }
 
     public void init() {
@@ -116,11 +120,22 @@ public class UserServiceImpl implements UserService {
                 .map(projectMapper::mapToViewModel)
                 .toList();
         userViewModel.setProjects(artistProjects);
+
+        List<WorkInProgressViewModel> artistWorkInProgress=workInProgressService.getAllArtistWorkInProgress(id);
+        userViewModel.setWorkInProgress(artistWorkInProgress);
         }else if (user.getUserOccupation().equals(UserOccupationEnum.BUYER)){
-            List<JobPublicationViewModel> buyerJobs = user.getJobPublications().stream()
+            List<JobPublicationViewModel> buyerActiveJobs = user.getJobPublications().stream()
+                    .filter(JobPublicationEntity::isActive)
                     .map(jobPublicationMapper::mapToJobViewModel)
                     .toList();
-            userViewModel.setJobPublications(buyerJobs);
+            userViewModel.setActiveJobPublications(buyerActiveJobs);
+            List<JobPublicationViewModel> buyerInactiveJobs = user.getJobPublications().stream()
+                    .filter(j->!j.isActive())
+                    .map(jobPublicationMapper::mapToJobViewModel)
+                    .toList();
+            userViewModel.setInactiveJobPublications(buyerInactiveJobs);
+            List<WorkInProgressViewModel> buyerWorkInProgress=workInProgressService.getAllBuyerWorkInProgress(id);
+            userViewModel.setWorkInProgress(buyerWorkInProgress);
         }
         return userViewModel;
     }

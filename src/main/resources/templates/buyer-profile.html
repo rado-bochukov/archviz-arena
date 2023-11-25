@@ -21,7 +21,7 @@
                 <img id="flag" src="" width="26" class="flags">
                 <span id="countryName" class="countryName" th:text="*{country}">Italy</span>
             </div>
-            <div class="text-left mt-2">Job publications: <strong th:text="*{jobPublications.size()}"/></div>
+            <div class="text-left mt-2">Job publications: <strong th:text="*{activeJobPublications.size()}"/></div>
             <div class="text-left mt-3">Description:</div>
             <div class="mt-0" th:text="*{description}">
             </div>
@@ -41,24 +41,58 @@
 
     <div class="card-deck" >
         <div class="card mt-5"
-             th:each="j:${user.jobPublications}"
+             th:each="j:${user.activeJobPublications}"
              th:object="${j}">
             <div class="card-header"  ><h4 th:text="*{title}" >Need 4 exterior images</h4></div>
             <div class="card-body">
+                <form th:action="@{/jobs/deactivate/{id}(id=${j.id})}"
+                th:method="post">
 
                 <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
                 <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
                 <div class="text-left mt-2" th:text="'Candidates: '+*{applicantsId.size()}">Candidates: 5</div>
 
-                <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details</a>
-                <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/jobs/job-applicants/{id}(id=${j.id})}" class="btn btn-info  mt-3">View candidates</a>
+                <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info mt-3">Details</a>
+                <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/jobs/job-applicants/{id}(id=${j.id})}" class="btn btn-info  mt-3 ml-1">Applications</a>
+                <button th:if="${principalId!=null && principalId==user.id}" type="submit" class="btn btn-info  mt-3 ml-1">Deactivate</button>
+                </form>
             </div>
         </div>
 
     </div>
 </div>
 
-<div th:replace="~{fragments/candidates-modal}"></div>
+<th:block th:if="${principalId!=null && principalId==user.id}" >
+    <div class="container">
+        <h3 class="text-left text-topics pl-3 mb-0">Inactive job Publications</h3>
+
+        <div class="card-deck" >
+            <div class="card mt-5"
+                 th:each="j:${user.inactiveJobPublications}"
+                 th:object="${j}">
+                <div class="card-header"  ><h4 th:text="*{title}" >Need 4 exterior images</h4></div>
+                <div class="card-body">
+
+                        <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
+                        <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
+
+                    <form th:action="@{/jobs/activate/{id}(id=${j.id})}"
+                          th:method="post">
+                        <button  type="submit" class="btn btn-info  mt-3 ml-1">Activate</button>
+                    </form>
+                    <form th:action="@{/jobs/delete/{id}(id=${j.id})}"
+                          th:method="post">
+                        <button  type="submit" class="btn btn-info  mt-3 ml-1">Delete</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</th:block>
+
+<th:block th:replace="~{fragments/work-in-progress-block}">
+</th:block>
 
 </body>
 <script src="/js/countriesAPI-2.js">

@@ -5,6 +5,7 @@ import com.example.archvizarena.model.view.CurrentApplicantViewModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,9 @@ public class JobViewController {
     public String getJobDetails(@PathVariable Long id,
                                 Model model,
                                 @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
+
+        // TODO: 25.11.2023 г. error handling for inactive or non existing job
+
 
 
         JobPublicationViewModel jobPublication=jobService.findJobById(id);

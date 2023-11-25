@@ -43,7 +43,7 @@ public class UserEntity extends BaseEntity {
 
 
     @OneToMany(mappedBy = "buyer",
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<JobPublicationEntity> jobPublicationEntities;
     @OneToMany(mappedBy = "author")
     private List<PortfolioProjectEntity> projects;
@@ -51,8 +51,7 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "commentAuthor")
     private List<CommentEntity> commentsSent;
 
-    @OneToMany(mappedBy = "applicant",fetch = FetchType.EAGER)
-    private List<ApplicationEntity> applicationMessagesSent;
+
 
 
 
@@ -191,11 +190,4 @@ public class UserEntity extends BaseEntity {
         this.commentsSent = commentsSent;
     }
 
-    public List<ApplicationEntity> getApplicationMessagesSent() {
-        return applicationMessagesSent;
-    }
-
-    public void setApplicationMessagesSent(List<ApplicationEntity> applicationMessagesSentEntity) {
-        this.applicationMessagesSent = applicationMessagesSentEntity;
-    }
 }

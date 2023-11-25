@@ -49,7 +49,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectBrowsingViewModel> findAll() {
 
-        return projectRepository.findAll().stream().map(projectMapper::mapToViewModel)
+        return projectRepository.findAll().stream()
+                .map(projectMapper::mapToViewModel)
                 .collect(Collectors.toList());
     }
 

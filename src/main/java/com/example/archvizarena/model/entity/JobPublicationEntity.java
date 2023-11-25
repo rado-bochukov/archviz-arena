@@ -13,13 +13,22 @@ public class JobPublicationEntity extends BaseProject{
 
     @ManyToOne
     private UserEntity buyer;
+    @Column(nullable = false)
+    private boolean isActive;
 
-
-
-    @OneToMany(mappedBy = "jobPublication" ,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "jobPublication",
+            fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<ApplicationEntity> applications;
 
     public JobPublicationEntity() {
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public List<ApplicationEntity> getApplications() {
