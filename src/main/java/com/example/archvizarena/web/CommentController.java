@@ -22,7 +22,7 @@ public class CommentController {
     }
 
 
-    @PostMapping("/projects/details/comment/add/{id}")
+    @PostMapping("/projects/details/{id}/comments/add")
 
     public String addComment(@PathVariable Long id,
                              @Valid CommentAddBindingModel commentAddBindingModel,
