@@ -1,9 +1,10 @@
 package com.example.archvizarena.web;
 
+import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.UserProfileViewModel;
-import com.example.archvizarena.model.view.BuyerProfileViewModel;
 import com.example.archvizarena.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,50 +23,25 @@ public class UserProfileController {
     }
 
 
-    @GetMapping("/artists/details/{id}")
-    public String getArtistDetails(@PathVariable Long id,
-                                   Model model,
-                                   @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
-
-        if(userDetails!=null){
-            Long principalId= userService.getPrincipalId(userDetails.getUsername());
-            model.addAttribute("principalId",principalId);
-        }
-
-        UserProfileViewModel artist=userService.findUserById(id);
-        model.addAttribute("user",artist);
-
-        return "artist-profile";
-    }
-
-    @GetMapping("/buyers/details/{id}")
+    @GetMapping("/details/{id}")
     public String getBuyerDetails(@PathVariable Long id,
-                                   Model model,
-                                  @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                                  Model model,
+                                  @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        if(userDetails!=null){
-            Long principalId= userService.getPrincipalId(userDetails.getUsername());
-            model.addAttribute("principalId",principalId);
+        UserProfileViewModel user = userService.findUserById(id, userDetails);
+        // TODO: 26.11.2023 г. error handling for null and admin id
+
+        model.addAttribute("user", user);
+        if(user.getUserOccupation().equals(UserOccupationEnum.ARTIST)){
+            return "artist-profile";
         }
-
-
-        UserProfileViewModel buyer=userService.findUserById(id);
-        model.addAttribute("user",buyer);
-
         return "buyer-profile";
     }
 
     @GetMapping("/myProfile")
-    public String getMyProfile(Model model,
-                               @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+    public String getMyProfile(@AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        Long userId= userService.getPrincipalId(userDetails.getUsername());
-        UserProfileViewModel artist = userService.findUserById(userId);
-        model.addAttribute("user",artist);
-
-        if(userDetails.isArtist()){
-            return "redirect:/users/artists/details/"+userId;
-        }
-        return "redirect:/users/buyers/details/"+userId;
+        Long userId = userService.getPrincipalId(userDetails.getUsername());
+        return "redirect:/users/details/" + userId;
     }
 }

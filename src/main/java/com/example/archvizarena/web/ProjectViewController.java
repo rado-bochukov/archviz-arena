@@ -31,7 +31,6 @@ public class ProjectViewController {
         model.addAttribute("allProjects",allProjects);
         model.addAttribute("projectsCount",count);
 
-
       return "projects-browse";
     }
     @ModelAttribute(name = "commentToBeAdded")
@@ -45,9 +44,7 @@ public class ProjectViewController {
                                     @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
 
         ProjectDetailsViewModel project=projectService.findById(id,userDetails);
-
         model.addAttribute("project",project);
-
 
         return "project-detail";
     }

@@ -29,8 +29,6 @@ public class UserRegisterController {
         this.modelMapper = modelMapper;
     }
 
-//    @ModelAttribute("userModel")
-
     @GetMapping("/register")
     public String getRegisterUser() {
         return "register-artist";
@@ -42,16 +40,11 @@ public class UserRegisterController {
     }
 
     @PostMapping("/register")
-//    ползваме валидатора директно като поставим анотация в аргумента
-//    биндинг резулт е обекта който се получава от дто-то , ако има грешки
-//    вместо да гръмне страницата ще редиректнем
     public String register(@Valid UserRegisterBindingModel userRegisterBindingModel,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
-//            flashAtributes са неща , които са достъпни след редиректа(ще се запазят полетата, които са въведени, вместо да се
-//            изчистват и да трябва да се пише всичко на ново) при последващата гет заявка
 
             UserRegisterBindingModel modelWithoutUserOccupation = new UserRegisterBindingModel();
             BeanUtils.copyProperties(userRegisterBindingModel, modelWithoutUserOccupation, "userOccupation");
@@ -59,19 +52,8 @@ public class UserRegisterController {
             redirectAttributes.addFlashAttribute("userRegisterBindingModel", modelWithoutUserOccupation);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userRegisterBindingModel", bindingResult);
 
-
-
             return "redirect:/users/register";
         }
-
-//        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getCreatorType() == null) {
-//            redirectAttributes.addAttribute("creator_type_error", "Bad");
-//            return "redirect:/users/register";
-//        }
-//        if (userRegisterBindingModel.getUserOccupation().equals(UserOccupationEnum.ARTIST) && userRegisterBindingModel.getPricePerImage() == null) {
-//            redirectAttributes.addAttribute("price_per_image_error", true);
-//            return "redirect:/users/register";
-//        }
         userService.register(modelMapper.map(userRegisterBindingModel, UserRegisterServiceModel.class));
 
         return "redirect:/users/login";

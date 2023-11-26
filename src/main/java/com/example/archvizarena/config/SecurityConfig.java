@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
 
@@ -32,7 +34,7 @@ public class SecurityConfig {
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
                                                 "/users/login-error",
-                                                "/artists/all", "/users/artists/details/{id}","/users/buyers/details/{id}",
+                                                "/artists/all", "/users/details/{id}",
                                                 "/projects/all", "/projects/details/{id}",
                                                 "jobs/all", "jobs/details/{id}")
                                         .permitAll().

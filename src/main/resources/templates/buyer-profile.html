@@ -28,9 +28,9 @@
         </div>
     </div>
     <div class="text-right mt-2">
-        <a th:unless="${principalId!=null && principalId==user.id}" th:href="@{/users/report/{id}(id=*{id})}"
+        <a th:unless="${user.viewerIsOwner}" th:href="@{/users/report/{id}(id=*{id})}"
            class="btn btn-info  mr-2 ">Report user</a>
-        <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/users/edit-profile}"
+        <a th:if="${user.viewerIsOwner}" th:href="@{/users/edit-profile}"
            class="btn btn-info  mr-0 ">Edit profile</a>
         <a sec:authorize="hasRole('ADMIN')" th:href="@{/users/edit-profile}" class="btn btn-info  mr-0 ">Block user</a>
     </div>
@@ -53,8 +53,8 @@
                 <div class="text-left mt-2" th:text="'Candidates: '+*{applicantsId.size()}">Candidates: 5</div>
 
                 <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info mt-3">Details</a>
-                <a th:if="${principalId!=null && principalId==user.id}" th:href="@{/jobs/job-applicants/{id}(id=${j.id})}" class="btn btn-info  mt-3 ml-1">Applications</a>
-                <button th:if="${principalId!=null && principalId==user.id}" type="submit" class="btn btn-info  mt-3 ml-1">Deactivate</button>
+                <a th:if="${user.viewerIsOwner}" th:href="@{/jobs/job-applicants/{id}(id=${j.id})}" class="btn btn-info  mt-3 ml-1">Applications</a>
+                <button th:if="${user.viewerIsOwner}" type="submit" class="btn btn-info  mt-3 ml-1">Deactivate</button>
                 </form>
             </div>
         </div>
@@ -62,7 +62,7 @@
     </div>
 </div>
 
-<th:block th:if="${principalId!=null && principalId==user.id}" >
+<th:block th:if="${user.viewerIsOwner}" >
     <div class="container">
         <h3 class="text-left text-topics pl-3 mb-0">Inactive job Publications</h3>
 
@@ -81,7 +81,7 @@
                         <button  type="submit" class="btn btn-info  mt-3 ml-1">Activate</button>
                     </form>
                     <form th:action="@{/jobs/delete/{id}(id=${j.id})}"
-                          th:method="post">
+                          th:method="delete">
                         <button  type="submit" class="btn btn-info  mt-3 ml-1">Delete</button>
                     </form>
                 </div>

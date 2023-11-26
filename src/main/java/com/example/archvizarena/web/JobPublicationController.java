@@ -7,6 +7,7 @@ import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.UserService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,12 +30,12 @@ public class JobPublicationController {
     }
 
     @GetMapping("/add")
-    public String getJobAdd(){
+    public String getJobAdd() {
         return "job-add";
     }
 
     @ModelAttribute
-    public JobPublicationAddBindingModel jobPublicationAddBindingModel(){
+    public JobPublicationAddBindingModel jobPublicationAddBindingModel() {
         return new JobPublicationAddBindingModel();
     }
 
@@ -43,58 +44,53 @@ public class JobPublicationController {
     public String addJob(@Valid JobPublicationAddBindingModel jobPublicationAddBindingModel,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes,
-                         @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                         @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("jobPublicationAddBindingModel", jobPublicationAddBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.jobPublicationAddBindingModel", bindingResult);
 
             return "redirect:/jobs/add";
         }
 
-        jobService.addJob(modelMapper.map(jobPublicationAddBindingModel, JobPublicationAddServiceModel.class),userDetails.getUsername());
+        jobService.addJob(modelMapper.map(jobPublicationAddBindingModel, JobPublicationAddServiceModel.class), userDetails.getUsername());
 
         return "redirect:/";
     }
 
+    @PreAuthorize("@jobServiceImpl.isViewerTheOwner(#id,#userDetails)")
     @PostMapping("/deactivate/{id}")
     public String deactivateJob(@PathVariable Long id,
-                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
         // TODO: 25.11.2023 г. error handling1
 
-
-        Long userId= userService.getPrincipalId(userDetails.getUsername());
-
-        jobService.deactivateJob(id,userId);
+        jobService.deactivateJob(id);
 
         return "redirect:/users/myProfile";
     }
 
-    @PostMapping("/delete/{id}")
+    @PreAuthorize("@jobServiceImpl.isViewerTheOwner(#id,#userDetails)")
+    @DeleteMapping ("/delete/{id}")
     public String deleteJob(@PathVariable Long id,
-                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                            @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
         // TODO: 25.11.2023 г. error handling2
 
-
-        Long userId= userService.getPrincipalId(userDetails.getUsername());
-
-        jobService.deleteJob(id,userId);
+        Long userId = userService.getPrincipalId(userDetails.getUsername());
+        jobService.deleteJob(id, userId);
 
         return "redirect:/users/myProfile";
     }
 
+    @PreAuthorize("@jobServiceImpl.isViewerTheOwner(#id,#userDetails)")
     @PostMapping("activate/{id}")
     public String activateJob(@PathVariable Long id,
-                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                              @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
         // TODO: 25.11.2023 г. error handling3
 
-
-        Long userId= userService.getPrincipalId(userDetails.getUsername());
-
-        jobService.activateJob(id,userId);
+        jobService.activateJob(id);
 
         return "redirect:/users/myProfile";
     }

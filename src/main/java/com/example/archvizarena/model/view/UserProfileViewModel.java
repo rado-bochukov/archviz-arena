@@ -1,6 +1,7 @@
 package com.example.archvizarena.model.view;
 
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
+import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,7 @@ public class UserProfileViewModel {
     private String country;
 
     private CreatorTypeEnum creatorTypeEnum;
+    private UserOccupationEnum userOccupation;
 
     private BigDecimal pricePerImage;
 
@@ -29,7 +31,25 @@ public class UserProfileViewModel {
 
     private String description;
 
+    private boolean viewerIsOwner;
+
     public UserProfileViewModel() {
+    }
+
+    public UserOccupationEnum getUserOccupation() {
+        return userOccupation;
+    }
+
+    public void setUserOccupation(UserOccupationEnum userOccupation) {
+        this.userOccupation = userOccupation;
+    }
+
+    public boolean isViewerIsOwner() {
+        return viewerIsOwner;
+    }
+
+    public void setViewerIsOwner(boolean viewerIsOwner) {
+        this.viewerIsOwner = viewerIsOwner;
     }
 
     public List<WorkInProgressViewModel> getWorkInProgress() {

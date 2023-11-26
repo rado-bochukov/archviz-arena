@@ -60,7 +60,7 @@
      th:text="'Found artists: '+${countArtists}">Found artists</h3>
     <div class="card-deck text-center mt-0">
         <div class="card mt-3" th:each="a : ${allArtists}" th:object="${a}" >
-            <a th:href="@{/users/artists/details/{id}(id=*{id})}" class="artist-link">
+            <a th:href="@{/users/details/{id}(id=*{id})}" class="artist-link">
                 <img th:if="*{pictureUrl==null}" class="card-img-top" th:src="@{/images/default_avatar.jpg}" alt="Card image cap"
                      width="160">
                 <img th:unless="*{pictureUrl==null}" class="card-img-top" th:src="*{pictureUrl}" alt="Card image cap">

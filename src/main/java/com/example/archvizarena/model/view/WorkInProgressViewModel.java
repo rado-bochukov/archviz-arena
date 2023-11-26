@@ -1,5 +1,7 @@
 package com.example.archvizarena.model.view;
 
+import java.util.List;
+
 public class WorkInProgressViewModel {
 
     private Long id;
@@ -8,7 +10,17 @@ public class WorkInProgressViewModel {
     private String buyerName;
     private String ArtistName;
 
+    private List<MessageViewModel> messages;
+
     public WorkInProgressViewModel() {
+    }
+
+    public List<MessageViewModel> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageViewModel> messages) {
+        this.messages = messages;
     }
 
     public Long getId() {

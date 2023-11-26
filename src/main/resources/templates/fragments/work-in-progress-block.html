@@ -1,4 +1,4 @@
-<th:block th:if="${principalId!=null && principalId==user.id}" th:fragment="work-in-progress" >
+<th:block th:if="${user.viewerIsOwner}" th:fragment="work-in-progress" >
   <div class="container">
     <h3 class="text-left text-topics pl-3 mb-0">Work in progress</h3>
 

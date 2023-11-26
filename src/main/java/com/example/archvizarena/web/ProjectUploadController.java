@@ -27,14 +27,10 @@ import java.util.List;
 public class ProjectUploadController {
 
     private final CloudinaryService cloudinaryService;
-
     private final ProjectService projectService;
-
     private final PictureService pictureService;
     private List<PictureUploadViewModel> pictures;
-
     private final ModelMapper modelMapper;
-
     private final LinkHolder linkHolder;
 
     public ProjectUploadController(CloudinaryService cloudinaryService1, ProjectService projectService, PictureService pictureService, List<PictureUploadViewModel> pictures, ModelMapper modelMapper, LinkHolder linkHolder) {
@@ -75,14 +71,12 @@ public class ProjectUploadController {
             // Upload the image to Cloudinary
             String imageUrl = cloudinaryService.uploadFile(file);
 
-            // Create a new PictureBindingModel object and set the image URL
             linkHolder.getImagesLink().add(imageUrl);
             pictures.add(new PictureUploadViewModel(file.getOriginalFilename()));
-
             pictureService.savePicture(imageUrl);
-//            pictureService.savePicture(imageUrl,userDetails);
 
-            return "redirect:/projects/add"; // Redirect to the create project page to continue uploading
+            // Redirect to the create project page to continue uploading
+            return "redirect:/projects/add";
 
         } catch (Exception e) {
             // Handle the exception, e.g., show an error page
@@ -104,11 +98,8 @@ public class ProjectUploadController {
             return "redirect:/projects/add";
         }
 
-
         portfolioProjectBindingModel.setPicturesUrl(linkHolder.getImagesLink());
-
         projectService.saveProject(modelMapper.map(portfolioProjectBindingModel, PortfolioProjectServiceModel.class),userDetails);
-
         pictures.clear();
         linkHolder.clear();
 

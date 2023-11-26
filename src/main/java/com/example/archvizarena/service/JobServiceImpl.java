@@ -1,10 +1,10 @@
 package com.example.archvizarena.service;
 
-import com.example.archvizarena.model.entity.ApplicationEntity;
 import com.example.archvizarena.model.entity.BaseEntity;
 import com.example.archvizarena.model.entity.JobPublicationEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
+import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.ApplicationRepository;
 import com.example.archvizarena.repository.JobPublicationRepository;
@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,18 +27,20 @@ public class JobServiceImpl implements JobService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final JobPublicationMapper jobPublicationMapper;
-    private final ApplicationService applicationService;
+
+
     private final ApplicationRepository applicationRepository;
 
     public JobServiceImpl(JobPublicationRepository jobPublicationRepository,
                           UserRepository userRepository,
                           ModelMapper modelMapper,
-                          JobPublicationMapper jobPublicationMapper, ApplicationService applicationService, ApplicationRepository applicationRepository) {
+                          JobPublicationMapper jobPublicationMapper, ApplicationRepository applicationRepository) {
         this.jobPublicationRepository = jobPublicationRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.jobPublicationMapper = jobPublicationMapper;
-        this.applicationService = applicationService;
+
+
         this.applicationRepository = applicationRepository;
     }
 
@@ -71,15 +72,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     @Transactional
-    public void deactivateJob(Long id, Long userId) {
+    public void deactivateJob(Long id) {
         JobPublicationEntity jobToBeDeactivated=jobPublicationRepository.findById(id).orElseThrow();
-
-        // TODO: 25.11.2023 г. error handling
-        // TODO: 25.11.2023 г. get this validation in method
-
-        if(!Objects.equals(jobToBeDeactivated.getBuyer().getId(), userId)){
-            throw new RuntimeException("this user cannot deactivate the publication");
-        }
 
         jobToBeDeactivated.setActive(false);
         List<Long> applicationsToBeRemoved = jobToBeDeactivated.getApplications()
@@ -95,9 +89,7 @@ public class JobServiceImpl implements JobService {
     @Transactional
     public void deleteJob(Long id, Long userId) {
         JobPublicationEntity jobToBeDeleted=jobPublicationRepository.findById(id).orElseThrow();
-        if(!Objects.equals(jobToBeDeleted.getBuyer().getId(), userId)){
-            throw new RuntimeException("this user cannot deactivate the publication");
-        }
+
         UserEntity user = userRepository.findById(userId).orElseThrow();
         user.getJobPublications().remove(jobToBeDeleted);
         userRepository.save(user);
@@ -107,14 +99,25 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public void activateJob(Long id, Long userId) {
+    public void activateJob(Long id) {
+
         JobPublicationEntity jobToBeActivated=jobPublicationRepository.findById(id).orElseThrow();
 
-        if(!Objects.equals(jobToBeActivated.getBuyer().getId(), userId)){
-            throw new RuntimeException("this user cannot deactivate the publication");
-        }
         jobToBeActivated.setActive(true);
         jobPublicationRepository.save(jobToBeActivated);
+    }
+
+    @Override
+    public boolean isViewerTheOwner(Long jobId, ArchVizArenaUserDetails viewer) {
+
+        UserEntity user=userRepository.findByUsername(viewer.getUsername()).orElse(null);
+        if(user == null){
+            return false;
+        }
+
+        return user.getJobPublications().stream().map(BaseEntity::getId)
+                .toList().contains(jobId);
+
     }
 
 }

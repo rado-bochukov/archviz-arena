@@ -1,9 +1,8 @@
 package com.example.archvizarena.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "work_in_progress")
@@ -15,7 +14,19 @@ public class WorkInProgressEntity extends BaseEntity{
     @ManyToOne
     private UserEntity artist;
 
+    @OneToMany(mappedBy = "workInProgress",
+    fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    private List<MessageEntity> messages;
+
     public WorkInProgressEntity() {
+    }
+
+    public List<MessageEntity> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<MessageEntity> messages) {
+        this.messages = messages;
     }
 
     public JobPublicationEntity getJob() {

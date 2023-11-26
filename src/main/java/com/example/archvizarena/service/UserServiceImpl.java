@@ -6,6 +6,7 @@ import com.example.archvizarena.model.entity.UserRoleEntity;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
+import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.*;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,7 +109,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileViewModel findUserById(Long id) {
+    public UserProfileViewModel findUserById(Long id, ArchVizArenaUserDetails userDetails) {
         UserEntity user=userRepository.findById(id).orElseThrow();
         UserProfileViewModel userViewModel= modelMapper.map(user, UserProfileViewModel.class);
         if(user.getProfilePicture()!=null){
@@ -137,7 +139,26 @@ public class UserServiceImpl implements UserService {
             List<WorkInProgressViewModel> buyerWorkInProgress=workInProgressService.getAllBuyerWorkInProgress(id);
             userViewModel.setWorkInProgress(buyerWorkInProgress);
         }
+        userViewModel.setViewerIsOwner(isOwner(id,userDetails));
         return userViewModel;
+    }
+
+    @Override
+    public boolean isViewerTheOwner(Long profileId, ArchVizArenaUserDetails viewer) {
+        return isOwner(profileId,viewer);
+    }
+
+    private boolean isOwner(Long profileId, ArchVizArenaUserDetails userDetails){
+
+        UserEntity user=userRepository.findById(profileId).orElse(null);
+        if(userDetails==null||user==null){
+            return false;
+        }
+
+        return Objects.equals(
+                profileId,
+                this.getPrincipalId(userDetails.getUsername())
+        );
     }
 
 

@@ -43,13 +43,10 @@ public class JobViewController {
 
         // TODO: 25.11.2023 г. error handling for inactive or non existing job
 
-
-
         JobPublicationViewModel jobPublication=jobService.findJobById(id);
         model.addAttribute("jobPublication", jobPublication);
 
         if (userDetails != null) {
-
             Long principalId = userService.getPrincipalId(userDetails.getUsername());
             model.addAttribute("principalId", principalId);
             return "job-publication-details";
