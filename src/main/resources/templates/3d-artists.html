@@ -10,13 +10,11 @@
 </header>
 
 <div class="container ">
-    <!-- Content here -->
+
     <h2 class="text-left text-topics">ArchViz Artists</h2>
 
     <form method="POST"
           class="form-inline">
-
-        <!--        <div class="row">-->
 
         <div class="form-group mb-2 mr-sm-2">
             <label class="sr-only " for="price">Price</label>
@@ -56,12 +54,13 @@
         <!--        </div>-->
     </form>
 
-    <h3  class="text-left text-topics mt-5"
-     th:text="'Found artists: '+${countArtists}">Found artists</h3>
+    <h3 class="text-left text-topics mt-5"
+        th:text="'Found artists: '+${countArtists}">Found artists</h3>
     <div class="card-deck text-center mt-0">
-        <div class="card mt-3" th:each="a : ${allArtists}" th:object="${a}" >
+        <div class="card mt-3" th:each="a : ${allArtists}" th:object="${a}">
             <a th:href="@{/users/details/{id}(id=*{id})}" class="artist-link">
-                <img th:if="*{pictureUrl==null}" class="card-img-top" th:src="@{/images/default_avatar.jpg}" alt="Card image cap"
+                <img th:if="*{pictureUrl==null}" class="card-img-top" th:src="@{/images/default_avatar.jpg}"
+                     alt="Card image cap"
                      width="160">
                 <img th:unless="*{pictureUrl==null}" class="card-img-top" th:src="*{pictureUrl}" alt="Card image cap">
             </a>
@@ -73,40 +72,12 @@
                     <span class="countryName ml-1" th:text="*{country}">Brazil</span>
                 </div>
                 <div class="mt-2" th:value="'Prices from <b>€'+*{pricePerImage}+' / image</b>'">Prices from
-                    <strong th:text="'€'+*{pricePerImage}+' / image'" /></div>
+                    <strong th:text="'€'+*{pricePerImage}+' / image'"/></div>
             </div>
-            <!--            <div class="card-footer">-->
-            <!--                <button type="submit" class="btn btn-info mb-2 text-right">Visit profile</button>-->
-            <!--            </div>-->
-        </div>
-    </div>
-
-    <div class="card mt-5">
-        <a href="" class="artist-link">
-            <img class="card-img-top" src="/images/house.JPG" alt="Card image cap">
-        </a>
-        <div class="card-body mt-0 pl-1">
-                <span class="media mt-1">
-                    <img class="mr-2 ml-2 mt-2" src="/img/1.jpg" width="68" height="74" alt="Generic placeholder image">
-            <span class="media-body">
-                <h4 class="card-title mt-0">Radostin Bochukov </h4>
-                <div class="badge-2 badge-secondary-2 mt-0 mb-3">Freelancer</div>
-                <span>  | </span>
-                <span class="mt-0">
-                    <img class="flags" src="" width="26">
-                    <span class="countryName">Italy</span>
-                </span>
-                     <div class="text-left mt-0">Prices from <b>€350 / image</b></div>
-                <!--                <div class="text-left mt-2">Prices from <b>€350 / image</b></div>-->
-            </span>
-            </span>
         </div>
     </div>
 </div>
 </div>
-
-<!--<div id="overlay1" style="display: none;"><div class="cv-spinner1"><span class="spinner1"></span></div></div>-->
-
 
 </body>
 <script src="/js/countriesAPI-2.js">

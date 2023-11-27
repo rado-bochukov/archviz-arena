@@ -108,13 +108,6 @@ public class UserEntity extends BaseEntity {
         this.username = username;
     }
 
-    public List<UserRoleEntity> getUserRoles() {
-        return roles;
-    }
-
-    public void setUserRoles(List<UserRoleEntity> userRoleEntities) {
-        this.roles = userRoleEntities;
-    }
 
     public String getDescription() {
         return description;

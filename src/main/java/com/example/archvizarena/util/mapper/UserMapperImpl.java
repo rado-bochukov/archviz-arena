@@ -1,9 +1,12 @@
 package com.example.archvizarena.util.mapper;
 
+import com.example.archvizarena.model.binding.UserEditBindingModel;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.view.ArtistViewModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserMapperImpl implements UserMapper {
@@ -22,5 +25,35 @@ public class UserMapperImpl implements UserMapper {
             artistViewModel.setPictureUrl(profilePicUrl);
         }
         return artistViewModel;
+    }
+
+    @Override
+    public UserEditBindingModel mapFromUserEntity(UserEntity userEntity) {
+        UserEditBindingModel userEditBindingModel=new UserEditBindingModel();
+        userEditBindingModel.setUsername(userEntity.getUsername());
+        userEditBindingModel.setEmail(userEntity.getEmail());
+        userEditBindingModel.setName(userEntity.getName());
+        userEditBindingModel.setDescription(userEntity.getDescription());
+        userEditBindingModel.setCountry(userEntity.getCountry());
+        userEditBindingModel.setUserOccupation(userEntity.getUserOccupation());
+        userEditBindingModel.setPricePerImage(userEntity.getPricePerImage());
+        userEditBindingModel.setCreatorType(userEntity.getCreatorType());
+        if(userEntity.getProfilePicture()!=null){
+
+        userEditBindingModel.setProfilePicture(userEntity.getProfilePicture().getUrl());
+        }
+        return userEditBindingModel;
+    }
+
+    @Override
+    public void mapUserFromUserEditModel(UserEntity user, UserEditBindingModel userEditBindingModel) {
+        user.setName(userEditBindingModel.getName());
+        user.setUsername(userEditBindingModel.getUsername());
+        user.setDescription(userEditBindingModel.getDescription());
+        user.setCountry(userEditBindingModel.getCountry());
+
+        if(userEditBindingModel.getProfilePicture()!=null){
+
+        }
     }
 }

@@ -17,7 +17,7 @@ public class PictureServiceImpl implements PictureService {
     public void initPictures() {
         if (pictureRepository.findAll().isEmpty()) {
             PictureEntity profileImage = new PictureEntity();
-            profileImage.setUrl("/img/user-avatar.svg");
+            profileImage.setUrl("/images/default_avatar.jpg");
             pictureRepository.save(profileImage);
         }
 

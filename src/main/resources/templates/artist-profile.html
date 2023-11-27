@@ -14,6 +14,8 @@
     <div class="media-2" th:object="${user}">
         <img th:if="*{pictureUrl==null}" class="mr-3" th:src="@{/images/default_avatar.jpg}" width="260" height="260"
              alt="Generic placeholder image">
+        <img th:unless="*{pictureUrl==null}" class="mr-3" th:src="*{pictureUrl}" width="260" height="260"
+             alt="Generic placeholder image">
         <div class="media-body">
             <h3 class="mt-0" th:text="*{name}">Radostin Bochukov</h3>
             <div class="badge-2 badge-secondary-2 mt-0 mb-2" th:text="*{creatorTypeEnum}">Freelancer</div>
@@ -25,8 +27,6 @@
             <div class="text-left mt-3">Description:</div>
             <div class="mt-0" th:text="*{description}">
             </div>
-
-
         </div>
     </div>
     <div class="text-right mt-2">
