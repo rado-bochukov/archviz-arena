@@ -13,6 +13,7 @@ import com.example.archvizarena.model.view.*;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import com.example.archvizarena.util.mapper.UserMapper;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -99,15 +101,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CurrentApplicantViewModel findCurrentApplicantInfo(String username) {
-        CurrentApplicantViewModel applicant = new CurrentApplicantViewModel();
-        UserEntity user = userRepository.findByUsername(username).orElseThrow();
-        applicant.setName(user.getName());
-        applicant.setId(user.getId());
-        return applicant;
-    }
-
-    @Override
     public Long getPrincipalId(String username) {
 
         UserEntity user = userRepository.findByUsername(username).orElseThrow();
@@ -129,14 +122,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEditBindingModel findUserById(Long id) {
 
-        return userMapper.mapFromUserEntity(userRepository.findById(id).orElseThrow());
+        return userMapper.mapFromUserEntity(this.getUser(id));
     }
 
     @Override
     public void editProfile(UserEditBindingModel userEditBindingModel) {
 
-        // TODO: 27.11.2023 г. error handling
-        UserEntity user = userRepository.findById(userEditBindingModel.getId()).orElseThrow();
+        UserEntity user = getUser(userEditBindingModel.getId());
         user.setName(userEditBindingModel.getName());
         user.setUsername(userEditBindingModel.getUsername());
         user.setDescription(userEditBindingModel.getDescription());
@@ -159,7 +151,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByUsername(username).isEmpty()) {
             return true;
         }
-        if (userRepository.findById(id).get().getUsername().equals(username)) {
+        if (this.getUser(id).getUsername().equals(username)) {
             return true;
         }
 
@@ -169,7 +161,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileViewModel findUserViewModelById(Long id) {
-        UserEntity user = userRepository.findById(id).orElseThrow();
+        UserEntity user = getUser(id);
         UserProfileViewModel userViewModel = modelMapper.map(user, UserProfileViewModel.class);
         if (user.getProfilePicture() != null) {
             String profilePicUrl = user.getProfilePicture().getUrl();
@@ -199,6 +191,10 @@ public class UserServiceImpl implements UserService {
             userViewModel.setWorkInProgress(buyerWorkInProgress);
         }
         return userViewModel;
+    }
+
+    private UserEntity getUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
     }
 
     private boolean isOwner(Long profileId, ArchVizArenaUserDetails userDetails) {

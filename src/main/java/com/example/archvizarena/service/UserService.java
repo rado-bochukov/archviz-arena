@@ -16,7 +16,6 @@ public interface UserService {
 
     List<ArtistViewModel> findAllArtists();
 
-    CurrentApplicantViewModel findCurrentApplicantInfo(String username);
 
     Long getPrincipalId(String username);
 

@@ -32,7 +32,7 @@ public class ApplicationController {
         this.userService = userService;
     }
 
-    @GetMapping("/jobs/details/application/add/{id}")
+    @GetMapping("/jobs/details/{id}/application/add")
     public String getApplyOnJobPublication(@PathVariable Long id,
                                            Model model,
                                            @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
@@ -56,7 +56,7 @@ public class ApplicationController {
         return new ApplicationAddBindingModel();
     }
 
-    @PostMapping("/jobs/details/application/add/{id}")
+    @PostMapping("/jobs/details/{id}/application/add")
 
     public String applyForJob(@PathVariable Long id,
                               @Valid ApplicationAddBindingModel applicationAddBindingModel,
@@ -68,7 +68,7 @@ public class ApplicationController {
             redirectAttributes.addFlashAttribute("applicationAddBindingModel", applicationAddBindingModel);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.applicationAddBindingModel", bindingResult);
 
-            return "redirect:/jobs/details/application/add/{id}";
+            return "redirect:/jobs/details/{id}/application/add";
         }
 
         ApplicationAddServiceModel applicationToBeAdded=new ApplicationAddServiceModel();
@@ -78,7 +78,7 @@ public class ApplicationController {
 
         applicationService.saveApplication(applicationToBeAdded);
 
-        return "redirect:/jobs/details/application/add/{id}";
+        return "redirect:/jobs/details/{id}/application/add";
 
     }
 

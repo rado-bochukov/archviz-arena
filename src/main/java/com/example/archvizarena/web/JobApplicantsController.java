@@ -40,9 +40,7 @@ public class JobApplicantsController {
         model.addAttribute("applications",applications);
         model.addAttribute("job",job);
 
-
         return "job-applicants";
     }
-
 
 }

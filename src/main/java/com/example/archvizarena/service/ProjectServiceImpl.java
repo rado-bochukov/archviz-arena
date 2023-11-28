@@ -11,6 +11,7 @@ import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -56,20 +57,25 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDetailsViewModel findById(Long id, ArchVizArenaUserDetails userDetails) {
-        PortfolioProjectEntity project = projectRepository.findById(id).orElseThrow();
+        PortfolioProjectEntity project = getProject(id);
 
         return this.mapToDetailsViewModel(project, userDetails); 
+    }
+
+    private PortfolioProjectEntity getProject(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("The project you are looking for does not exist! Maybe you should create it :)"));
     }
 
     @Override
     public ProjectDetailsViewModel likeTheProject(Long id, ArchVizArenaUserDetails userDetails) {
 
-        PortfolioProjectEntity project = projectRepository.findById(id).orElseThrow();
+        PortfolioProjectEntity project = getProject(id);
         project.setLikesCount(project.getLikesCount()+1);
         project.getUsersLikedTheProject().add(userRepository.findByUsername(userDetails.getUsername()).orElseThrow());
         projectRepository.save(project);
 
-        PortfolioProjectEntity updatedProject = projectRepository.findById(id).orElseThrow();
+        PortfolioProjectEntity updatedProject = getProject(id);
         ProjectDetailsViewModel projectToView = this.mapToDetailsViewModel(updatedProject, userDetails);
         projectToView.setLikedFromCurrentUser(true);
         return projectToView;

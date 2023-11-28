@@ -61,7 +61,7 @@
 </div>
 <div class="container">
     <div class="card-deck">
-        <div class="card mt-5" style="width: 18rem;" th:each="j: ${allJobs}"
+        <div class="card mt-5 highlight" style="width: 18rem;" th:each="j: ${allJobs}"
              th:object="${j}">
             <div class="card-header"><h4><strong th:text="*{title}"/></h4></div>
             <div class="card-body">

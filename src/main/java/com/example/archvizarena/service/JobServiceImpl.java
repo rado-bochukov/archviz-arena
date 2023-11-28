@@ -9,6 +9,7 @@ import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.ApplicationRepository;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -66,14 +67,14 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public JobPublicationViewModel findJobById(Long id) {
-        JobPublicationEntity job=jobPublicationRepository.findById(id).orElseThrow();
+        JobPublicationEntity job=this.lookForTheJob(id);
         return jobPublicationMapper.mapToJobViewModel(job);
     }
 
     @Override
     @Transactional
     public void deactivateJob(Long id) {
-        JobPublicationEntity jobToBeDeactivated=jobPublicationRepository.findById(id).orElseThrow();
+        JobPublicationEntity jobToBeDeactivated=this.lookForTheJob(id);
 
         jobToBeDeactivated.setActive(false);
         List<Long> applicationsToBeRemoved = jobToBeDeactivated.getApplications()
@@ -88,7 +89,7 @@ public class JobServiceImpl implements JobService {
     @Override
     @Transactional
     public void deleteJob(Long id, Long userId) {
-        JobPublicationEntity jobToBeDeleted=jobPublicationRepository.findById(id).orElseThrow();
+        JobPublicationEntity jobToBeDeleted = this.lookForTheJob(id);
 
         UserEntity user = userRepository.findById(userId).orElseThrow();
         user.getJobPublications().remove(jobToBeDeleted);
@@ -101,10 +102,17 @@ public class JobServiceImpl implements JobService {
     @Override
     public void activateJob(Long id) {
 
-        JobPublicationEntity jobToBeActivated=jobPublicationRepository.findById(id).orElseThrow();
+        JobPublicationEntity jobToBeActivated = this.lookForTheJob(id);
 
         jobToBeActivated.setActive(true);
         jobPublicationRepository.save(jobToBeActivated);
+    }
+
+    private JobPublicationEntity lookForTheJob(Long id) {
+      return   jobPublicationRepository.findById(id).
+                orElseThrow(()->new ObjectNotFoundException("The job publication you are searching for " +
+                        "does not exist!" +
+                        "Maybe you should post it :) "));
     }
 
     @Override

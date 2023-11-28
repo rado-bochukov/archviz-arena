@@ -200,3 +200,8 @@ img.w-1001{
     width: 100%;
     overflow: hidden
 }
+
+.highlight:hover {
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3); /* Adjust the shadow as needed */
+    transition: box-shadow 0.3s ease; /* Add a smooth transition effect */
+}

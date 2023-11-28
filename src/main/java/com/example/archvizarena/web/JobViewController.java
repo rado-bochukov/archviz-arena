@@ -5,13 +5,16 @@ import com.example.archvizarena.model.view.CurrentApplicantViewModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.UserService;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -41,7 +44,6 @@ public class JobViewController {
                                 Model model,
                                 @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        // TODO: 25.11.2023 г. error handling for inactive or non existing job
 
         JobPublicationViewModel jobPublication=jobService.findJobById(id);
         model.addAttribute("jobPublication", jobPublication);
@@ -53,4 +55,5 @@ public class JobViewController {
         }
         return "job-publication-details";
     }
+
 }

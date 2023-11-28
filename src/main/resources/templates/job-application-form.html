@@ -16,7 +16,7 @@
     <h2 class="text-center text-topics" th:text="'Apply for job #'+ ${jobPublication.id}">Apply for job #</h2>
 
     <form th:method="post"
-          th:action="@{/jobs/details/application/add/{id}(id=${jobPublication.id})}"
+          th:action="@{/jobs/details/{id}/application/add (id=${jobPublication.id})}"
           th:object="${jobPublication}"
           enctype="multipart/form-data"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
