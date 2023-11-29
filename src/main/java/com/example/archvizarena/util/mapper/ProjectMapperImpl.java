@@ -3,6 +3,7 @@ package com.example.archvizarena.util.mapper;
 import com.example.archvizarena.model.entity.PictureEntity;
 import com.example.archvizarena.model.entity.PortfolioProjectEntity;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
+import com.example.archvizarena.model.view.ProjectReportViewModel;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProjectMapperImpl implements ProjectMapper {
     @Override
-    public ProjectBrowsingViewModel mapToViewModel(PortfolioProjectEntity portfolioProjectEntity) {
+    public ProjectBrowsingViewModel mapFromEntity(PortfolioProjectEntity portfolioProjectEntity) {
         if(portfolioProjectEntity==null){
             return null;
         }
@@ -27,5 +28,16 @@ public class ProjectMapperImpl implements ProjectMapper {
         return projectBrowsingViewModel;
 
 
+    }
+
+    @Override
+    public ProjectReportViewModel mapFromEntityToReportView(PortfolioProjectEntity project) {
+        ProjectReportViewModel projectReportViewModel=new ProjectReportViewModel();
+        projectReportViewModel.setId(project.getId());
+        projectReportViewModel.setTitle(project.getTitle());
+        projectReportViewModel.setAuthorId(project.getAuthor().getId());
+        projectReportViewModel.setAuthorName(project.getAuthor().getName());
+
+        return projectReportViewModel;
     }
 }

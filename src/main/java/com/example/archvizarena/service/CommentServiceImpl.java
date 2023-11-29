@@ -6,6 +6,7 @@ import com.example.archvizarena.model.view.CommentViewModel;
 import com.example.archvizarena.repository.CommentRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,8 +32,11 @@ public class CommentServiceImpl implements CommentService {
         commentViewModel.setAuthorName(comment.getCommentAuthor().getName());
         commentViewModel.setCreated(comment.getCreated());
         commentViewModel.setTextContent(comment.getTextContent());
+        commentViewModel.setId(comment.getId());
         return commentViewModel;
     }
+
+    // TODO: 29.11.2023 г. check the method
 
     @Override
     public void saveAndAddComment(CommentAddServiceModel commentToBeAdded) {
@@ -42,5 +46,14 @@ public class CommentServiceImpl implements CommentService {
         comment.setProject(projectRepository.findById(commentToBeAdded.getProjectId()).get());
         comment.setCreated(LocalDateTime.now());
         commentRepository.save(comment);
+    }
+
+    @Override
+    public CommentViewModel findById(Long commentId) {
+        CommentEntity comment = commentRepository.findById(commentId).
+                orElseThrow(() -> new ObjectNotFoundException("The comment you are looking for does not exist!"));
+
+        return this.mapToCommentViewModel(comment);
+
     }
 }

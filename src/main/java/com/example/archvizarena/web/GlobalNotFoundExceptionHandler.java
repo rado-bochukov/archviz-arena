@@ -7,8 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class GlobalNotFoundExceptionHandler {
-    @ExceptionHandler(ObjectNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(ObjectNotFoundException exception){
+    @ExceptionHandler({ObjectNotFoundException.class, IllegalArgumentException.class})
+    public ModelAndView handleUserNotFoundException(RuntimeException exception){
         ModelAndView modelAndView=new ModelAndView("not-found-exception");
         modelAndView.addObject("message",exception.getMessage());
         return modelAndView;

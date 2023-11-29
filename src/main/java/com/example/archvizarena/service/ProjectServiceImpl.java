@@ -8,6 +8,7 @@ import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.CommentViewModel;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
 import com.example.archvizarena.model.view.ProjectDetailsViewModel;
+import com.example.archvizarena.model.view.ProjectReportViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -51,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectBrowsingViewModel> findAll() {
 
         return projectRepository.findAll().stream()
-                .map(projectMapper::mapToViewModel)
+                .map(projectMapper::mapFromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -79,6 +80,15 @@ public class ProjectServiceImpl implements ProjectService {
         ProjectDetailsViewModel projectToView = this.mapToDetailsViewModel(updatedProject, userDetails);
         projectToView.setLikedFromCurrentUser(true);
         return projectToView;
+    }
+
+    @Override
+    public ProjectReportViewModel getProjectToBeReported(Long projectId) {
+        PortfolioProjectEntity project=this.getProject(projectId);
+
+        ProjectReportViewModel projectToBeReported=projectMapper.mapFromEntityToReportView(project);
+
+        return projectToBeReported;
     }
 
     private ProjectDetailsViewModel mapToDetailsViewModel(PortfolioProjectEntity project, ArchVizArenaUserDetails userDetails) {

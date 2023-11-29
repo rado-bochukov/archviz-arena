@@ -8,4 +8,5 @@ public interface CommentService {
     CommentViewModel mapToCommentViewModel(CommentEntity c);
     void saveAndAddComment(CommentAddServiceModel commentToBeAdded);
 
+    CommentViewModel findById(Long commentId);
 }

@@ -60,7 +60,7 @@ public class SecurityConfig {
                 )
                 .logout((logout) ->
                         logout.logoutUrl("/users/logout").
-                                logoutSuccessUrl("/").//go to homepage after logout
+                                logoutSuccessUrl("/").
                                 invalidateHttpSession(true)
                                 .deleteCookies("JSESSIONID"));
 

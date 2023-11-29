@@ -51,31 +51,34 @@
 <div class="container " th:object="${project}">
     <h5 class="text-center  ">Comments</h5>
     <div class="card mt-4 " th:each="c : *{projectComments}">
-        <div class="card-header" th:text="'Published on: '+${c.created}">
-            Published on: 23/04/2024
+        <div class="card-header ">
+             <span class="media ">
+            <span class="media-body" th:text="'Published on: '+${c.created}">
+
+            </span>
+
+            <a th:href="@{/report/{projectId}/{commentId} (projectId=${id},commentId=${c.id})}"
+               class="btn btn-info ml-2 text-right">Report comment</a>
+            </span>
         </div>
         <div class="card-body">
             <h6 class="card-title">by
                 <th:strong th:text="${c.authorName}"/>
             </h6>
-            <p class="card-text" th:text="${c.textContent}">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus
-                scelerisque ante
-                sollicitudin. Cras purus odio,
-                vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla.
-                Donec
-                lacinia congue felis in faucibus.</p>
+            <p class="card-text" th:text="${c.textContent}"></p>
         </div>
     </div>
 
 </div>
 
-<div class="container" >
+<div class="container">
     <form th:method="post"
           th:action="@{/projects/details/{id}/comments/add (id=${project.id})}"
           th:object="${commentToBeAdded}">
         <div class="form-group ml-3 mr-3">
             <label for="exampleFormControlTextarea1">Leave a comment</label>
-            <textarea th:field="*{textContent}"  class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea th:field="*{textContent}" class="form-control" id="exampleFormControlTextarea1"
+                      rows="3"></textarea>
         </div>
         <button type="submit" class="btn btn-info ml-3">Leave a comment</button>
     </form>

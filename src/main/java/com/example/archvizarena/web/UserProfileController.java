@@ -26,7 +26,9 @@ public class UserProfileController {
                                   Model model,
                                   @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-
+        if(id==1){
+            throw new IllegalArgumentException("This is not a valid user!");
+        }
         UserProfileViewModel user = userService.findUserById(id,userDetails);
 
         model.addAttribute("user", user);

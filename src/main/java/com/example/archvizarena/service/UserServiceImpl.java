@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
 
         if (user.getUserOccupation().equals(UserOccupationEnum.ARTIST)) {
             List<ProjectBrowsingViewModel> artistProjects = user.getProjects().stream()
-                    .map(projectMapper::mapToViewModel)
+                    .map(projectMapper::mapFromEntity)
                     .toList();
             userViewModel.setProjects(artistProjects);
 
