@@ -57,7 +57,7 @@
                 </span>
                 </span>
             <div>
-                <a th:href="@{/users/artists/details/{id}(id=*{applicant.id})}" class="btn btn-info btn-sm mt-1 mb-0">View
+                <a th:href="@{/users/details/{id}(id=*{applicant.id})}" class="btn btn-info btn-sm mt-1 mb-0">View
                     Profile</a>
                 <button type="button" class="btn btn-info btn-sm mt-1 ml-2" data-toggle="modal"
                         th:data-target="'#application-message-'+${iterStat.index}" data-whatever="@mdo">View message

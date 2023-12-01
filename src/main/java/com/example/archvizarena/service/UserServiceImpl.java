@@ -18,13 +18,18 @@ import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import com.example.archvizarena.util.mapper.UserMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.apache.coyote.http11.Constants.a;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -44,6 +49,7 @@ public class UserServiceImpl implements UserService {
     private final PictureRepository pictureRepository;
 
 
+
     public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper, JobPublicationMapper jobPublicationMapper, UserMapper userMapper, WorkInProgressService workInProgressService, PictureRepository pictureRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
@@ -55,6 +61,8 @@ public class UserServiceImpl implements UserService {
         this.workInProgressService = workInProgressService;
 
         this.pictureRepository = pictureRepository;
+
+
     }
 
     public void init() {
@@ -191,6 +199,22 @@ public class UserServiceImpl implements UserService {
             userViewModel.setWorkInProgress(buyerWorkInProgress);
         }
         return userViewModel;
+    }
+
+    @Override
+    public void updateThePrincipalAuthenticationToken(String username, ArchVizArenaUserDetails userDetails) {
+
+        ArchVizArenaUserDetailService archVizArenaUserDetailService=new ArchVizArenaUserDetailService(userRepository);
+        UserDetails updatedUserDetails = archVizArenaUserDetailService.loadUserByUsername(username);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails, userDetails.getPassword(), userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    }
+
+    @Override
+    public String getNameById(Long id) {
+        return getUser(id).getName();
     }
 
     private UserEntity getUser(Long id) {

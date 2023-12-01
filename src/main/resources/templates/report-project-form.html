@@ -16,31 +16,21 @@
     <h2 class="text-center text-topics">Report form</h2>
 
     <form th:method="post"
-          th:action="@{/report/submit}"
+          th:action="@{/report/project/{id} (id=${projectId})}"
           th:object="${reportSubmitBindingModel}"
           enctype="multipart/form-data"
           class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
         <div class="form-group col-md-whole_row mb-3">
-            <input type="hidden"
-                   th:field="*{reportedUserId}"
-                   th:value="${authorId}">
+
             <label class="text-white font-weight-bold">Report user: <strong
                     th:text="${author}"/></label>
 
         </div>
         <div class="form-group col-md-whole_row mb-3">
-            <input type="hidden"
-                   th:field="*{reportedProjectId}"
-                   th:value="${projectId}">
-            <label class="text-white font-weight-bold">Project: <strong
+
+            <label  class="text-white font-weight-bold">Project: <strong
                     th:text="${projectTitle}"/></label>
 
-        </div>
-        <div class="form-group col-md-whole_row mb-3">
-            <input type="hidden"
-                   th:field="*{commentId}"
-                   th:value="${commentId}">
-            <label class="text-white font-weight-bold">Comment: <i th:text="${comment}"></i> </label>
         </div>
         <div class="form-group col-md-whole_row mb-3">
             <label for="inputDescription" class="text-white font-weight-bold">Report message:</label>
@@ -52,7 +42,7 @@
                             name="inputDescription"
                             class="form-control"
                             aria-describedby="inputDescriptionError"></textarea>
-                <p class="invalid-feedback errors alert alert-danger">Application message length must be more than 5
+                <p class="invalid-feedback errors alert alert-danger">Report message length must be more than 5
                     characters!</p>
             </div>
         </div>
@@ -60,7 +50,7 @@
         <div class="row">
             <div class="col col-md-4">
                 <div class="button-holder d-flex">
-                    <input type="submit" class="btn btn-info " value="Apply for this job"/>
+                    <input type="submit" class="btn btn-info " value="Report project"/>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@ import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.UserProfileViewModel;
 import com.example.archvizarena.model.view.ArtistViewModel;
-import com.example.archvizarena.model.view.CurrentApplicantViewModel;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -30,5 +30,9 @@ public interface UserService {
     boolean newUserNameIsUnique(Long id, String username);
 
     UserProfileViewModel findUserViewModelById(Long id);
+
+    void updateThePrincipalAuthenticationToken(String username, ArchVizArenaUserDetails userDetails);
+
+    String getNameById(Long id);
 
 }

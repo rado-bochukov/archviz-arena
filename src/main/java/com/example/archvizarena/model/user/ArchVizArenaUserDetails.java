@@ -27,6 +27,14 @@ public class ArchVizArenaUserDetails implements UserDetails {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

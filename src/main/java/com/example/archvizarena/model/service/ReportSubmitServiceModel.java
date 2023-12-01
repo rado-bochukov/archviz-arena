@@ -1,22 +1,27 @@
-package com.example.archvizarena.model.binding;
-
+package com.example.archvizarena.model.service;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
-public class ReportSubmitBindingModel {
-
-
+public class ReportSubmitServiceModel {
     private Long reportedProjectId;
 
     private Long reportedUserId;
-    @Size(min = 5)
-    @NotEmpty
+
     private String message;
 
-    public ReportSubmitBindingModel() {
+    private Long reportingUserId;
+
+    public ReportSubmitServiceModel() {
     }
 
+    public Long getReportingUserId() {
+        return reportingUserId;
+    }
+
+    public void setReportingUserId(Long reportingUserId) {
+        this.reportingUserId = reportingUserId;
+    }
 
     public Long getReportedProjectId() {
         return reportedProjectId;

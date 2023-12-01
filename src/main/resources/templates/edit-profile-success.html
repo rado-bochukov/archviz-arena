@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+
+<th:block th:insert="~{fragments/head}"/>
+
+<body>
+<header>
+  <div th:replace="~{fragments/navbar}">Navbar</div>
+</header>
+
+<div class="container text-center">
+
+
+  <h3 >  You have updated your profile details!</h3>
+  <a class="btn btn-info btn-lg" th:href="@{/users/myProfile}" role="button">My profile</a>
+</div>
+
+
+<div>
+  <footer></footer>
+</div>
+
+</body>
+</html>

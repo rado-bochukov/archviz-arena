@@ -10,18 +10,16 @@ import jakarta.persistence.Table;
 public class ReportEntity extends BaseEntity {
     @ManyToOne
     private UserEntity reportingUser;
-    @ManyToOne
-    private CommentEntity reportedComment;
+
     @ManyToOne
     private PortfolioProjectEntity reportedProject;
-    @ManyToOne
-    private JobPublicationEntity reportedJobPublication;
+
     @ManyToOne
     private UserEntity reportedUser;
 
     @Column
     private String message;
-
+    @Column
     private boolean isChecked;
 
 
@@ -36,28 +34,12 @@ public class ReportEntity extends BaseEntity {
         this.reportingUser = reportingUser;
     }
 
-    public CommentEntity getReportedComment() {
-        return reportedComment;
-    }
-
-    public void setReportedComment(CommentEntity reportedComment) {
-        this.reportedComment = reportedComment;
-    }
-
     public PortfolioProjectEntity getReportedProject() {
         return reportedProject;
     }
 
     public void setReportedProject(PortfolioProjectEntity reportedProject) {
         this.reportedProject = reportedProject;
-    }
-
-    public JobPublicationEntity getReportedJobPublication() {
-        return reportedJobPublication;
-    }
-
-    public void setReportedJobPublication(JobPublicationEntity reportedJobPublications) {
-        this.reportedJobPublication = reportedJobPublications;
     }
 
     public UserEntity getReportedUser() {

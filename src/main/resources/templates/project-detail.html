@@ -36,8 +36,11 @@
     <button th:unless="*{isLikedFromCurrentUser()}" type="submit" class="btn btn-info mb-0 mt-2 "
             id="like">Like</button>
         <button th:if="*{isLikedFromCurrentUser()}" type="submit" class="btn btn-info mt-2 ml-2" id="liked" disabled>Liked!</button>
-        <button type="submit" class="btn btn-info mt-2 ml-2" id="comment">Leave a comment</button>
         </form>
+       <span>
+           <button class="btn btn-info mt-2 ml-2" id="comment" onclick="redirectToField()">Leave a comment</button>
+           <a th:href="@{/report/project/{id} (id=*{id})}" class="btn btn-info mt-2 ml-2">Report</a>
+       </span>
     </span>
     <div class="container mt-0">
         <h5 class="text-center mt-0 ">Description</h5>
@@ -51,15 +54,7 @@
 <div class="container " th:object="${project}">
     <h5 class="text-center  ">Comments</h5>
     <div class="card mt-4 " th:each="c : *{projectComments}">
-        <div class="card-header ">
-             <span class="media ">
-            <span class="media-body" th:text="'Published on: '+${c.created}">
-
-            </span>
-
-            <a th:href="@{/report/{projectId}/{commentId} (projectId=${id},commentId=${c.id})}"
-               class="btn btn-info ml-2 text-right">Report comment</a>
-            </span>
+        <div class="card-header " th:text="'Published on: '+${c.created}">
         </div>
         <div class="card-body">
             <h6 class="card-title">by
@@ -93,6 +88,14 @@
         if (like.className == 'btn btn-info mb-0') {
             // like.className='btn btn-info'
             like.remove()
+        }
+    }
+
+    function redirectToField() {
+
+        const targetField = document.getElementById('exampleFormControlTextarea1');
+        if (targetField) {
+            targetField.scrollIntoView({behavior: 'smooth'});
         }
     }
 
