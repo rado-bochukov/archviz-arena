@@ -1,17 +1,19 @@
 package com.example.archvizarena.model.view;
 
-public class ReportedUserViewModel {
+public class ReportViewModel {
 
     private Long reportId;
     private String reportedUser;
     private String reportingUser;
     private String message;
+    private Long reportedProjectId;
 
     private Long reportedUserId;
-    private Long reportingUserId;
+    private String reportedProjectTitle;
 
 
-    public ReportedUserViewModel() {
+
+    public ReportViewModel() {
     }
 
     public Long getReportedUserId() {
@@ -20,14 +22,6 @@ public class ReportedUserViewModel {
 
     public void setReportedUserId(Long reportedUserId) {
         this.reportedUserId = reportedUserId;
-    }
-
-    public Long getReportingUserId() {
-        return reportingUserId;
-    }
-
-    public void setReportingUserId(Long reportingUserId) {
-        this.reportingUserId = reportingUserId;
     }
 
     public Long getReportId() {
@@ -61,4 +55,21 @@ public class ReportedUserViewModel {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    public Long getReportedProjectId() {
+        return reportedProjectId;
+    }
+
+    public void setReportedProjectId(Long reportedProjectId) {
+        this.reportedProjectId = reportedProjectId;
+    }
+
+    public String getReportedProjectTitle() {
+        return reportedProjectTitle;
+    }
+
+    public void setReportedProjectTitle(String reportedProjectTitle) {
+        this.reportedProjectTitle = reportedProjectTitle;
+    }
+
 }

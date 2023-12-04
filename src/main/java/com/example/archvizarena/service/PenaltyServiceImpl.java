@@ -1,0 +1,72 @@
+package com.example.archvizarena.service;
+
+import com.example.archvizarena.model.binding.PenaltyAddBindingModel;
+import com.example.archvizarena.model.entity.*;
+import com.example.archvizarena.model.entity.enums.PenaltyTypeEnum;
+import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
+import com.example.archvizarena.repository.PenaltyRepository;
+import com.example.archvizarena.repository.ReportRepository;
+import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PenaltyServiceImpl implements PenaltyService {
+
+    private final ReportRepository reportRepository;
+    private final PenaltyRepository penaltyRepository;
+    private final ProjectService projectService;
+    private final JobService jobService;
+    private final UserRepository userRepository;
+
+
+    public PenaltyServiceImpl(ReportRepository reportRepository, PenaltyRepository penaltyRepository, ProjectService projectService, JobService jobService, UserRepository userRepository) {
+        this.reportRepository = reportRepository;
+        this.penaltyRepository = penaltyRepository;
+        this.projectService = projectService;
+        this.jobService = jobService;
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    @Transactional
+    public void addPenalty(PenaltyAddBindingModel penaltyAddBindingModel, Long id) {
+
+        ReportEntity reportEntity = reportRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("The report you are looking for does not exist!"));
+
+        UserEntity reportedUser = reportEntity.getReportedUser();
+        PortfolioProjectEntity reportedProject = reportEntity.getReportedProject();
+        List<Long> reportsToBeDeleted = reportRepository.findAllByReportedUser_Id(reportedUser.getId()).stream().map(BaseEntity::getId).collect(Collectors.toList());
+
+        reportRepository.deleteAllById(reportsToBeDeleted);
+
+        if (reportedProject != null) {
+            projectService.deleteProject(reportedProject.getId());
+        }
+        PenaltyEntity penaltyEntity = new PenaltyEntity();
+        penaltyEntity.setPenalizedUser(reportedUser);
+        penaltyEntity.setPenalty(penaltyAddBindingModel.getPenaltyType());
+        penaltyEntity.setMessage(penaltyAddBindingModel.getPenaltyMessage());
+        penaltyEntity.setEndDate(LocalDateTime.now().plusDays(7));
+
+//        if (penaltyAddBindingModel.getPenaltyType().equals(PenaltyTypeEnum.BLOCK)) {
+//            reportedUser.setBlocked(true);
+//            if (reportedUser.getUserOccupation().equals(UserOccupationEnum.ARTIST)) {
+//                projectService.deactivateUserProjects(reportedUser.getId());
+//            }
+//            jobService.deactivateUserJobPublications(reportedUser.getId());
+//        } else {
+//            reportedUser.setMuted(true);
+//        }
+        reportedUser.setMuted(true);
+
+        userRepository.save(reportedUser);
+        penaltyRepository.save(penaltyEntity);
+    }
+}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head}">
 
 </head>
@@ -11,6 +12,9 @@
 
 
 <div class="container" th:object="${project}">
+    <th:block th:if="*{imagesUrls.size()==1}">
+        <div th:replace="~{fragments/carousel-1-element}"></div>
+    </th:block>
 
     <th:block th:if="*{imagesUrls.size()==2}">
         <div th:replace="~{fragments/carousel-2-elements}"></div>
@@ -39,7 +43,8 @@
         </form>
        <span>
            <button class="btn btn-info mt-2 ml-2" id="comment" onclick="redirectToField()">Leave a comment</button>
-           <a th:href="@{/report/project/{id} (id=*{id})}" class="btn btn-info mt-2 ml-2">Report</a>
+           <a th:unless="${project.viewerTheOwner or #authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/report/project/{id} (id=*{id})}" class="btn btn-info mt-2 ml-1">Report</a>
+
        </span>
     </span>
     <div class="container mt-0">

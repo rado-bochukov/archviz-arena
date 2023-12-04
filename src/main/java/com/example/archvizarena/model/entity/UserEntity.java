@@ -4,6 +4,7 @@ package com.example.archvizarena.model.entity;
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -43,7 +44,7 @@ public class UserEntity extends BaseEntity {
 
 
     @OneToMany(mappedBy = "buyer",
-            fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+            fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<JobPublicationEntity> jobPublicationEntities;
     @OneToMany(mappedBy = "author")
     private List<PortfolioProjectEntity> projects;
@@ -51,14 +52,51 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "commentAuthor")
     private List<CommentEntity> commentsSent;
 
+    @OneToOne
+    private PenaltyEntity penaltyEntity;
 
+//    private boolean isBlocked;
 
-
+    private boolean isMuted;
 
 
     public UserEntity() {
 
     }
+
+//    public boolean isBlocked() {
+//        return isBlocked;
+//    }
+//
+//    public void setBlocked(boolean blocked) {
+//        isBlocked = blocked;
+//    }
+
+    public boolean isMuted() {
+        return isMuted;
+    }
+
+    public void setMuted(boolean muted) {
+        isMuted = muted;
+    }
+
+    public PenaltyEntity getPenaltyEntity() {
+        return penaltyEntity;
+    }
+
+    public void setPenaltyEntity(PenaltyEntity penaltyEntity) {
+        this.penaltyEntity = penaltyEntity;
+    }
+
+    public List<JobPublicationEntity> getJobPublicationEntities() {
+        return jobPublicationEntities;
+    }
+
+    public void setJobPublicationEntities(List<JobPublicationEntity> jobPublicationEntities) {
+        this.jobPublicationEntities = jobPublicationEntities;
+    }
+
+
 
     public String getCountry() {
         return country;
@@ -156,7 +194,6 @@ public class UserEntity extends BaseEntity {
     public void setProfilePicture(PictureEntity profilePicture) {
         this.profilePicture = profilePicture;
     }
-
 
 
     public List<JobPublicationEntity> getJobPublications() {

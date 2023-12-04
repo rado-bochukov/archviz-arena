@@ -22,11 +22,21 @@ public class ProjectDetailsViewModel {
 
     private ProjectCategoryEnum category;
 
-   private boolean isLikedFromCurrentUser;
+    private boolean isLikedFromCurrentUser;
 
-   private List<CommentViewModel>projectComments;
+    private boolean isViewerTheOwner;
+
+    private List<CommentViewModel> projectComments;
 
     public ProjectDetailsViewModel() {
+    }
+
+    public boolean isViewerTheOwner() {
+        return isViewerTheOwner;
+    }
+
+    public void setViewerTheOwner(boolean viewerTheOwner) {
+        isViewerTheOwner = viewerTheOwner;
     }
 
     public List<CommentViewModel> getProjectComments() {

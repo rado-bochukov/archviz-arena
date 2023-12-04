@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+<div class="container " style="align-content: center; max-width: 760px">
+  <div class="card mt-5 p3 align-content-center text-center">
+    <div class=" mt-1">
+
+      <h3 class="mt-1 mb-0 ">The user has been sanctioned for 7 days!</h3>
+
+    </div>
+    <span class="mt-2 mb-2">
+        <a th:href="@{/}" type="button" class="btn btn-info">Home</a>
+    </span>
+
+  </div>
+</div>
+<div>
+  <footer></footer>
+</div>
+</body>
+</html>

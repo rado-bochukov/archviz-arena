@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{/fragments/head}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar}">
+</div>
+
+
+<div class="container">
+    <h2 class="text-center text-topics">Penalty form</h2>
+
+    <form th:method="post"
+          th:action="@{/admin/sanction/{id} (id=${report.reportId})}"
+          th:object="${penaltyAddBindingModel}"
+          enctype="multipart/form-data"
+          class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
+        <div class="form-group col-md-whole_row mb-3">
+
+            <label class="text-white font-weight-bold">User to be penalized: <strong
+                    th:text="${report.reportedUser}"/></label>
+
+        </div>
+        <div th:unless="${report.reportedProjectTitle==null}" class="form-group col-md-whole_row mb-3">
+
+            <label class="text-white font-weight-bold">Project to be deleted: <strong
+                    th:text="${report.reportedProjectTitle}"/></label>
+
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label class="text-white font-weight-bold">Penalty type</label>
+            <select th:field="*{penaltyType}"
+                    th:errorclass="is-invalid"
+                    id="occupation"
+                    class="form-control">
+                <option value="">- Select penalty type -</option>
+
+                <option th:each="p : ${T(com.example.archvizarena.model.entity.enums.PenaltyTypeEnum).values()}"
+                        th:text="${p}"
+                        th:value="${p}"
+                        th:selected="${p}==*{penaltyType}">ARTIST
+                </option>
+            </select>
+            <p class="invalid-feedback errors alert alert-danger">
+                Penalty type is required!
+            </p>
+        </div>
+        <div class="form-group col-md-whole_row mb-3">
+            <label for="inputDescription" class="text-white font-weight-bold">Penalty message:</label>
+            <div class="form-group">
+                    <textarea
+                            th:field="*{penaltyMessage}"
+                            th:errorclass="is-invalid"
+                            id="inputDescription"
+                            name="inputDescription"
+                            class="form-control"
+                            aria-describedby="inputDescriptionError"></textarea>
+                <p class="invalid-feedback errors alert alert-danger">Penalty message length must be more than 5
+                    characters!</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-4">
+                <div class="button-holder d-flex">
+                    <input type="submit" class="btn btn-info " value="Penalize user"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <footer></footer>
+</div>
+
+</body>
+
+</html>

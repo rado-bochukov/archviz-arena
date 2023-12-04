@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "reports")
 public class ReportEntity extends BaseEntity {
@@ -20,10 +22,29 @@ public class ReportEntity extends BaseEntity {
     @Column
     private String message;
     @Column
-    private boolean isChecked;
+    private boolean isArchived;
+
+    @Column
+    private LocalDateTime archivedUntil;
 
 
     public ReportEntity() {
+    }
+
+    public boolean isArchived() {
+        return isArchived;
+    }
+
+    public void setArchived(boolean archived) {
+        isArchived = archived;
+    }
+
+    public LocalDateTime getArchivedUntil() {
+        return archivedUntil;
+    }
+
+    public void setArchivedUntil(LocalDateTime archivedUntil) {
+        this.archivedUntil = archivedUntil;
     }
 
     public UserEntity getReportingUser() {
@@ -58,11 +79,5 @@ public class ReportEntity extends BaseEntity {
         this.message = message;
     }
 
-    public boolean isChecked() {
-        return isChecked;
-    }
 
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
 }

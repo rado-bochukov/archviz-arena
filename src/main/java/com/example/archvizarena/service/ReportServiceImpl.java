@@ -4,13 +4,14 @@ import com.example.archvizarena.model.entity.PortfolioProjectEntity;
 import com.example.archvizarena.model.entity.ReportEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.ReportSubmitServiceModel;
-import com.example.archvizarena.model.view.ReportedUserViewModel;
+import com.example.archvizarena.model.view.ReportViewModel;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.ReportRepository;
 import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,21 +50,56 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ReportedUserViewModel> findAllUserReports() {
+    public List<ReportViewModel> findAllActiveUserReports() {
 
         return reportRepository.findAllByReportedProjectNull().stream()
-                .map(this::mapFromEntityToUserView)
+                .filter(r->!r.isArchived())
+                .map(this::mapFromEntityToView)
                 .toList();
     }
 
-    private ReportedUserViewModel mapFromEntityToUserView(ReportEntity r) {
-        ReportedUserViewModel report=new ReportedUserViewModel();
-        report.setReportId(r.getId());
-        report.setReportedUser(r.getReportedUser().getName());
-        report.setReportingUser(r.getReportingUser().getName());
-        report.setMessage(r.getMessage());
-        report.setReportedUserId(r.getReportedUser().getId());
-        report.setReportingUserId(r.getReportingUser().getId());
+
+
+    @Override
+    public List<ReportViewModel> findAllActiveProjectReports() {
+        return reportRepository.findAllByReportedProjectNotNull().stream()
+                .filter(r->!r.isArchived())
+                .map(this::mapFromEntityToView)
+                .toList();
+    }
+
+    @Override
+    public void dismissReport(Long id) {
+        ReportEntity reportEntity= getReportEntity(id);
+        reportEntity.setArchived(true);
+        reportEntity.setArchivedUntil(LocalDateTime.now().plusDays(7));
+        reportRepository.save(reportEntity);
+    }
+
+    private ReportEntity getReportEntity(Long id) {
+        return reportRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Oops, the report you are looking for does not exist!"));
+    }
+
+    @Override
+    public ReportViewModel findById(Long id) {
+       ReportEntity reportEntity=getReportEntity(id);
+        return mapFromEntityToView(reportEntity);
+    }
+
+    private ReportViewModel mapFromEntityToView(ReportEntity reportEntity) {
+
+        ReportViewModel report=new ReportViewModel();
+        report.setReportId(reportEntity.getId());
+        report.setReportingUser(reportEntity.getReportingUser().getName());
+        report.setReportedUser(reportEntity.getReportedUser().getName());
+        report.setMessage(reportEntity.getMessage());
+
+        if(reportEntity.getReportedProject()!=null){
+            report.setReportedProjectId(reportEntity.getReportedProject().getId());
+            report.setReportedProjectTitle(reportEntity.getReportedProject().getTitle());
+        }
+
         return report;
     }
 
@@ -73,7 +109,7 @@ public class ReportServiceImpl implements ReportService {
                 .orElseThrow(() -> new ObjectNotFoundException("The user you are looking for does not exist!"));
         reportEntity.setReportingUser(reportingUser);
         reportEntity.setMessage(report.getMessage());
-        reportEntity.setChecked(false);
+        reportEntity.setArchived(false);
         return reportEntity;
     }
 }

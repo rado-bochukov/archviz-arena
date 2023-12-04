@@ -1,6 +1,7 @@
 package com.example.archvizarena.service;
 
 import com.example.archvizarena.model.binding.UserEditBindingModel;
+import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.UserProfileViewModel;
@@ -29,7 +30,8 @@ public interface UserService {
 
     boolean newUserNameIsUnique(Long id, String username);
 
-    UserProfileViewModel findUserViewModelById(Long id);
+
+    UserProfileViewModel mapFromEntity(UserEntity user);
 
     void updateThePrincipalAuthenticationToken(String username, ArchVizArenaUserDetails userDetails);
 

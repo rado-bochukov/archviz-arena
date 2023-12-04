@@ -11,7 +11,7 @@ public interface JobService {
 
     void addJob(JobPublicationAddServiceModel jobToBeAdded, String username);
 
-    JobPublicationViewModel findJobById(Long id);
+    JobPublicationViewModel findJobById(Long id,ArchVizArenaUserDetails userDetails);
 
     void deactivateJob(Long id);
 
@@ -20,4 +20,6 @@ public interface JobService {
     void activateJob(Long id);
 
     boolean isViewerTheOwner(Long jobId, ArchVizArenaUserDetails viewer);
+
+    void deactivateUserJobPublications(Long id);
 }

@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.apache.coyote.http11.Constants.a;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -93,8 +91,6 @@ public class UserServiceImpl implements UserService {
         newUser.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
         UserRoleEntity userRoleEntity = userRoleRepository.findByRole(UserRoleEnum.USER);
         newUser.setRoles(List.of(userRoleEntity));
-
-
         userRepository.save(newUser);
 
     }
@@ -104,20 +100,26 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .filter(u -> u.getUserOccupation() != null)
                 .filter(u -> u.getUserOccupation().name().equals("ARTIST"))
+//                .filter(u->!u.isBlocked())
                 .map(userMapper::mapToArtistViewModel)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Long getPrincipalId(String username) {
-
         UserEntity user = userRepository.findByUsername(username).orElseThrow();
         return user.getId();
     }
 
     @Override
     public UserProfileViewModel findUserById(Long id, ArchVizArenaUserDetails userDetails) {
-        UserProfileViewModel userViewModel = this.findUserViewModelById(id);
+        UserEntity user=getUser(id);
+//        if(user.isBlocked()){
+//            if(!isOwner(id,userDetails)){
+//                throw new ObjectNotFoundException("Oops...We can not find the user you are looking for!");
+//            }
+//        }
+        UserProfileViewModel userViewModel = this.mapFromEntity(user);
         userViewModel.setViewerIsOwner(isOwner(id, userDetails));
         return userViewModel;
     }
@@ -168,8 +170,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileViewModel findUserViewModelById(Long id) {
-        UserEntity user = getUser(id);
+    public UserProfileViewModel mapFromEntity(UserEntity user) {
+
         UserProfileViewModel userViewModel = modelMapper.map(user, UserProfileViewModel.class);
         if (user.getProfilePicture() != null) {
             String profilePicUrl = user.getProfilePicture().getUrl();
@@ -182,7 +184,7 @@ public class UserServiceImpl implements UserService {
                     .toList();
             userViewModel.setProjects(artistProjects);
 
-            List<WorkInProgressViewModel> artistWorkInProgress = workInProgressService.getAllArtistWorkInProgress(id);
+            List<WorkInProgressViewModel> artistWorkInProgress = workInProgressService.getAllArtistWorkInProgress(user.getId());
             userViewModel.setWorkInProgress(artistWorkInProgress);
         } else if (user.getUserOccupation().equals(UserOccupationEnum.BUYER)) {
             List<JobPublicationViewModel> buyerActiveJobs = user.getJobPublications().stream()
@@ -195,7 +197,7 @@ public class UserServiceImpl implements UserService {
                     .map(jobPublicationMapper::mapToJobViewModel)
                     .toList();
             userViewModel.setInactiveJobPublications(buyerInactiveJobs);
-            List<WorkInProgressViewModel> buyerWorkInProgress = workInProgressService.getAllBuyerWorkInProgress(id);
+            List<WorkInProgressViewModel> buyerWorkInProgress = workInProgressService.getAllBuyerWorkInProgress(user.getId());
             userViewModel.setWorkInProgress(buyerWorkInProgress);
         }
         return userViewModel;
@@ -218,7 +220,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserEntity getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
+        return  userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
     }
 
     private boolean isOwner(Long profileId, ArchVizArenaUserDetails userDetails) {

@@ -50,6 +50,7 @@ public class ReportController {
     @GetMapping("/user/{id}")
     public String ReportUser(@PathVariable Long id,
                              Model model) {
+
         String name = userService.getNameById(id);
         model.addAttribute("userName", name);
         model.addAttribute("userId", id);

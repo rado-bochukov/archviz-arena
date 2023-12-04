@@ -35,7 +35,7 @@ public class JobApplicantsController {
                                    Model model,
                                    @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
 
-        JobPublicationBrowseCandidatesViewModel job=modelMapper.map(jobService.findJobById(id),JobPublicationBrowseCandidatesViewModel.class);
+        JobPublicationBrowseCandidatesViewModel job=modelMapper.map(jobService.findJobById(id,userDetails),JobPublicationBrowseCandidatesViewModel.class);
         List<ApplicationViewModel> applications=applicationService.findJobApplications(id);
         model.addAttribute("applications",applications);
         model.addAttribute("job",job);

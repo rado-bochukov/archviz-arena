@@ -1,8 +1,6 @@
 package com.example.archvizarena.service;
 
-import com.example.archvizarena.model.entity.PictureEntity;
-import com.example.archvizarena.model.entity.PortfolioProjectEntity;
-import com.example.archvizarena.model.entity.UserEntity;
+import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.CommentViewModel;
@@ -14,6 +12,7 @@ import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.ProjectMapper;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final CommentService commentService;
     private final ProjectMapper projectMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService,  ProjectMapper projectMapper) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ModelMapper modelMapper, PictureRepository pictureRepository, CommentService commentService, ProjectMapper projectMapper) {
         this.projectRepository = projectRepository;
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
@@ -52,6 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectBrowsingViewModel> findAll() {
 
         return projectRepository.findAll().stream()
+                .filter(BaseProject::isActive)
                 .map(projectMapper::mapFromEntity)
                 .collect(Collectors.toList());
     }
@@ -59,8 +59,13 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectDetailsViewModel findById(Long id, ArchVizArenaUserDetails userDetails) {
         PortfolioProjectEntity project = getProject(id);
+//        if(!project.isActive()){
+//            if(!isViewerTheOwner(id, userDetails)){
+//                throw new ObjectNotFoundException("Oops , seems the publication you are looking for cannot be reached!");
+//            }
+//        }
 
-        return this.mapToDetailsViewModel(project, userDetails); 
+        return this.mapToDetailsViewModel(project, userDetails);
     }
 
     private PortfolioProjectEntity getProject(Long id) {
@@ -72,7 +77,12 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDetailsViewModel likeTheProject(Long id, ArchVizArenaUserDetails userDetails) {
 
         PortfolioProjectEntity project = getProject(id);
-        project.setLikesCount(project.getLikesCount()+1);
+//        if(!project.isActive()){
+//            if(!isViewerTheOwner(id, userDetails)){
+//                throw new ObjectNotFoundException("Oops , seems the publication you are looking for cannot be reached!");
+//            }
+//        }
+        project.setLikesCount(project.getLikesCount() + 1);
         project.getUsersLikedTheProject().add(userRepository.findByUsername(userDetails.getUsername()).orElseThrow());
         projectRepository.save(project);
 
@@ -84,11 +94,27 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectReportViewModel getProjectToBeReported(Long projectId) {
-        PortfolioProjectEntity project=this.getProject(projectId);
+        PortfolioProjectEntity project = this.getProject(projectId);
+//        if(!project.isActive()){
+//            throw new ObjectNotFoundException("Oops , seems the publication you are looking for cannot be reached!");
+//        }
+        return projectMapper.mapFromEntityToReportView(project);
+    }
 
-        ProjectReportViewModel projectToBeReported=projectMapper.mapFromEntityToReportView(project);
+    @Override
+    @Transactional
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
+    }
 
-        return projectToBeReported;
+    @Override
+    @Transactional
+    public void deactivateUserProjects(Long id) {
+        projectRepository.findAllByAuthor_Id(id)
+                .forEach(project->{
+                    project.setActive(false);
+                    projectRepository.save(project);
+                });
     }
 
     private ProjectDetailsViewModel mapToDetailsViewModel(PortfolioProjectEntity project, ArchVizArenaUserDetails userDetails) {
@@ -114,8 +140,27 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(commentService::mapToCommentViewModel)
                 .toList();
         projectToView.setProjectComments(comments);
+        projectToView.setViewerTheOwner(this.isViewerTheOwner(project.getAuthor().getId(), userDetails));
 
         return projectToView;
+    }
+
+    private boolean isViewerTheOwner(Long id, ArchVizArenaUserDetails userDetails) {
+        return isOwner(id, userDetails, userRepository);
+    }
+
+    static boolean isOwner(Long id, ArchVizArenaUserDetails userDetails, UserRepository userRepository) {
+        if(userDetails == null){
+            return false;
+        }
+
+        UserEntity user= userRepository.findByUsername(userDetails.getUsername()).orElse(null);
+        if(user == null){
+            return false;
+        }
+
+        return user.getJobPublications().stream().map(BaseEntity::getId)
+                .toList().contains(id);
     }
 
 
@@ -131,6 +176,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setLikesCount(0);
         project.setPictures(projectPictures);
         project.setAuthor(author);
+        project.setActive(true);
 
         return project;
     }

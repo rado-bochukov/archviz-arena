@@ -51,7 +51,6 @@ public class ProjectViewController {
 
     @PostMapping("/details/like/{id}")
     public String likeTheProject(@PathVariable Long id,
-                                    Model model,
                                     @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
 
         projectService.likeTheProject(id,userDetails);

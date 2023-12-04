@@ -37,7 +37,7 @@ public class ApplicationController {
                                            Model model,
                                            @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        JobPublicationViewModel jobPublication=jobService.findJobById(id);
+        JobPublicationViewModel jobPublication=jobService.findJobById(id,userDetails);
         model.addAttribute("jobPublication", jobPublication);
 
         if (userDetails != null) {

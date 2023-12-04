@@ -9,34 +9,35 @@
 <div th:replace="~{fragments/navbar}">
 </div>
 <div class="container">
-  <h2 class="text-center text-topics" th:text="'Reported users: '+ ${count}"></h2>
+  <h2 class="text-center text-topics" th:text="'Reported projects: '+ ${count}"></h2>
 
   <form th:method="post"
-        th:action="@{/admin/reports/users/dismiss/{id} (id=*{reportId})}"
-        th:each="r, iterStat : ${reports}"
+        th:action="@{/admin/reports/projects/dismiss/{id} (id=*{reportId})}"
+        th:each="r, iterStat : ${reportedProjects}"
         th:object="${r}"
         enctype="multipart/form-data"
         class="main-form mx-auto col-md-8 d-flex flex-column justify-content-center mt-4">
     <div class="mt-2 mb-1">
 
                 <span class="media-body">
-                <h4 class="mt-0 " th:text="*{reportedUser}">Radostin Bochukov </h4>
+                <h4 class="mt-0 " th:text="*{reportedProjectTitle}">Radostin Bochukov </h4>
+                  <div> From: <strong th:text="*{reportedUser}" />  </div>
                 <span class="mt-2">
                      <span class="candidateType">Reported by: <strong th:text="*{reportingUser}" /> </span>
                 </span>
                 </span>
       <div>
-        <a th:href="@{/users/details/{id}(id=*{reportedUserId})}" class="btn btn-info btn-sm mt-1 mb-0">View
-          Profile</a>
+        <a th:href="@{/projects/details/{id}(id=*{reportedProjectId})}" class="btn btn-info btn-sm mt-1 mb-0">View
+          Project</a>
         <button type="button" class="btn btn-info btn-sm mt-1 ml-2" data-toggle="modal"
                 th:data-target="'#application-message-'+${iterStat.index}" data-whatever="@mdo">View message
         </button>
-          <a th:href="@{/admin/sanction/{id}(id=*{reportId})}" class="btn btn-info btn-sm mt-1 mb-0 ml-2">Sanction</a>
+        <a th:href="@{/admin/sanction/{id}(id=*{reportId})}" class="btn btn-info btn-sm mt-1 mb-0 ml-2">Delete project and sanction author</a>
 
         <button type="submit" class="btn btn-info btn-sm mt-1 ml-2">Dismiss</button>
       </div>
     </div>
-    <div th:each="r, iterStat : ${reports}" th:object="${r}" class="modal fade"
+    <div th:each="r, iterStat : ${reportedProjects}" th:object="${r}" class="modal fade"
          th:id="'application-message-'+${iterStat.index}" tabindex="-1" role="dialog"
          aria-labelledby="applicationSuccessful"
          aria-hidden="true">

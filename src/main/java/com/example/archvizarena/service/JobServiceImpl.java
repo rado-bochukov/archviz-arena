@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.example.archvizarena.service.ProjectServiceImpl.isOwner;
+
 @Service
 public class JobServiceImpl implements JobService {
 
@@ -66,8 +68,13 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public JobPublicationViewModel findJobById(Long id) {
+    public JobPublicationViewModel findJobById(Long id,ArchVizArenaUserDetails userDetails) {
         JobPublicationEntity job=this.lookForTheJob(id);
+        if(!job.isActive()){
+            if(!isViewerTheOwner(id, userDetails)){
+                throw new ObjectNotFoundException("Oops , seems the publication you are looking for cannot be reached!");
+            }
+        }
         return jobPublicationMapper.mapToJobViewModel(job);
     }
 
@@ -117,15 +124,17 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public boolean isViewerTheOwner(Long jobId, ArchVizArenaUserDetails viewer) {
+        return isOwner(jobId, viewer, userRepository);
 
-        UserEntity user=userRepository.findByUsername(viewer.getUsername()).orElse(null);
-        if(user == null){
-            return false;
-        }
+    }
 
-        return user.getJobPublications().stream().map(BaseEntity::getId)
-                .toList().contains(jobId);
-
+    @Override
+    @Transactional
+    public void deactivateUserJobPublications(Long id) {
+        jobPublicationRepository.findAllByBuyer_Id(id).forEach(jobPublicationEntity -> {
+                    jobPublicationEntity.setActive(false);
+                    jobPublicationRepository.save(jobPublicationEntity);
+                });
     }
 
 }

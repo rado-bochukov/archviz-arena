@@ -18,4 +18,9 @@ public interface ProjectService {
     ProjectDetailsViewModel likeTheProject(Long id, ArchVizArenaUserDetails userDetails);
 
     ProjectReportViewModel getProjectToBeReported(Long projectId);
+
+    void deleteProject(Long id);
+
+    void deactivateUserProjects(Long id);
+
 }
