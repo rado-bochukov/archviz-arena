@@ -11,6 +11,7 @@ import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,7 +109,7 @@ public class WorkInProgressServiceImpl implements WorkInProgressService {
         MessageViewModel messageViewModel = new MessageViewModel();
 
         messageViewModel.setAuthorName(message.getCommentAuthor().getName());
-        messageViewModel.setCreated(message.getCreated());
+        messageViewModel.setCreated(message.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss" )));
         messageViewModel.setTextContent(message.getTextContent());
 
         return messageViewModel;

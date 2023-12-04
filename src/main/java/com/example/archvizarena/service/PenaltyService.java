@@ -4,4 +4,6 @@ import com.example.archvizarena.model.binding.PenaltyAddBindingModel;
 
 public interface PenaltyService {
     void addPenalty(PenaltyAddBindingModel penaltyAddBindingModel, Long id);
+
+    void unmuteUsersWithExpiredMute();
 }

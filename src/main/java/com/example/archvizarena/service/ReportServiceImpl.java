@@ -9,6 +9,7 @@ import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.ReportRepository;
 import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -85,6 +86,22 @@ public class ReportServiceImpl implements ReportService {
     public ReportViewModel findById(Long id) {
        ReportEntity reportEntity=getReportEntity(id);
         return mapFromEntityToView(reportEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long reportId) {
+        reportRepository.deleteById(reportId);
+    }
+
+    @Override
+    public void clearArchivedReports() {
+        reportRepository.findAllByIsArchivedTrue()
+                .forEach(reportEntity -> {
+                    if(reportEntity.getArchivedUntil().isBefore(LocalDateTime.now())){
+                        reportRepository.deleteById(reportEntity.getId());
+                    }
+                });
     }
 
     private ReportViewModel mapFromEntityToView(ReportEntity reportEntity) {

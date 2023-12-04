@@ -84,7 +84,7 @@ public class ReportController {
 
         reportService.saveProjectReport(report);
 
-        return "redirect:/";
+        return "redirect:/report/submit/success";
     }
 
     @PostMapping("/user/{id}")
@@ -108,6 +108,11 @@ public class ReportController {
 
         reportService.saveUserReport(report);
 
-        return "redirect:/";
+        return "redirect:/report/submit/success";
+    }
+
+    @GetMapping("/submit/success")
+    public String ReportSuccess() {
+        return "report-submitted";
     }
 }

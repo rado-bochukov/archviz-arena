@@ -6,7 +6,7 @@ public class MessageViewModel {
 
     private String authorName;
 
-    private LocalDateTime created;
+    private String created;
 
     private String textContent;
 
@@ -21,11 +21,11 @@ public class MessageViewModel {
         this.authorName = authorName;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

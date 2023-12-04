@@ -89,9 +89,6 @@ public class AdminController {
         }
 
         penaltyService.addPenalty(penaltyAddBindingModel,id);
-        reportService.dismissReport(id);
-
-
         return "redirect:/admin/sanction/success";
     }
 

@@ -55,8 +55,8 @@ public class UserEntity extends BaseEntity {
     @OneToOne
     private PenaltyEntity penaltyEntity;
 
-//    private boolean isBlocked;
-
+    //    private boolean isBlocked;
+    @Column(name = "muted",nullable = false)
     private boolean isMuted;
 
 
@@ -95,7 +95,6 @@ public class UserEntity extends BaseEntity {
     public void setJobPublicationEntities(List<JobPublicationEntity> jobPublicationEntities) {
         this.jobPublicationEntities = jobPublicationEntities;
     }
-
 
 
     public String getCountry() {

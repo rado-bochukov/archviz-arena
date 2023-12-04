@@ -10,6 +10,7 @@ import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
 
         CommentViewModel commentViewModel=new CommentViewModel();
         commentViewModel.setAuthorName(comment.getCommentAuthor().getName());
-        commentViewModel.setCreated(comment.getCreated());
+        commentViewModel.setCreated(comment.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         commentViewModel.setTextContent(comment.getTextContent());
         commentViewModel.setId(comment.getId());
         return commentViewModel;

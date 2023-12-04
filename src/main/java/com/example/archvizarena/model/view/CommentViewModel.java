@@ -9,8 +9,8 @@ public class CommentViewModel {
     private Long id;
 
     private String authorName;
-@DateTimeFormat(pattern = "yyyy-MM-dd 'T' HH:mm")
-    private LocalDateTime created;
+    @DateTimeFormat(pattern = "yyyy-MM-dd ")
+    private String created;
 
     private String textContent;
 
@@ -33,11 +33,11 @@ public class CommentViewModel {
         this.authorName = authorName;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 

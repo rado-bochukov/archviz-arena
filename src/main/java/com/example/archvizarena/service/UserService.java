@@ -37,4 +37,7 @@ public interface UserService {
 
     String getNameById(Long id);
 
+    boolean isUserMuted(String username);
+
+
 }

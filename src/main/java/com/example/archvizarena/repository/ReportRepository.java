@@ -12,4 +12,6 @@ public interface ReportRepository extends JpaRepository<ReportEntity,Long> {
     List<ReportEntity> findAllByReportedProjectNull();
     List<ReportEntity> findAllByReportedProjectNotNull();
     List<ReportEntity> findAllByReportedUser_Id(Long id);
+
+    List<ReportEntity> findAllByIsArchivedTrue();
 }

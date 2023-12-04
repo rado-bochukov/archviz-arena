@@ -58,35 +58,62 @@
         <!--            </div>-->
         <!--        </div>-->
     </form>
-</div>
-<div class="container">
-    <div class="card-deck">
-        <div class="card mt-5 highlight" style="width: 18rem;" th:each="j: ${allJobs}"
-             th:object="${j}">
-            <div class="card-header"><h4><strong th:text="*{title}"/></h4></div>
-            <div class="card-body">
+    <div class="card-deck mt-3 text-center">
+        <div class="row">
+            <div class="col-md-4 mt-4 mb-2" th:each="j: ${allJobs}" th:object="${j}">
+                <div class="card highlight" style="max-width: 300px; min-width: 180px" >
+                    <div class="card-header"><h4><strong th:text="*{title}"/></h4></div>
+                    <div class="card-body">
 
-                <div class="text-left mt-2">From: <strong th:text="*{authorName}"/></div>
-                <div class="mt-2">
-                    <img class="flags" src="" width="26">
-                    <span class="countryName" th:text="*{authorCountry}">United States</span>
+                        <div class="text-left mt-2">From: <strong th:text="*{authorName}"/></div>
+                        <div class="mt-2 text-left">
+                            <img class="flags" src="" width="26">
+                            <span class="countryName" th:text="*{authorCountry}">United States</span>
+                        </div>
+                        <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
+                        <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
+
+                        <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details</a>
+                        <a th:href="@{/users/details/{id}(id=${j.authorId})}" class="btn btn-info  ml-2 mt-3">View
+                            Buyer</a>
+                    </div>
                 </div>
-                <div class="text-left mt-2">Category: <strong th:text="*{category}"/></div>
-                <div class="text-left mt-2">Budget: <strong th:text="'€'+*{budget}"/></div>
-
-                <a th:href="@{/jobs/details/{id}(id=${j.id})}" class="btn btn-info  mt-3">Details</a>
-                <a th:href="@{/users/details/{id}(id=${j.authorId})}" class="btn btn-info  ml-2 mt-3">View Buyer</a>
             </div>
         </div>
     </div>
 </div>
 
 
-
-
 </body>
 <script src="/js/countriesAPI-2.js">
 
 </script>
+<script>
+
+    const cards = document.querySelectorAll('.card');
+    const maxHeight = Math.max(...Array.from(cards, card => card.offsetHeight));
+    cards.forEach(card => {
+        card.style.height = maxHeight + 'px';
+    });
+</script>
+
+
+
+<style>
+    /* Add this CSS for responsive layout */
+    @media (max-width: 1200px) {
+        .card-deck-container .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px; /* Adjust this margin based on your design */
+        }
+
+        .card-deck-container .col-md-3 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding: 0 15px; /* Adjust this padding based on your design */
+        }
+    }
+</style>
 
 </html>

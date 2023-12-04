@@ -17,4 +17,9 @@ public interface ReportService {
     void dismissReport(Long id);
 
     ReportViewModel findById(Long id);
+
+    void deleteById(Long reportId);
+
+    void clearArchivedReports();
+
 }

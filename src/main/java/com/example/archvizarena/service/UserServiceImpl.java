@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -34,18 +35,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final ModelMapper modelMapper;
-
     private final ProjectMapper projectMapper;
     private final JobPublicationMapper jobPublicationMapper;
     private final UserMapper userMapper;
-
     private final WorkInProgressService workInProgressService;
     private final PictureRepository pictureRepository;
-
 
 
     public UserServiceImpl(UserRepository userRepository, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder, ModelMapper modelMapper, ProjectMapper projectMapper, JobPublicationMapper jobPublicationMapper, UserMapper userMapper, WorkInProgressService workInProgressService, PictureRepository pictureRepository) {
@@ -57,10 +53,7 @@ public class UserServiceImpl implements UserService {
         this.jobPublicationMapper = jobPublicationMapper;
         this.userMapper = userMapper;
         this.workInProgressService = workInProgressService;
-
         this.pictureRepository = pictureRepository;
-
-
     }
 
     public void init() {
@@ -78,15 +71,13 @@ public class UserServiceImpl implements UserService {
             userRoleEntity.setRole(UserRoleEnum.USER);
             userRoleRepository.save(userRoleEntity);
 
-
             initAdmin(List.of(adminRole, moderatorRole));
-
         }
-
     }
 
     @Override
     public void register(UserRegisterServiceModel userRegisterDto) {
+
         UserEntity newUser = modelMapper.map(userRegisterDto, UserEntity.class);
         newUser.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
         UserRoleEntity userRoleEntity = userRoleRepository.findByRole(UserRoleEnum.USER);
@@ -113,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileViewModel findUserById(Long id, ArchVizArenaUserDetails userDetails) {
-        UserEntity user=getUser(id);
+        UserEntity user = getUser(id);
 //        if(user.isBlocked()){
 //            if(!isOwner(id,userDetails)){
 //                throw new ObjectNotFoundException("Oops...We can not find the user you are looking for!");
@@ -131,7 +122,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEditBindingModel findUserById(Long id) {
-
         return userMapper.mapFromUserEntity(this.getUser(id));
     }
 
@@ -164,8 +154,6 @@ public class UserServiceImpl implements UserService {
         if (this.getUser(id).getUsername().equals(username)) {
             return true;
         }
-
-
         return false;
     }
 
@@ -206,7 +194,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateThePrincipalAuthenticationToken(String username, ArchVizArenaUserDetails userDetails) {
 
-        ArchVizArenaUserDetailService archVizArenaUserDetailService=new ArchVizArenaUserDetailService(userRepository);
+        ArchVizArenaUserDetailService archVizArenaUserDetailService = new ArchVizArenaUserDetailService(userRepository);
         UserDetails updatedUserDetails = archVizArenaUserDetailService.loadUserByUsername(username);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 updatedUserDetails, userDetails.getPassword(), userDetails.getAuthorities());
@@ -219,8 +207,18 @@ public class UserServiceImpl implements UserService {
         return getUser(id).getName();
     }
 
+    @Override
+    public boolean isUserMuted(String username) {
+
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
+        return user.isMuted();
+    }
+
+
+
     private UserEntity getUser(Long id) {
-        return  userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
     }
 
     private boolean isOwner(Long profileId, ArchVizArenaUserDetails userDetails) {
@@ -229,7 +227,6 @@ public class UserServiceImpl implements UserService {
         if (userDetails == null || user == null) {
             return false;
         }
-
         return Objects.equals(
                 profileId,
                 this.getPrincipalId(userDetails.getUsername())
