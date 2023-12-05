@@ -1,5 +1,6 @@
 package com.example.archvizarena.service;
 
+import com.example.archvizarena.model.binding.ArtistSearchBindingModel;
 import com.example.archvizarena.model.binding.UserEditBindingModel;
 import com.example.archvizarena.model.entity.JobPublicationEntity;
 import com.example.archvizarena.model.entity.PictureEntity;
@@ -10,6 +11,7 @@ import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.*;
+import com.example.archvizarena.repository.ArtistSpecification;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -217,6 +219,13 @@ public class UserServiceImpl implements UserService {
         return user.isMuted();
     }
 
+    @Override
+    public List<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel) {
+        return userRepository.findAll(new ArtistSpecification(artistSearchBindingModel))
+                .stream()
+                .map(userMapper::mapToArtistViewModel)
+                .collect(Collectors.toList());
+    }
 
 
     private UserEntity getUser(Long id) {

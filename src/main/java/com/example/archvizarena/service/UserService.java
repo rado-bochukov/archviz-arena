@@ -1,5 +1,6 @@
 package com.example.archvizarena.service;
 
+import com.example.archvizarena.model.binding.ArtistSearchBindingModel;
 import com.example.archvizarena.model.binding.UserEditBindingModel;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
@@ -40,5 +41,7 @@ public interface UserService {
 
     boolean isUserMuted(String username);
 
+
+    List<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel);
 
 }

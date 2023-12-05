@@ -34,7 +34,7 @@ public class SecurityConfig {
                                         .permitAll().
                                         requestMatchers("/", "/users/login", "/users/register",
                                                 "/users/login-error",
-                                                "/artists/all", "/users/details/{id}",
+                                                "/artists/all", "artists/search", "/users/details/{id}",
                                                 "/projects/all**", "/projects/details/{id}",
                                                 "jobs/all", "jobs/details/{id}","/error")
                                         .permitAll().
