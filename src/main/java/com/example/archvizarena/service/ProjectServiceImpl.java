@@ -14,6 +14,8 @@ import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,12 +50,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectBrowsingViewModel> findAll() {
+    public Page<ProjectBrowsingViewModel> findAllActiveProjects(Pageable pageable) {
 
-        return projectRepository.findAll().stream()
-                .filter(BaseProject::isActive)
-                .map(projectMapper::mapFromEntity)
-                .collect(Collectors.toList());
+        return projectRepository.findAllByIsActiveTrue(pageable)
+                .map(projectMapper::mapFromEntity);
+
     }
 
     @Override
@@ -107,15 +108,15 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.deleteById(id);
     }
 
-    @Override
-    @Transactional
-    public void deactivateUserProjects(Long id) {
-        projectRepository.findAllByAuthor_Id(id)
-                .forEach(project->{
-                    project.setActive(false);
-                    projectRepository.save(project);
-                });
-    }
+//    @Override
+//    @Transactional
+//    public void deactivateUserProjects(Long id) {
+//        projectRepository.findAllByAuthor_Id(id)
+//                .forEach(project->{
+//                    project.setActive(false);
+//                    projectRepository.save(project);
+//                });
+//    }
 
     private ProjectDetailsViewModel mapToDetailsViewModel(PortfolioProjectEntity project, ArchVizArenaUserDetails userDetails) {
         ProjectDetailsViewModel projectToView = modelMapper.map(project, ProjectDetailsViewModel.class);

@@ -13,6 +13,8 @@ import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -135,6 +137,13 @@ public class JobServiceImpl implements JobService {
                     jobPublicationEntity.setActive(false);
                     jobPublicationRepository.save(jobPublicationEntity);
                 });
+    }
+
+    @Override
+    public Page<JobPublicationViewModel> findAllActiveJobs(Pageable pageable) {
+        return jobPublicationRepository.findAllByIsActiveTrue(pageable)
+                .map(jobPublicationMapper::mapToJobViewModel);
+
     }
 
 }

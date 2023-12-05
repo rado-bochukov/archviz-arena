@@ -1,6 +1,8 @@
 package com.example.archvizarena.repository;
 
 import com.example.archvizarena.model.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,4 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity u where u.isMuted=true ")
     List<UserEntity> findAllByIsMutedTrue();
+    @Query("select u from UserEntity u where u.userOccupationEnum='ARTIST' ")
+    Page<UserEntity> findAllByUserOccupation_Artist(Pageable pageable);
 }

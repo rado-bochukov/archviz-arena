@@ -205,3 +205,19 @@ img.w-1001{
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3); /* Adjust the shadow as needed */
     transition: box-shadow 0.3s ease; /* Add a smooth transition effect */
 }
+
+.page-link {
+    color: #d1ecf1;
+    background-color: #2F4F4F;
+    border-color: #2F4F4F;
+}
+
+.page-link:hover{
+    color: #d1ecf1;
+    background-color: #5A7272;
+    background-color: #5A7272;
+}
+
+.page-link.disabled{
+opacity: 65;
+}

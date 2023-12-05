@@ -35,7 +35,7 @@ public class SecurityConfig {
                                         requestMatchers("/", "/users/login", "/users/register",
                                                 "/users/login-error",
                                                 "/artists/all", "/users/details/{id}",
-                                                "/projects/all", "/projects/details/{id}",
+                                                "/projects/all**", "/projects/details/{id}",
                                                 "jobs/all", "jobs/details/{id}","/error")
                                         .permitAll().
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).

@@ -39,7 +39,14 @@
             </select>
 
         </div>
-        <div th:replace="~{/fragments/countries-dropdown}">
+        <div class="form-group mb-2 mr-sm-2"
+             th:fragment="countries-dropdown">
+
+            <label for="country" class="sr-only ">Country</label>
+
+            <select id="country" name="country" class="form-control">
+                <option value="">- Select a country -</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-info mb-2">Search</button>
 
@@ -80,7 +87,7 @@
 
     <div class="card-deck mt-3 text-center">
         <div class="row">
-            <div class="col-md-3 mt-4 mb-2" th:each="a : ${allArtists}" th:object="${a}">
+            <div class="col-md-3 mt-4 mb-2" th:each="a : ${allArtists.getContent()}" th:object="${a}">
                 <div class="card highlight">
                     <a th:href="@{/users/details/{id}(id=*{id})}" class="artist-link">
                         <img th:if="*{pictureUrl==null}" class="card-img-top" th:src="@{/images/default_avatar.jpg}"
@@ -106,6 +113,52 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid container-fluid row justify-content-center" th:fragment="pagination">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allArtists.isFirst()} ? 'disabled' : ''">
+                    <a th:unless="${allArtists.isFirst()}"
+                       th:href="@{/artists/all(size=${allArtists.getSize()},page=0)}"
+                       class="page-link" href="#">First</a>
+                    <a th:if="${allArtists.isFirst()}"
+                       class="page-link" href="#">First</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allArtists.hasPrevious() ? '' : 'disabled'}">
+                    <a th:if="${allArtists.hasPrevious()}"
+                       th:href="@{/artists/all(size=${allArtists.getSize()},page=${allArtists.getNumber() - 1})}"
+                       class="page-link" href="#">Previous</a>
+                    <a th:unless="${allArtists.hasPrevious()}"
+                       class="page-link" href="#">Previous</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allArtists.hasNext() ? '' : 'disabled'}">
+                    <a th:if="${allArtists.hasNext()}"
+                       th:href="@{/artists/all(size=${allArtists.getSize()},page=${allArtists.getNumber() + 1})}"
+                       class="page-link" href="#">Next</a>
+                    <a th:unless="${allArtists.hasNext()}"
+                       class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allArtists.isLast()} ? 'disabled' : ''">
+                    <a th:unless="${allArtists.isLast()}"
+                       th:href="@{/artists/all(size=${allArtists.getSize()},page=${allArtists.getTotalPages() - 1})}"
+                       class="page-link" href="#">Last</a>
+                    <a th:if="${allArtists.isLast()}"
+                       class="page-link" href="#">Last</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 

@@ -44,7 +44,14 @@
             </select>
 
         </div>
-        <div th:replace="~{/fragments/countries-dropdown}">
+        <div class="form-group mb-2 mr-sm-2"
+             th:fragment="countries-dropdown">
+
+            <label for="country" class="sr-only ">Country</label>
+
+            <select id="country" name="country" class="form-control">
+                <option value="">- Select a country -</option>
+            </select>
         </div>
         <button type="submit" class="btn btn-info mb-2">Submit</button>
 
@@ -58,10 +65,12 @@
         <!--            </div>-->
         <!--        </div>-->
     </form>
+
+    <h3 class="text-center text-topics pl-3 mt-5" th:text="'Results: '+${jobsCount}">Results: 5</h3>
     <div class="card-deck mt-3 text-center">
         <div class="row">
-            <div class="col-md-4 mt-4 mb-2" th:each="j: ${allJobs}" th:object="${j}">
-                <div class="card highlight" style="max-width: 300px; min-width: 180px" >
+            <div class="col-md-4 mt-4 mb-2" th:each="j : ${allJobs.getContent()}" th:object="${j}" >
+                <div class="card highlight"  style="max-width: 300px; min-width: 180px" >
                     <div class="card-header"><h4><strong th:text="*{title}"/></h4></div>
                     <div class="card-body">
 
@@ -80,6 +89,52 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="container-fluid container-fluid row justify-content-center" th:fragment="pagination">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allJobs.isFirst()} ? 'disabled' : ''">
+                    <a th:unless="${allJobs.isFirst()}"
+                       th:href="@{/jobs/all(size=${allJobs.getSize()},page=0)}"
+                       class="page-link" href="#">First</a>
+                    <a th:if="${allJobs.isFirst()}"
+                       class="page-link" href="#">First</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allJobs.hasPrevious() ? '' : 'disabled'}">
+                    <a th:if="${allJobs.hasPrevious()}"
+                       th:href="@{/jobs/all(size=${allJobs.getSize()},page=${allJobs.getNumber() - 1})}"
+                       class="page-link" href="#">Previous</a>
+                    <a th:unless="${allJobs.hasPrevious()}"
+                       class="page-link" href="#">Previous</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allJobs.hasNext() ? '' : 'disabled'}">
+                    <a th:if="${allJobs.hasNext()}"
+                       th:href="@{/jobs/all(size=${allJobs.getSize()},page=${allJobs.getNumber() + 1})}"
+                       class="page-link" href="#">Next</a>
+                    <a th:unless="${allJobs.hasNext()}"
+                       class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${allJobs.isLast()} ? 'disabled' : ''">
+                    <a th:unless="${allJobs.isLast()}"
+                       th:href="@{/jobs/all(size=${allJobs.getSize()},page=${allJobs.getTotalPages() - 1})}"
+                       class="page-link" href="#">Last</a>
+                    <a th:if="${allJobs.isLast()}"
+                       class="page-link" href="#">Last</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 

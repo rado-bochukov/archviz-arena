@@ -2,6 +2,9 @@ package com.example.archvizarena.web;
 
 import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +23,11 @@ public class ArtistController {
     }
 
     @GetMapping("/all")
-    public String getArtists(Model model){
+    public String getArtists(Model model,
+                             @PageableDefault(size = 8)Pageable pageable){
 
-        List<ArtistViewModel> allArtists =userService.findAllArtists();
-        int foundArtistsCount=allArtists.size();
+        Page<ArtistViewModel> allArtists =userService.findAllArtists(pageable);
+        long foundArtistsCount=allArtists.getTotalElements();
 
         model.addAttribute("allArtists",allArtists);
         model.addAttribute("countArtists",foundArtistsCount);

@@ -6,6 +6,9 @@ import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.UserService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -31,10 +34,12 @@ public class JobViewController {
     }
 
     @GetMapping("/all")
-    public String getAllJobs(Model model) {
+    public String getAllJobs(Model model,
+                            @PageableDefault (size = 6) Pageable pageable) {
 
-        List<JobPublicationViewModel> allJobs = jobService.findAllJobs();
-        model.addAttribute("allJobs", allJobs);
+        Page<JobPublicationViewModel> allActiveJobs = jobService.findAllActiveJobs(pageable);
+        model.addAttribute("allJobs", allActiveJobs);
+        model.addAttribute("jobsCount", allActiveJobs.getTotalElements());
 
         return "jobs-browse";
     }

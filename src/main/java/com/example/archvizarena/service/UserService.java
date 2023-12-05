@@ -6,7 +6,8 @@ import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.UserProfileViewModel;
 import com.example.archvizarena.model.view.ArtistViewModel;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface UserService {
 
     void register(UserRegisterServiceModel userToBeRegistered);
 
-    List<ArtistViewModel> findAllArtists();
+    Page<ArtistViewModel> findAllArtists(Pageable pageable);
 
 
     Long getPrincipalId(String username);

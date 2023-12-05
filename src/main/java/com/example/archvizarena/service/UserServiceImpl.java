@@ -18,6 +18,8 @@ import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import com.example.archvizarena.util.mapper.UserMapper;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +27,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -87,13 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ArtistViewModel> findAllArtists() {
-        return userRepository.findAll().stream()
-                .filter(u -> u.getUserOccupation() != null)
-                .filter(u -> u.getUserOccupation().name().equals("ARTIST"))
+    public Page<ArtistViewModel> findAllArtists(Pageable pageable) {
+        return userRepository.findAllByUserOccupation_Artist(pageable)
+//                .stream()
+//                .filter(u -> u.getUserOccupation() != null)
+//                .filter(u -> u.getUserOccupation().name().equals("ARTIST"))
 //                .filter(u->!u.isBlocked())
-                .map(userMapper::mapToArtistViewModel)
-                .collect(Collectors.toList());
+                .map(userMapper::mapToArtistViewModel);
+//                .collect(Collectors.toList());
     }
 
     @Override

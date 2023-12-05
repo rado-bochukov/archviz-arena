@@ -26,4 +26,24 @@ function fetchData() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    var countryDropdown = document.getElementById('country');
+
+
+    fetch('https://restcountries.com/v3.1/all')
+        .then(response => response.json())
+        .then(data => {
+
+            var countryNames = data.map(country => country.name.common);
+            countryNames.sort();
+            countryNames.forEach(commonName => {
+                var option = document.createElement('option');
+                option.value = commonName;
+                option.textContent = commonName;
+                countryDropdown.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error fetching countries:', error));
+});
+
 fetchData();

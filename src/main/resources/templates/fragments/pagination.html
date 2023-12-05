@@ -1,0 +1,46 @@
+<div class="container-fluid container-fluid row justify-content-center" th:fragment="pagination">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${allProjects.isFirst()} ? 'disabled' : ''">
+                <a th:unless="${allProjects.isFirst()}"
+                   th:href="@{/projects/all(size=${allProjects.getSize()},page=0)}"
+                   class="page-link" href="#">First</a>
+                <a th:if="${allProjects.isFirst()}"
+                   class="page-link" href="#">First</a>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${allProjects.hasPrevious() ? '' : 'disabled'}">
+                <a th:if="${allProjects.hasPrevious()}"
+                   th:href="@{/projects/all(size=${allProjects.getSize()},page=${allProjects.getNumber() - 1})}"
+                   class="page-link" href="#">Previous</a>
+                <a th:unless="${allProjects.hasPrevious()}"
+                   class="page-link" href="#">Previous</a>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${allProjects.hasNext() ? '' : 'disabled'}">
+                <a th:if="${allProjects.hasNext()}"
+                   th:href="@{/projects/all(size=${allProjects.getSize()},page=${allProjects.getNumber() + 1})}"
+                   class="page-link" href="#">Next</a>
+                <a th:unless="${allProjects.hasNext()}"
+                   class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${allProjects.isLast()} ? 'disabled' : ''">
+                <a th:unless="${allProjects.isLast()}"
+                   th:href="@{/projects/all(size=${allProjects.getSize()},page=${allProjects.getTotalPages() - 1})}"
+                   class="page-link" href="#">Last</a>
+                <a th:if="${allProjects.isLast()}"
+                   class="page-link" href="#">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>

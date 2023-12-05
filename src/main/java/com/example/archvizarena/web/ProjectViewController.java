@@ -6,10 +6,14 @@ import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
 import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.service.ProjectService;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -24,37 +28,40 @@ public class ProjectViewController {
     }
 
     @GetMapping("/all")
-    public String getBrowseProjects(Model model){
+    public String getBrowseProjects(Model model,
+                                   @PageableDefault(page = 0,
+                                   size = 5) Pageable pageable) {
 
-        List<ProjectBrowsingViewModel>allProjects=projectService.findAll();
-        int count=allProjects.size();
-        model.addAttribute("allProjects",allProjects);
-        model.addAttribute("projectsCount",count);
+        Page<ProjectBrowsingViewModel> allProjects = projectService.findAllActiveProjects(pageable);
+        long count = allProjects.getTotalElements();
+        model.addAttribute("allProjects", allProjects);
+        model.addAttribute("projectsCount", count);
 
-      return "projects-browse";
+        return "projects-browse";
     }
+
     @ModelAttribute(name = "commentToBeAdded")
-    public CommentAddBindingModel commentAddBindingModel(){
+    public CommentAddBindingModel commentAddBindingModel() {
         return new CommentAddBindingModel();
     }
 
     @GetMapping("/details/{id}")
     public String getProjectDetails(@PathVariable Long id,
                                     Model model,
-                                    @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                                    @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        ProjectDetailsViewModel project=projectService.findById(id,userDetails);
-        model.addAttribute("project",project);
+        ProjectDetailsViewModel project = projectService.findById(id, userDetails);
+        model.addAttribute("project", project);
 
         return "project-detail";
     }
 
     @PostMapping("/details/like/{id}")
     public String likeTheProject(@PathVariable Long id,
-                                    @AuthenticationPrincipal ArchVizArenaUserDetails userDetails){
+                                 @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
-        projectService.likeTheProject(id,userDetails);
-        return "redirect:/projects/details/"+id;
+        projectService.likeTheProject(id, userDetails);
+        return "redirect:/projects/details/" + id;
     }
 
 }
