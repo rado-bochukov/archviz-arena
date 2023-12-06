@@ -1,7 +1,8 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.PictureEntity;
 import com.example.archvizarena.repository.PictureRepository;
+import com.example.archvizarena.service.PictureService;
 import org.springframework.stereotype.Service;
 
 @Service

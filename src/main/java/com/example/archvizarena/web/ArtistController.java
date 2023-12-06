@@ -45,17 +45,18 @@ public class ArtistController {
 
     @GetMapping("/search")
     public String searchArtists(@Valid ArtistSearchBindingModel artistSearchBindingModel,
-                                Model model) {
+                                Model model,
+                                Pageable pageable) {
 
 
         if (!artistSearchBindingModel.isEmpty()) {
-            List<ArtistViewModel> foundArtists = userService.searchArtists(artistSearchBindingModel);
-            int foundArtistsCount = foundArtists.size();
+            Page<ArtistViewModel> foundArtists = userService.searchArtists(artistSearchBindingModel,pageable);
+            int foundArtistsCount = foundArtists.getContent().size();
             model.addAttribute("allArtists", foundArtists);
             model.addAttribute("countArtists", foundArtistsCount);
         }
 
-        return "3d-artists-search";
+        return "3d-artists";
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.archvizarena.service;
 
+import com.example.archvizarena.model.binding.ProjectSearchBindingModel;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
@@ -23,6 +24,8 @@ public interface ProjectService {
     ProjectReportViewModel getProjectToBeReported(Long projectId);
 
     void deleteProject(Long id);
+
+    Page<ProjectBrowsingViewModel> searchProjects(ProjectSearchBindingModel projectSearchBindingModel, Pageable pageable);
 
 //    void deactivateUserProjects(Long id);
 

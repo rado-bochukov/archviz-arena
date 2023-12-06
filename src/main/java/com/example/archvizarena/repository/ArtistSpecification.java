@@ -8,6 +8,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArtistSpecification implements Specification<UserEntity> {
 
     private final ArtistSearchBindingModel artistSearchBindingModel;
@@ -21,40 +24,27 @@ public class ArtistSpecification implements Specification<UserEntity> {
                                  CriteriaQuery<?> query,
                                  CriteriaBuilder criteriaBuilder) {
 
-        Predicate predicate = criteriaBuilder.conjunction();
+        final List<Predicate> predicates = new ArrayList<>();
 
         if (artistSearchBindingModel.getCountry() != null && !artistSearchBindingModel.getCountry().isEmpty()) {
-            predicate.getExpressions().add(
-                    criteriaBuilder.and(criteriaBuilder.equal(root.get("country"), artistSearchBindingModel.getCountry()))
-            );
+            predicates.add(criteriaBuilder.equal(root.get("country"), artistSearchBindingModel.getCountry()));
         }
-
         if (artistSearchBindingModel.getPriceRange() != null) {
 
             switch (artistSearchBindingModel.getPriceRange()) {
-                case "range1" -> predicate.getExpressions().add(
-                        criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerImage"), 200))
-                );
+                case "range1" -> predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerImage"), 200));
                 case "range2" -> {
-                    predicate.getExpressions().add(
-                            criteriaBuilder.and(criteriaBuilder.greaterThan(root.get("pricePerImage"), 200))
-                    );
-                    predicate.getExpressions().add(
-                            criteriaBuilder.and(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerImage"), 500))
-                    );
+                    predicates.add(criteriaBuilder.greaterThan(root.get("pricePerImage"), 200));
+                    predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("pricePerImage"), 500));
                 }
-                case "range3" -> predicate.getExpressions().add(
-                        criteriaBuilder.and(criteriaBuilder.greaterThan(root.get("pricePerImage"), 500))
-                );
+                case "range3" -> predicates.add(criteriaBuilder.greaterThan(root.get("pricePerImage"), 500));
             }
         }
-        if (artistSearchBindingModel.getCreatorType() != null ) {
-            predicate.getExpressions().add(
-                    criteriaBuilder.and(criteriaBuilder.equal(root.get("creatorType"), artistSearchBindingModel.getCreatorType()))
-            );
+        if (artistSearchBindingModel.getCreatorType() != null) {
+            predicates.add(criteriaBuilder.equal(root.get("creatorType"), artistSearchBindingModel.getCreatorType()));
         }
 
-        System.out.println(predicate.toString());
-        return predicate;
+
+        return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }

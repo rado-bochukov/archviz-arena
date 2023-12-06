@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.binding.ArtistSearchBindingModel;
 import com.example.archvizarena.model.binding.UserEditBindingModel;
@@ -15,6 +15,9 @@ import com.example.archvizarena.repository.ArtistSpecification;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.ArchVizArenaUserDetailService;
+import com.example.archvizarena.service.UserService;
+import com.example.archvizarena.service.WorkInProgressService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import com.example.archvizarena.util.mapper.ProjectMapper;
@@ -31,7 +34,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -220,11 +222,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel) {
-        return userRepository.findAll(new ArtistSpecification(artistSearchBindingModel))
-                .stream()
-                .map(userMapper::mapToArtistViewModel)
-                .collect(Collectors.toList());
+    public
+        Page<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel,Pageable pageable) {
+        return userRepository.findAll(new ArtistSpecification(artistSearchBindingModel),pageable)
+//                .stream()
+                .map(userMapper::mapToArtistViewModel);
+//                .collect(Collectors.toList());
     }
 
 
@@ -254,7 +257,6 @@ public class UserServiceImpl implements UserService {
         admin.setPassword(passwordEncoder.encode("11111"));
 
         userRepository.save(admin);
-
     }
 
 }

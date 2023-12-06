@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.CommentEntity;
 import com.example.archvizarena.model.service.CommentAddServiceModel;
@@ -6,6 +6,7 @@ import com.example.archvizarena.model.view.CommentViewModel;
 import com.example.archvizarena.repository.CommentRepository;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.CommentService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceImpl(CommentRepository commentRepository, ProjectRepository projectRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.projectRepository = projectRepository;
+
         this.userRepository = userRepository;
     }
 

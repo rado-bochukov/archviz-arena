@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.PortfolioProjectEntity;
 import com.example.archvizarena.model.entity.ReportEntity;
@@ -8,6 +8,7 @@ import com.example.archvizarena.model.view.ReportViewModel;
 import com.example.archvizarena.repository.ProjectRepository;
 import com.example.archvizarena.repository.ReportRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.ReportService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

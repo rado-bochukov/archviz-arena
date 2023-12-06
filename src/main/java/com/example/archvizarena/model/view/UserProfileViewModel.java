@@ -27,7 +27,7 @@ public class UserProfileViewModel {
 
     private List<WorkInProgressViewModel> workInProgress;
 
-    private BigDecimal budget;
+
 
     private String description;
 
@@ -74,15 +74,6 @@ public class UserProfileViewModel {
 
     public void setInactiveJobPublications(List<JobPublicationViewModel> inactiveJobPublications) {
         this.inactiveJobPublications = inactiveJobPublications;
-    }
-
-
-    public BigDecimal getBudget() {
-        return budget;
-    }
-
-    public void setBudget(BigDecimal budget) {
-        this.budget = budget;
     }
 
     public String getDescription() {

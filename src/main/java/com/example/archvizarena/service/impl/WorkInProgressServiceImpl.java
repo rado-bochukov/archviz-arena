@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
@@ -7,13 +7,13 @@ import com.example.archvizarena.model.view.WorkInProgressViewModel;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.repository.WorkInProgressRepository;
+import com.example.archvizarena.service.JobService;
+import com.example.archvizarena.service.WorkInProgressService;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

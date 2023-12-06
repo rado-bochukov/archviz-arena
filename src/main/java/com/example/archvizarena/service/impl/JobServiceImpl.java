@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.BaseEntity;
 import com.example.archvizarena.model.entity.JobPublicationEntity;
@@ -9,6 +9,7 @@ import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.ApplicationRepository;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import jakarta.transaction.Transactional;
@@ -20,10 +21,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.example.archvizarena.service.ProjectServiceImpl.isOwner;
+import static com.example.archvizarena.service.impl.ProjectServiceImpl.isOwner;
 
 @Service
 public class JobServiceImpl implements JobService {

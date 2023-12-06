@@ -1,4 +1,4 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.ApplicationEntity;
 import com.example.archvizarena.model.service.ApplicationAddServiceModel;
@@ -7,6 +7,7 @@ import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.repository.ApplicationRepository;
 import com.example.archvizarena.repository.JobPublicationRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.ApplicationService;
 import com.example.archvizarena.util.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,14 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.binding.PenaltyAddBindingModel;
 import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.repository.PenaltyRepository;
 import com.example.archvizarena.repository.ReportRepository;
 import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.JobService;
+import com.example.archvizarena.service.PenaltyService;
+import com.example.archvizarena.service.ProjectService;
+import com.example.archvizarena.service.ReportService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

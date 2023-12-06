@@ -1,7 +1,8 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.archvizarena.service.CloudinaryService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

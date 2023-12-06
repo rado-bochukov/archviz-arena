@@ -1,5 +1,6 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
+import com.example.archvizarena.model.binding.ProjectSearchBindingModel;
 import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
@@ -7,9 +8,9 @@ import com.example.archvizarena.model.view.CommentViewModel;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
 import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.model.view.ProjectReportViewModel;
-import com.example.archvizarena.repository.PictureRepository;
-import com.example.archvizarena.repository.ProjectRepository;
-import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.repository.*;
+import com.example.archvizarena.service.CommentService;
+import com.example.archvizarena.service.ProjectService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.ProjectMapper;
 import jakarta.transaction.Transactional;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -106,6 +106,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     public void deleteProject(Long id) {
         projectRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<ProjectBrowsingViewModel> searchProjects(ProjectSearchBindingModel projectSearchBindingModel, Pageable pageable) {
+        return projectRepository.findAll(new ProjectSpecification(projectSearchBindingModel),pageable)
+//                .stream()
+                .map(projectMapper::mapFromEntity);
+//                .collect(Collectors.toList());
     }
 
 //    @Override

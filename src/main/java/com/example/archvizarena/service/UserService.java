@@ -42,6 +42,6 @@ public interface UserService {
     boolean isUserMuted(String username);
 
 
-    List<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel);
+    Page<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel,Pageable pageable);
 
 }

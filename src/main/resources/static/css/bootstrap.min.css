@@ -4519,7 +4519,7 @@ tbody.collapse.show {
         -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
         -ms-flex-flow: row wrap;
-        flex-flow: row wrap;
+        flex-flow: column;
         margin-right: -15px;
         margin-left: -15px
     }

@@ -1,10 +1,14 @@
 package com.example.archvizarena.web;
 
+import com.example.archvizarena.model.binding.ArtistSearchBindingModel;
 import com.example.archvizarena.model.binding.CommentAddBindingModel;
+import com.example.archvizarena.model.binding.ProjectSearchBindingModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
+import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.model.view.ProjectBrowsingViewModel;
 import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.service.ProjectService;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +33,14 @@ public class ProjectViewController {
 
     @GetMapping("/all")
     public String getBrowseProjects(Model model,
-                                   @PageableDefault(page = 0,
-                                   size = 5) Pageable pageable) {
+                                    @PageableDefault(page = 0,
+                                            size = 5) Pageable pageable) {
 
         Page<ProjectBrowsingViewModel> allProjects = projectService.findAllActiveProjects(pageable);
-        long count = allProjects.getTotalElements();
+        int count = allProjects.getContent().size();
         model.addAttribute("allProjects", allProjects);
         model.addAttribute("projectsCount", count);
+
 
         return "projects-browse";
     }
@@ -62,6 +67,27 @@ public class ProjectViewController {
 
         projectService.likeTheProject(id, userDetails);
         return "redirect:/projects/details/" + id;
+    }
+
+    @ModelAttribute
+    ProjectSearchBindingModel projectSearchBindingModel() {
+        return new ProjectSearchBindingModel();
+    }
+
+    @GetMapping("/search")
+    public String searchArtists(@Valid ProjectSearchBindingModel projectSearchBindingModel,
+                                Model model,
+                                Pageable pageable) {
+
+
+        if (!projectSearchBindingModel.isEmpty()) {
+            Page<ProjectBrowsingViewModel> foundProjects = projectService.searchProjects(projectSearchBindingModel, pageable);
+            int foundProjectsCount = foundProjects.getContent().size();
+            model.addAttribute("allProjects", foundProjects);
+            model.addAttribute("projectsCount", foundProjectsCount);
+        }
+
+        return "projects-browse";
     }
 
 }

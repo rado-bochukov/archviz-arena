@@ -1,10 +1,11 @@
-package com.example.archvizarena.service;
+package com.example.archvizarena.service.impl;
 
 import com.example.archvizarena.model.entity.MessageEntity;
 import com.example.archvizarena.model.service.MessageAddServiceModel;
 import com.example.archvizarena.repository.MessageRepository;
 import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.repository.WorkInProgressRepository;
+import com.example.archvizarena.service.MessageService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
