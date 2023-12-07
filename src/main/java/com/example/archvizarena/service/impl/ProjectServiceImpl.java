@@ -42,7 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void saveProject(PortfolioProjectServiceModel portfolioProjectToBeSaved, ArchVizArenaUserDetails userDetails) {
+    public void saveProject(PortfolioProjectServiceModel portfolioProjectToBeSaved, String userDetails) {
 
         PortfolioProjectEntity project = this.fromPortfolioServiceModel(portfolioProjectToBeSaved, userDetails);
         projectRepository.save(project);
@@ -173,10 +173,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-    private PortfolioProjectEntity fromPortfolioServiceModel(PortfolioProjectServiceModel portfolioProjectToBeSaved, ArchVizArenaUserDetails userDetails) {
+    private PortfolioProjectEntity fromPortfolioServiceModel(PortfolioProjectServiceModel portfolioProjectToBeSaved, String userDetails) {
 
         PortfolioProjectEntity project = modelMapper.map(portfolioProjectToBeSaved, PortfolioProjectEntity.class);
-        UserEntity author = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+        UserEntity author = userRepository.findByUsername(userDetails).orElseThrow();
         List<PictureEntity> projectPictures = portfolioProjectToBeSaved.getPicturesUrl().stream()
                 .map(pictureRepository::findByUrl)
                 .toList();

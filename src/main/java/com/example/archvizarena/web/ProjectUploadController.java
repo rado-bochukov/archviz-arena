@@ -85,7 +85,6 @@ public class ProjectUploadController {
     }
 
     @PostMapping("/add")
-
     public String publishProject(@Valid PortfolioProjectBindingModel portfolioProjectBindingModel,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes,
@@ -99,7 +98,8 @@ public class ProjectUploadController {
         }
 
         portfolioProjectBindingModel.setPicturesUrl(linkHolder.getImagesLink());
-        projectService.saveProject(modelMapper.map(portfolioProjectBindingModel, PortfolioProjectServiceModel.class),userDetails);
+        projectService.saveProject(modelMapper.map(portfolioProjectBindingModel,
+                PortfolioProjectServiceModel.class),userDetails.getUsername());
         pictures.clear();
         linkHolder.clear();
 
