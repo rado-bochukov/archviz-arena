@@ -4,16 +4,23 @@ import com.example.archvizarena.model.entity.PictureEntity;
 import com.example.archvizarena.model.entity.PortfolioProjectEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
+import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.service.ArchVizArenaUserDetailService;
+import com.example.archvizarena.testConfig.TestConfig;
 import com.example.archvizarena.testUtils.TestDataUtil;
 import com.example.archvizarena.testUtils.UserTestDataUtil;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -30,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = TestConfig.class)
 class ProjectUploadControllerTest {
 
     private static final String TEST_ARTIST_USERNAME = "artist1";
@@ -43,13 +51,17 @@ class ProjectUploadControllerTest {
     TestDataUtil testDataUtil;
 
 
+
+
     @Autowired
     private MockMvc mockMvc;
 
+
     @BeforeEach
     void setUp() {
-        testDataUtil.cleanUp();
-        userTestDataUtil.cleanUp();
+//        testDataUtil.cleanUp();
+//        userTestDataUtil.cleanUp();
+        UserEntity artist=userTestDataUtil.createArtist(TEST_ARTIST_USERNAME);
     }
 
     @AfterEach
@@ -61,8 +73,8 @@ class ProjectUploadControllerTest {
     @Test
     @WithAnonymousUser
     void TestAnonymousUserUploadProjectFails() throws Exception {
-        UserEntity user = userTestDataUtil.createTestAdmin(TEST_ADMIN_USERNAME);
-        PortfolioProjectEntity project = testDataUtil.createTestProject(user);
+
+
         mockMvc.perform(
                         get("/projects/add")
                                 .with(csrf())
@@ -71,14 +83,9 @@ class ProjectUploadControllerTest {
     }
 
     @Test
-    @WithMockUser(username = TEST_ARTIST_USERNAME,
-    roles = {"USER","ARTIST"})
+    @WithUserDetails(value = TEST_ARTIST_USERNAME,
+    userDetailsServiceBeanName = "ava")
     void TestUserUploadProject() throws Exception {
-
-        UserEntity artist=userTestDataUtil.createArtist(TEST_ARTIST_USERNAME);
-
-        ArchVizArenaUserDetails userDetails = mock(ArchVizArenaUserDetails.class);
-        when(userDetails.getUsername()).thenReturn("artist1");
 
 
         List<PictureEntity> pictures= testDataUtil.createTestPictures();
