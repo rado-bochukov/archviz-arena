@@ -29,11 +29,11 @@ public class ProjectSpecification implements Specification<PortfolioProjectEntit
         final List<Predicate> predicates = new ArrayList<>();
 
         if (projectSearchBindingModel.getCountry() != null && !projectSearchBindingModel.getCountry().isEmpty()) {
-            predicates.add(criteriaBuilder.equal(root.get("country"), projectSearchBindingModel.getCountry()));
+            predicates.add(criteriaBuilder.equal(root.join("author").get("country"), projectSearchBindingModel.getCountry()));
         }
 
         if (projectSearchBindingModel.getCreatorType() != null) {
-            predicates.add(criteriaBuilder.equal(root.get("creatorType"), projectSearchBindingModel.getCreatorType()));
+            predicates.add(criteriaBuilder.equal(root.join("author").get("creatorType"), projectSearchBindingModel.getCreatorType()));
         }
         if (projectSearchBindingModel.getCategory() != null) {
             predicates.add(criteriaBuilder.equal(root.get("category"), projectSearchBindingModel.getCategory()));

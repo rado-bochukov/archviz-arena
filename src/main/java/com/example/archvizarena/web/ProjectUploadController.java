@@ -75,11 +75,9 @@ public class ProjectUploadController {
             pictures.add(new PictureUploadViewModel(file.getOriginalFilename()));
             pictureService.savePicture(imageUrl);
 
-            // Redirect to the create project page to continue uploading
             return "redirect:/projects/add";
 
         } catch (Exception e) {
-            // Handle the exception, e.g., show an error page
             return "redirect:/projects/add";
         }
     }

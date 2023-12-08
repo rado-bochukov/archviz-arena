@@ -1,9 +1,13 @@
 package com.example.archvizarena.service.impl;
 
+import com.example.archvizarena.model.binding.UserEditBindingModel;
 import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
+import com.example.archvizarena.model.entity.enums.UserRoleEnum;
+import com.example.archvizarena.model.service.UserRegisterServiceModel;
+import com.example.archvizarena.model.view.ArtistViewModel;
 import com.example.archvizarena.model.view.UserProfileViewModel;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -19,12 +23,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.archvizarena.testUtils.UnitTestUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -39,10 +47,12 @@ class UserServiceImplTest {
     private UserRoleRepository mockUserRoleRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
+    @Mock
     private ModelMapper modelMapper;
     private ProjectMapper projectMapper;
     @Mock
     private JobPublicationMapper jobPublicationMapper;
+
     private UserMapper userMapper;
     @Mock
     private WorkInProgressService workInProgressService;
@@ -54,7 +64,7 @@ class UserServiceImplTest {
         userServiceToTest = new UserServiceImpl(mockUserRepository,
                 mockUserRoleRepository,
                 passwordEncoder,
-                new ModelMapper(),
+                modelMapper,
                 new ProjectMapper(),
                 jobPublicationMapper,
                 new UserMapper(new ModelMapper()),
@@ -128,99 +138,145 @@ class UserServiceImplTest {
         verify(mockUserRoleRepository, times(3)).save(any(UserRoleEntity.class));
         verify(mockUserRepository, times(1)).save(any(UserEntity.class));
 
-        // You may also want to verify that the initAdmin method was called with the expected roles
-        // For simplicity, let's assume initAdmin is a method of yourClass
+    }
 
+    @Test
+    public void testRegisterSuccessful(){
+
+        UserRegisterServiceModel userRegisterDto = new UserRegisterServiceModel();
+
+        UserEntity newUser = new UserEntity();
+        when(modelMapper.map(userRegisterDto, UserEntity.class)).thenReturn(newUser);
+        when(passwordEncoder.encode(any())).thenReturn("encodedPassword");
+        when(mockUserRoleRepository.findByRole(UserRoleEnum.USER)).thenReturn(new UserRoleEntity());
+
+
+        userServiceToTest.register(userRegisterDto);
+
+
+        verify(modelMapper, times(1)).map(userRegisterDto, UserEntity.class);
+        verify(passwordEncoder, times(1)).encode(userRegisterDto.getPassword());
+        verify(mockUserRoleRepository, times(1)).findByRole(UserRoleEnum.USER);
+        verify(mockUserRepository, times(1)).save(newUser);
     }
 
 
-    private static UserProfileViewModel testArtistProfile() {
-        UserProfileViewModel artistProfileViewModel = new UserProfileViewModel();
-        artistProfileViewModel.setId(1L);
-        artistProfileViewModel.setName("Artist 1");
-        artistProfileViewModel.setCountry("Bulgaria");
-        artistProfileViewModel.setUserOccupation(UserOccupationEnum.ARTIST);
-        artistProfileViewModel.setCreatorTypeEnum(CreatorTypeEnum.FREELANCER);
-        artistProfileViewModel.setDescription("I am artist 1");
-        artistProfileViewModel.setPricePerImage(BigDecimal.valueOf(350));
-        artistProfileViewModel.setViewerIsOwner(false);
-        artistProfileViewModel.setPictureUrl(createProfilePicture().getUrl());
-        return artistProfileViewModel;
+@Test
+    public void testFindAllArtists(){
+    Pageable pageable=Pageable.ofSize(2);
+    UserEntity artist1=createArtistEntity();
+    UserEntity artist2=createArtistEntity();
+    artist2.setId(2L);
+    List<UserEntity> artists=List.of(artist1,artist2);
+
+    when(mockUserRepository.findAllByUserOccupation_Artist(pageable))
+            .thenReturn(new PageImpl<>(artists));
+
+    Page<ArtistViewModel> result = userServiceToTest.findAllArtists(pageable);
+
+    verify(mockUserRepository, times(1)).findAllByUserOccupation_Artist(pageable);
+
+    Assertions.assertEquals(artists.size(), result.getContent().size());
+}
+
+@Test
+    public void testGetPrincipalIdShouldReturn_1(){
+        UserEntity artist=createArtistEntity();
+    when(mockUserRepository.findByUsername(artist.getUsername()))
+            .thenReturn(Optional.of(artist));
+
+    Long principalId = userServiceToTest.getPrincipalId(artist.getUsername());
+
+    Assertions.assertEquals(artist.getId(),principalId);
+
+}
+    @Test
+    public void testGetPrincipalIdShouldFail(){
+
+        assertThrows(ObjectNotFoundException.class,
+                () -> userServiceToTest.getPrincipalId("test"));
 
     }
 
-    private static UserProfileViewModel testBuyerProfile() {
-        UserProfileViewModel buyerProfileViewModel = new UserProfileViewModel();
-        buyerProfileViewModel.setId(2L);
-        buyerProfileViewModel.setName("Buyer 1");
-        buyerProfileViewModel.setCountry("France");
-        buyerProfileViewModel.setUserOccupation(UserOccupationEnum.BUYER);
-        buyerProfileViewModel.setDescription("I am buyer 1");
-        buyerProfileViewModel.setViewerIsOwner(false);
-        return buyerProfileViewModel;
+    @Test
+   public void TestEditProfile(){
 
+        UserEditBindingModel userEditBindingModel = editArtistEntity();
+        PictureEntity profilePicture=createProfilePicture();
+        userEditBindingModel.setProfilePicture(profilePicture.getUrl());
+        UserEntity artist = createArtistEntity();
+        when(mockUserRepository.findById(artist.getId())).thenReturn(Optional.of(artist));
+        when(mockPictureRepository.findByUrl(profilePicture.getUrl())).thenReturn(profilePicture);
+
+
+        userServiceToTest.editProfile(userEditBindingModel);
+
+
+        verify(mockUserRepository, times(1)).findById(any(Long.class));
+        verify(mockPictureRepository, times(1)).findByUrl(any(String.class));
+        verify(mockUserRepository, times(1)).save(artist);
     }
 
-    private static UserEntity createArtistEntity() {
-        UserEntity artist = new UserEntity();
-        artist.setId(1L);
-        artist.setName("Artist 1");
-        artist.setCountry("Bulgaria");
-        artist.setUserOccupation(UserOccupationEnum.ARTIST);
-        artist.setCreatorType(CreatorTypeEnum.FREELANCER);
-        artist.setDescription("I am artist 1");
-        artist.setPricePerImage(BigDecimal.valueOf(350));
+    @Test
+    public void  testNewUserNameIsUnique_ReturnTrue(){
+        UserEntity artist=createArtistEntity();
+        String newUsername="newUsername";
 
-        return artist;
+
+        userServiceToTest.newUserNameIsUnique(artist.getId(),newUsername);
+
+        Assertions.assertTrue(userServiceToTest.newUserNameIsUnique(artist.getId(),newUsername));
     }
 
-    private static UserEntity createBuyerEntity() {
-        UserEntity buyer = new UserEntity();
-        buyer.setId(2L);
-        buyer.setName("Buyer 1");
-        buyer.setCountry("France");
-        buyer.setUserOccupation(UserOccupationEnum.BUYER);
-        buyer.setDescription("I am buyer 1");
+    @Test
+    public void  testNewUserNameIsUnique_ReturnTrueWhenNewUsernameIsTheSame(){
+        UserEntity artist=createArtistEntity();
+        String newUsername=artist.getUsername();
+        when(mockUserRepository.findByUsername(artist.getUsername())).thenReturn(Optional.of(artist));
+        when(mockUserRepository.findById(artist.getId())).thenReturn(Optional.of(artist));
 
-        return buyer;
+        Assertions.assertTrue(userServiceToTest.newUserNameIsUnique(artist.getId(),newUsername));
     }
 
-    private static PortfolioProjectEntity createProject() {
+    @Test
+    public void  testGetNameById(){
+        UserEntity artist=createArtistEntity();
+        when(mockUserRepository.findById(artist.getId())).thenReturn(Optional.of(artist));
 
-        PortfolioProjectEntity project = new PortfolioProjectEntity();
-        project.setTitle("Project 1");
-        project.setDescription("project 1 description");
-        project.setActive(true);
-        project.setCategory(ProjectCategoryEnum.EXTERIOR);
-        project.setLikesCount(2);
-        return project;
+        String nameById = userServiceToTest.getNameById(artist.getId());
+
+        Assertions.assertEquals(artist.getName(),nameById);
     }
 
-    private static JobPublicationEntity createJobPublication() {
+    @Test
+    public void  testIsUserMuted_ReturnTrue(){
+        UserEntity artist=createArtistEntity();
+        artist.setMuted(true);
+        when(mockUserRepository.findByUsername(artist.getUsername())).thenReturn(Optional.of(artist));
 
-        JobPublicationEntity job = new JobPublicationEntity();
-        job.setTitle("Job_p 1");
-        job.setDescription("job 1 description");
-        job.setActive(true);
-        job.setCategory(ProjectCategoryEnum.EXTERIOR);
+        boolean userMuted = userServiceToTest.isUserMuted(artist.getUsername());
 
-        return job;
+        Assertions.assertTrue(userMuted);
     }
 
-    private static PictureEntity createPicture() {
-        PictureEntity picture = new PictureEntity();
+    @Test
+    public void  testIsUserMuted_ReturnFalse(){
+        UserEntity artist=createArtistEntity();
+        artist.setMuted(false);
+        when(mockUserRepository.findByUsername(artist.getUsername())).thenReturn(Optional.of(artist));
 
-        picture.setUrl("pictureUrl");
-        picture.setId(1L);
-        return picture;
+        boolean userMuted = userServiceToTest.isUserMuted(artist.getUsername());
+
+        Assertions.assertFalse(userMuted);
     }
 
-    private static PictureEntity createProfilePicture() {
-        PictureEntity picture = new PictureEntity();
 
-        picture.setUrl("ProfilePictureUrl");
-        picture.setId(2L);
-        return picture;
-    }
+
+
+
+
+
+
+
 
 }

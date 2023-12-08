@@ -22,7 +22,7 @@ public class PortfolioProjectEntity extends BaseProject{
     @Column(name = "likes_count")
     private int likesCount;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<UserEntity> usersLikedTheProject;
 
 

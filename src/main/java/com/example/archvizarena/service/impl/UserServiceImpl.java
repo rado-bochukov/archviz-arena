@@ -88,7 +88,6 @@ public class UserServiceImpl implements UserService {
         UserRoleEntity userRoleEntity = userRoleRepository.findByRole(UserRoleEnum.USER);
         newUser.setRoles(List.of(userRoleEntity));
         userRepository.save(newUser);
-
     }
 
     @Override
@@ -104,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long getPrincipalId(String username) {
-        UserEntity user = userRepository.findByUsername(username).orElseThrow();
+        UserEntity user = userRepository.findByUsername(username).orElseThrow(()->new ObjectNotFoundException("There is no such user!"));
         return user.getId();
     }
 
