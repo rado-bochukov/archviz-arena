@@ -32,8 +32,6 @@ public class JobServiceImpl implements JobService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final JobPublicationMapper jobPublicationMapper;
-
-
     private final ApplicationRepository applicationRepository;
 
     public JobServiceImpl(JobPublicationRepository jobPublicationRepository,
@@ -130,14 +128,14 @@ public class JobServiceImpl implements JobService {
 
     }
 
-    @Override
-    @Transactional
-    public void deactivateUserJobPublications(Long id) {
-        jobPublicationRepository.findAllByBuyer_Id(id).forEach(jobPublicationEntity -> {
-                    jobPublicationEntity.setActive(false);
-                    jobPublicationRepository.save(jobPublicationEntity);
-                });
-    }
+//    @Override
+//    @Transactional
+//    public void deactivateUserJobPublications(Long id) {
+//        jobPublicationRepository.findAllByBuyer_Id(id).forEach(jobPublicationEntity -> {
+//                    jobPublicationEntity.setActive(false);
+//                    jobPublicationRepository.save(jobPublicationEntity);
+//                });
+//    }
 
     @Override
     public Page<JobPublicationViewModel> findAllActiveJobs(Pageable pageable) {

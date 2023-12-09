@@ -23,7 +23,6 @@ public class CommentServiceImpl implements CommentService {
     public CommentServiceImpl(CommentRepository commentRepository, ProjectRepository projectRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
         this.projectRepository = projectRepository;
-
         this.userRepository = userRepository;
     }
 
@@ -38,8 +37,6 @@ public class CommentServiceImpl implements CommentService {
         commentViewModel.setId(comment.getId());
         return commentViewModel;
     }
-
-    // TODO: 29.11.2023 г. check the method
 
     @Override
     public void saveAndAddComment(CommentAddServiceModel commentToBeAdded) {

@@ -86,5 +86,5 @@ public class WorkInProgressController {
 
         return "redirect:/work-in-progress/"+id;
     }
-    // TODO: 25.11.2023 г. сортиране на обявите
+
 }

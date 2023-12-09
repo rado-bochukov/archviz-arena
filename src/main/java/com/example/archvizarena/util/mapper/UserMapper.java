@@ -43,15 +43,4 @@ public class UserMapper  {
         return userEditBindingModel;
     }
 
-
-    public void mapUserFromUserEditModel(UserEntity user, UserEditBindingModel userEditBindingModel) {
-        user.setName(userEditBindingModel.getName());
-        user.setUsername(userEditBindingModel.getUsername());
-        user.setDescription(userEditBindingModel.getDescription());
-        user.setCountry(userEditBindingModel.getCountry());
-
-        if(userEditBindingModel.getProfilePicture()!=null){
-
-        }
-    }
 }

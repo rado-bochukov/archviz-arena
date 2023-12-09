@@ -93,6 +93,7 @@ class UserServiceImplTest {
         UserProfileViewModel referenceArtist = testArtistProfile();
         when(mockUserRepository.findById(testArtist.getId()))
                 .thenReturn(Optional.of(testArtist));
+        when(modelMapper.map(testArtist,UserProfileViewModel.class)).thenReturn(referenceArtist);
 
 //        act
         UserProfileViewModel artistViewProfile = userServiceToTest.findUserById(testArtist.getId(), null);
@@ -115,6 +116,7 @@ class UserServiceImplTest {
         UserProfileViewModel referenceArtist = testBuyerProfile();
         when(mockUserRepository.findById(testBuyer.getId()))
                 .thenReturn(Optional.of(testBuyer));
+        when(modelMapper.map(testBuyer,UserProfileViewModel.class)).thenReturn(referenceArtist);
 
 //        act
         UserProfileViewModel artistViewProfile = userServiceToTest.findUserById(testBuyer.getId(), null);

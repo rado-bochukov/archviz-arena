@@ -1,25 +1,26 @@
 package com.example.archvizarena.testUtils;
 
 import com.example.archvizarena.model.binding.UserEditBindingModel;
-import com.example.archvizarena.model.entity.JobPublicationEntity;
-import com.example.archvizarena.model.entity.PictureEntity;
-import com.example.archvizarena.model.entity.PortfolioProjectEntity;
-import com.example.archvizarena.model.entity.UserEntity;
+import com.example.archvizarena.model.entity.*;
 import com.example.archvizarena.model.entity.enums.CreatorTypeEnum;
 import com.example.archvizarena.model.entity.enums.ProjectCategoryEnum;
 import com.example.archvizarena.model.entity.enums.UserOccupationEnum;
+import com.example.archvizarena.model.service.ApplicationAddServiceModel;
+import com.example.archvizarena.model.service.CommentAddServiceModel;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
+import com.example.archvizarena.model.service.ReportSubmitServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.ProjectDetailsViewModel;
 import com.example.archvizarena.model.view.UserProfileViewModel;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 
 public class UnitTestUtil {
 
-     public static UserProfileViewModel testArtistProfile() {
+    public static UserProfileViewModel testArtistProfile() {
         UserProfileViewModel artistProfileViewModel = new UserProfileViewModel();
         artistProfileViewModel.setId(1L);
         artistProfileViewModel.setName("Artist 1");
@@ -34,7 +35,7 @@ public class UnitTestUtil {
 
     }
 
-   public static UserProfileViewModel testBuyerProfile() {
+    public static UserProfileViewModel testBuyerProfile() {
         UserProfileViewModel buyerProfileViewModel = new UserProfileViewModel();
         buyerProfileViewModel.setId(2L);
         buyerProfileViewModel.setName("Buyer 1");
@@ -62,7 +63,7 @@ public class UnitTestUtil {
     }
 
     public static UserEditBindingModel editArtistEntity() {
-        UserEditBindingModel artistEdit =new UserEditBindingModel();
+        UserEditBindingModel artistEdit = new UserEditBindingModel();
         artistEdit.setId(1L);
         artistEdit.setName("Artist 11");
         artistEdit.setCountry("France");
@@ -76,8 +77,7 @@ public class UnitTestUtil {
     }
 
 
-
-     public static UserEntity createBuyerEntity() {
+    public static UserEntity createBuyerEntity() {
         UserEntity buyer = new UserEntity();
         buyer.setId(2L);
         buyer.setName("Buyer 1");
@@ -89,7 +89,7 @@ public class UnitTestUtil {
         return buyer;
     }
 
-     public static PortfolioProjectEntity createProject() {
+    public static PortfolioProjectEntity createProject() {
 
         PortfolioProjectEntity project = new PortfolioProjectEntity();
         project.setTitle("Project 1");
@@ -104,7 +104,7 @@ public class UnitTestUtil {
 
     public static ProjectDetailsViewModel projectDetailsViewModel() {
 
-        ProjectDetailsViewModel projectDetailsViewModel=new ProjectDetailsViewModel();
+        ProjectDetailsViewModel projectDetailsViewModel = new ProjectDetailsViewModel();
         projectDetailsViewModel.setTitle("Project 1");
         projectDetailsViewModel.setDescription("project 1 description");
         projectDetailsViewModel.setCategory(ProjectCategoryEnum.EXTERIOR);
@@ -112,9 +112,9 @@ public class UnitTestUtil {
         return projectDetailsViewModel;
     }
 
-    public static PortfolioProjectServiceModel portfolioProjectServiceModel(){
+    public static PortfolioProjectServiceModel portfolioProjectServiceModel() {
 
-         PortfolioProjectServiceModel portfolioToBeSaved=new PortfolioProjectServiceModel();
+        PortfolioProjectServiceModel portfolioToBeSaved = new PortfolioProjectServiceModel();
         portfolioToBeSaved.setTitle("Project 1");
         portfolioToBeSaved.setDescription("project 1 description");
         portfolioToBeSaved.setCategory(ProjectCategoryEnum.EXTERIOR);
@@ -122,18 +122,19 @@ public class UnitTestUtil {
         return portfolioToBeSaved;
     }
 
-     public static JobPublicationEntity createJobPublication() {
+    public static JobPublicationEntity createJobPublication() {
 
         JobPublicationEntity job = new JobPublicationEntity();
         job.setTitle("Job_p 1");
         job.setDescription("job 1 description");
         job.setActive(true);
         job.setCategory(ProjectCategoryEnum.EXTERIOR);
+        job.setBudget(BigDecimal.valueOf(1000));
 
         return job;
     }
 
-     public static PictureEntity createPicture() {
+    public static PictureEntity createPicture() {
         PictureEntity picture = new PictureEntity();
 
         picture.setUrl("pictureUrl");
@@ -141,11 +142,65 @@ public class UnitTestUtil {
         return picture;
     }
 
-     public static PictureEntity createProfilePicture() {
+    public static PictureEntity createProfilePicture() {
         PictureEntity picture = new PictureEntity();
 
         picture.setUrl("ProfilePictureUrl");
         picture.setId(2L);
         return picture;
     }
+
+    public static ReportEntity createReport() {
+        ReportEntity reportEntity = new ReportEntity();
+        reportEntity.setMessage("This is test Report Message");
+        return reportEntity;
+    }
+
+    public static ReportSubmitServiceModel createReportSubmitServiceModel() {
+        ReportSubmitServiceModel reportSubmit = new ReportSubmitServiceModel();
+        reportSubmit.setMessage("This is test Report Message");
+        return reportSubmit;
+    }
+
+    public static WorkInProgressEntity createWorkInProgress() {
+        WorkInProgressEntity workInProgress = new WorkInProgressEntity();
+        workInProgress.setId(1L);
+        return workInProgress;
+    }
+
+    public static MessageEntity createMessage() {
+        MessageEntity message = new MessageEntity();
+        message.setTextContent("This is test message");
+        message.setCreated(LocalDateTime.now());
+        return message;
+    }
+
+
+    public static ApplicationEntity createApplication() {
+        ApplicationEntity application = new ApplicationEntity();
+        application.setId(1L);
+        application.setTextContent("Test application message");
+        return application;
+    }
+
+    public static ApplicationAddServiceModel createApplicationServiceModel() {
+        ApplicationAddServiceModel applicationToBeAdded = new ApplicationAddServiceModel();
+        applicationToBeAdded.setTextContent("Test application message");
+        return applicationToBeAdded;
+    }
+
+    public static CommentEntity createComment(){
+        CommentEntity comment=new CommentEntity();
+        comment.setId(1L);
+        comment.setTextContent("This is test comment.");
+        return comment;
+    }
+
+    public static CommentAddServiceModel createCommentServiceModel(){
+        CommentAddServiceModel commentToBeAdded=new CommentAddServiceModel();
+        commentToBeAdded.setTextContent("This is test comment.");
+        return commentToBeAdded;
+    }
+
+
 }

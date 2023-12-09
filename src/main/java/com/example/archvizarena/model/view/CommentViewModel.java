@@ -49,5 +49,5 @@ public class CommentViewModel {
         this.textContent = textContent;
     }
 
-    // TODO: 22.11.2023 г. Date format of the comments
+
 }

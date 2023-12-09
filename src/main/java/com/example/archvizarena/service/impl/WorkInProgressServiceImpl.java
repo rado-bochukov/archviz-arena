@@ -9,6 +9,7 @@ import com.example.archvizarena.repository.UserRepository;
 import com.example.archvizarena.repository.WorkInProgressRepository;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.WorkInProgressService;
+import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
 import org.springframework.stereotype.Service;
 
@@ -64,18 +65,18 @@ public class WorkInProgressServiceImpl implements WorkInProgressService {
 
     @Override
     public List<WorkInProgressViewModel> getAllBuyerWorkInProgress(Long id) {
-        List<WorkInProgressViewModel> collect = workInProgressRepository.findAll()
+
+        return workInProgressRepository.findAll()
                 .stream().filter(w -> w.getBuyer().getId().equals(id))
                 .map(this::fromWorkInProgressEntity)
                 .toList();
-
-        return collect;
     }
 
     @Override
     public WorkInProgressViewModel findById(Long id) {
 
-        WorkInProgressEntity byId = workInProgressRepository.findById(id).orElseThrow();
+        WorkInProgressEntity byId = workInProgressRepository.findById(id).
+                orElseThrow(()->new ObjectNotFoundException("Oops, we can not find this work in progress!"));
         return this.fromWorkInProgressEntity(byId);
     }
 

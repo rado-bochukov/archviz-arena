@@ -23,7 +23,7 @@ public interface JobService {
 
     boolean isViewerTheOwner(Long jobId, ArchVizArenaUserDetails viewer);
 
-    void deactivateUserJobPublications(Long id);
+//    void deactivateUserJobPublications(Long id);
 
     Page<JobPublicationViewModel> findAllActiveJobs(Pageable pageable);
 }

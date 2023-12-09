@@ -137,7 +137,7 @@ class ProjectServiceImplTest {
         assertEquals(testProject.getAuthor().getName(),projectToBeReported.getAuthorName());
         assertEquals(testProject.getAuthor().getId(),projectToBeReported.getAuthorId());
 
-
-
     }
+
+
 }
