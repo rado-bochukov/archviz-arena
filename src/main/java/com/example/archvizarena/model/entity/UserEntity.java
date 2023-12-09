@@ -46,7 +46,7 @@ public class UserEntity extends BaseEntity {
     @OneToMany(mappedBy = "buyer",
             fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<JobPublicationEntity> jobPublicationEntities;
-    @OneToMany(
+    @OneToMany(mappedBy = "author",
     fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private List<PortfolioProjectEntity> projects;
 

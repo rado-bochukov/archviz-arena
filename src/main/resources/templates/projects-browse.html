@@ -19,7 +19,8 @@
           class="form-inline pl-3 ">
         <div class="form-group mb-2 mr-sm-2">
             <label class="sr-only " for="category">Category</label>
-            <select id="category" class="form-control">
+            <select th:field="*{category}"
+                    id="category" class="form-control">
                 <option value="">- Select category -</option>
                 <optgroup label="Project category">
                     <option th:each="p: ${T(com.example.archvizarena.model.entity.enums.ProjectCategoryEnum).values()}"
@@ -113,7 +114,7 @@
 </div>
 </div>
 
-
+<footer th:replace="~{fragments/footer}"></footer>
 </body>
 <script src="/js/countriesAPI-2.js">
 

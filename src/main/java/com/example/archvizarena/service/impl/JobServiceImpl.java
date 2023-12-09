@@ -1,14 +1,13 @@
 package com.example.archvizarena.service.impl;
 
+import com.example.archvizarena.model.binding.JobPublicationSearchBindingModel;
 import com.example.archvizarena.model.entity.BaseEntity;
 import com.example.archvizarena.model.entity.JobPublicationEntity;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
-import com.example.archvizarena.repository.ApplicationRepository;
-import com.example.archvizarena.repository.JobPublicationRepository;
-import com.example.archvizarena.repository.UserRepository;
+import com.example.archvizarena.repository.*;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
@@ -142,6 +141,12 @@ public class JobServiceImpl implements JobService {
         return jobPublicationRepository.findAllByIsActiveTrue(pageable)
                 .map(jobPublicationMapper::mapToJobViewModel);
 
+    }
+
+    @Override
+    public Page<JobPublicationViewModel> searchJobPublications(JobPublicationSearchBindingModel jobPublicationSearchBindingModel, Pageable pageable) {
+        return jobPublicationRepository.findAll(new JobSpecification(jobPublicationSearchBindingModel),pageable)
+                .map(jobPublicationMapper::mapToJobViewModel);
     }
 
 }

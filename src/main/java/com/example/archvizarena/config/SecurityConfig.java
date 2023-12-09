@@ -36,7 +36,7 @@ public class SecurityConfig {
                                                 "/users/login-error",
                                                 "/artists/all", "artists/search", "/users/details/{id}",
                                                 "/projects/all","projects/search", "/projects/details/{id}",
-                                                "jobs/all", "jobs/details/{id}","/error")
+                                                "/jobs/all","/jobs/search", "/jobs/details/{id}","/error")
                                         .permitAll().
                                         requestMatchers("/pages/moderators").hasRole(UserRoleEnum.MODERATOR.name()).
                                         requestMatchers("/admin/**").hasRole(UserRoleEnum.ADMIN.name()).

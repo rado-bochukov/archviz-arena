@@ -1,5 +1,6 @@
 package com.example.archvizarena.service;
 
+import com.example.archvizarena.model.binding.JobPublicationSearchBindingModel;
 import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
@@ -26,4 +27,6 @@ public interface JobService {
 //    void deactivateUserJobPublications(Long id);
 
     Page<JobPublicationViewModel> findAllActiveJobs(Pageable pageable);
+
+    Page<JobPublicationViewModel> searchJobPublications(JobPublicationSearchBindingModel jobPublicationSearchBindingModel, Pageable pageable);
 }

@@ -6,26 +6,29 @@
 <th:block th:insert="~{fragments/head}"/>
 
 <body>
+
+
+
 <header>
     <div th:replace="~{fragments/navbar}">Navbar</div>
 </header>
 <div class="container-fluid">
     <div class="jumbotron">
         <h1 class="display-4">Wellcome to ArchVizArena!</h1>
-        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
-            featured content or information.</p>
+        <h3 class="lead">Find the best Archviz artists in the field.</h3>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+        <p>Need the perfect visualizations for your next project?</p>
+        <p>Need to find an inspiration from the best in the field?</p>
         <p class="lead">
-            <a class="btn btn-info btn-lg" href="#" role="button">Browse 3D Artists</a>
+            <a class="btn btn-info btn-lg" th:href="@{/artists/all}" role="button">Browse 3D Artists</a>
         </p>
 </div>
     </div>
 
-<div>
-    <footer></footer>
-</div>
 
 </body>
+<div>
+    <footer th:replace="~{fragments/footer}"></footer>
+</div>
 </html>
 
