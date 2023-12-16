@@ -11,7 +11,7 @@ import com.example.archvizarena.model.entity.enums.UserRoleEnum;
 import com.example.archvizarena.model.service.UserRegisterServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.*;
-import com.example.archvizarena.repository.ArtistSpecification;
+import com.example.archvizarena.repository.specification.ArtistSpecification;
 import com.example.archvizarena.repository.PictureRepository;
 import com.example.archvizarena.repository.UserRoleRepository;
 import com.example.archvizarena.repository.UserRepository;
@@ -93,12 +93,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<ArtistViewModel> findAllArtists(Pageable pageable) {
         return userRepository.findAllByUserOccupation_Artist(pageable)
-//                .stream()
-//                .filter(u -> u.getUserOccupation() != null)
-//                .filter(u -> u.getUserOccupation().name().equals("ARTIST"))
-//                .filter(u->!u.isBlocked())
                 .map(userMapper::mapToArtistViewModel);
-//                .collect(Collectors.toList());
+//
     }
 
     @Override
@@ -110,11 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileViewModel findUserById(Long id, ArchVizArenaUserDetails userDetails) {
         UserEntity user = getUser(id);
-//        if(user.isBlocked()){
-//            if(!isOwner(id,userDetails)){
-//                throw new ObjectNotFoundException("Oops...We can not find the user you are looking for!");
-//            }
-//        }
+
         UserProfileViewModel userViewModel = this.mapFromEntity(user);
         userViewModel.setViewerIsOwner(isOwner(id, userDetails));
         return userViewModel;
@@ -224,14 +216,12 @@ public class UserServiceImpl implements UserService {
     public
         Page<ArtistViewModel> searchArtists(ArtistSearchBindingModel artistSearchBindingModel,Pageable pageable) {
         return userRepository.findAll(new ArtistSpecification(artistSearchBindingModel),pageable)
-//                .stream()
                 .map(userMapper::mapToArtistViewModel);
-//                .collect(Collectors.toList());
     }
 
 
     private UserEntity getUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching fo does not exist!"));
+        return userRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("The user you are searching for does not exist!"));
     }
 
     private boolean isOwner(Long profileId, ArchVizArenaUserDetails userDetails) {

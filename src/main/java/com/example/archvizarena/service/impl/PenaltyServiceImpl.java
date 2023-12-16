@@ -78,6 +78,7 @@ public class PenaltyServiceImpl implements PenaltyService {
 //            reportedUser.setMuted(true);
 //        }
         reportedUser.setMuted(true);
+        reportedUser.getProjects().remove(reportedProject);
 
         userRepository.save(reportedUser);
         penaltyRepository.save(penaltyEntity);

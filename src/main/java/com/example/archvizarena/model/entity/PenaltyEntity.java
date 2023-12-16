@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "penalties")
 public class PenaltyEntity extends BaseEntity{
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private UserEntity penalizedUser;
 
     @Column(name = "penalty-type")

@@ -3,21 +3,25 @@ package com.example.archvizarena.util.mapper;
 import com.example.archvizarena.model.binding.UserEditBindingModel;
 import com.example.archvizarena.model.entity.UserEntity;
 import com.example.archvizarena.model.view.ArtistViewModel;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class UserMapper  {
 
-    private final ModelMapper modelMapper;
 
-    public UserMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
+
+    public UserMapper() {
+
     }
 
-
     public ArtistViewModel mapToArtistViewModel(UserEntity userEntity) {
-        ArtistViewModel artistViewModel = modelMapper.map(userEntity, ArtistViewModel.class);
+        ArtistViewModel artistViewModel = new ArtistViewModel();
+
+        artistViewModel.setId(userEntity.getId());
+        artistViewModel.setName(userEntity.getName());
+        artistViewModel.setCountry(userEntity.getCountry());
+        artistViewModel.setCreatorTypeEnum(userEntity.getCreatorType());
+        artistViewModel.setPricePerImage(userEntity.getPricePerImage());
         if (userEntity.getProfilePicture() != null) {
             String profilePicUrl = userEntity.getProfilePicture().getUrl();
             artistViewModel.setPictureUrl(profilePicUrl);

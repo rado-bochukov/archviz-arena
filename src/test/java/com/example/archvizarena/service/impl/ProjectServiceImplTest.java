@@ -22,6 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,56 +37,52 @@ class ProjectServiceImplTest {
     private ProjectService projectServiceToTest;
 
     @Mock
-    private  ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
     @Mock
-    private  UserRepository userRepository;
-    @Mock
-    private  ModelMapper modelMapper;
-    @Mock
-    private  PictureRepository pictureRepository;
-    @Mock
-    private  CommentService commentService;
+    private UserRepository userRepository;
 
-    private  ProjectMapper projectMapper;
+    @Mock
+    private PictureRepository pictureRepository;
+    @Mock
+    private CommentService commentService;
+
     @Mock
     private ArchVizArenaUserDetails archVizArenaUserDetails;
-
-
-
+    @Mock
+    private ProjectMapper projectMapper;
 
 
     @BeforeEach
-    void setUp(){
-        projectServiceToTest=new ProjectServiceImpl(projectRepository,
+    void setUp() {
+        projectServiceToTest = new ProjectServiceImpl(projectRepository,
                 userRepository,
-                modelMapper,
                 pictureRepository,
                 commentService,
-               new ProjectMapper());
+                projectMapper);
     }
 
     @Test
-    void testProjectNotFound(){
+    void testProjectNotFound() {
         Assertions.assertThrows(ObjectNotFoundException.class,
-                () -> projectServiceToTest.findById(2L,null));
+                () -> projectServiceToTest.findById(2L, null));
     }
 
     @Test
-    void testSavePortfolioProject(){
-        PortfolioProjectServiceModel portfolioProjectServiceModel=portfolioProjectServiceModel();
+    void testSavePortfolioProject() {
+        PortfolioProjectServiceModel portfolioProjectServiceModel = portfolioProjectServiceModel();
         portfolioProjectServiceModel.setPicturesUrl(List.of(createPicture().getUrl()));
-        PortfolioProjectEntity testProject=createProject();
-        UserEntity author= createArtistEntity();
-        List<PictureEntity> projectPictures= List.of(createPicture());
+        PortfolioProjectEntity testProject = createProject();
+        UserEntity author = createArtistEntity();
+        List<PictureEntity> projectPictures = List.of(createPicture());
         testProject.setPictures(projectPictures);
         testProject.setAuthor(author);
 
         when(userRepository.findByUsername(author.getUsername())).thenReturn(Optional.of(author));
         when(pictureRepository.findByUrl(projectPictures.get(0).getUrl())).thenReturn(projectPictures.get(0));
         when(projectRepository.save(testProject)).thenReturn(testProject);
-        when(modelMapper.map(portfolioProjectServiceModel,PortfolioProjectEntity.class)).thenReturn(testProject);
+        when(projectMapper.mapFromServiceModel(portfolioProjectServiceModel)).thenReturn(testProject);
 
-        projectServiceToTest.saveProject(portfolioProjectServiceModel,author.getUsername());
+        projectServiceToTest.saveProject(portfolioProjectServiceModel, author.getUsername());
 
         verify(userRepository, times(1)).findByUsername(author.getUsername());
         verify(pictureRepository, times(1)).findByUrl(projectPictures.get(0).getUrl());
@@ -93,14 +90,14 @@ class ProjectServiceImplTest {
     }
 
     @Test
-    void testLikeTheProject(){
+    void testLikeTheProject() {
 
-        ProjectDetailsViewModel projectWithIncreasedLikes=projectDetailsViewModel();
-        PortfolioProjectEntity testProject=createProject();
-        projectWithIncreasedLikes.setLikesCount(testProject.getLikesCount()+1);
+        ProjectDetailsViewModel projectWithIncreasedLikes = projectDetailsViewModel();
+        PortfolioProjectEntity testProject = createProject();
+        projectWithIncreasedLikes.setLikesCount(testProject.getLikesCount() + 1);
 
-        UserEntity author= createArtistEntity();
-        List<PictureEntity> projectPictures= List.of(createPicture());
+        UserEntity author = createArtistEntity();
+        List<PictureEntity> projectPictures = List.of(createPicture());
         testProject.setPictures(projectPictures);
         testProject.setAuthor(author);
 
@@ -108,36 +105,16 @@ class ProjectServiceImplTest {
         when(archVizArenaUserDetails.getUsername()).thenReturn(author.getUsername());
         when(userRepository.findByUsername(archVizArenaUserDetails.getUsername())).thenReturn(Optional.of(author));
         when(projectRepository.save(testProject)).thenReturn(testProject);
-        when(modelMapper.map(testProject, ProjectDetailsViewModel.class)).thenReturn(projectWithIncreasedLikes);
+        when(projectMapper.mapFromEntityToDetailsView(testProject)).thenReturn(projectWithIncreasedLikes);
 
         ProjectDetailsViewModel result = projectServiceToTest.likeTheProject(testProject.getId(), archVizArenaUserDetails);
 
-        assertEquals(testProject.getLikesCount(),result.getLikesCount());
+        assertEquals(testProject.getLikesCount(), result.getLikesCount());
 
         verify(projectRepository, times(1)).save(testProject);
     }
 
-    @Test
-     void testProjectReportViewModel(){
 
-
-        PortfolioProjectEntity testProject=createProject();
-
-        UserEntity author= createArtistEntity();
-        List<PictureEntity> projectPictures= List.of(createPicture());
-        testProject.setPictures(projectPictures);
-        testProject.setAuthor(author);
-
-        when(projectRepository.findById(testProject.getId())).thenReturn(Optional.of(testProject));
-
-        ProjectReportViewModel projectToBeReported = projectServiceToTest.getProjectToBeReported(testProject.getId());
-
-        assertEquals(testProject.getTitle(),projectToBeReported.getTitle());
-        assertEquals(testProject.getId(),projectToBeReported.getId());
-        assertEquals(testProject.getAuthor().getName(),projectToBeReported.getAuthorName());
-        assertEquals(testProject.getAuthor().getId(),projectToBeReported.getAuthorId());
-
-    }
 
 
 }

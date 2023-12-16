@@ -21,7 +21,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobPublicationRepository jobPublicationRepository;
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
 
     public ApplicationServiceImpl(ApplicationRepository applicationRepository,

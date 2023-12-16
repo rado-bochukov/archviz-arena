@@ -21,8 +21,6 @@ public class PictureServiceImpl implements PictureService {
             profileImage.setUrl("/images/default_avatar.jpg");
             pictureRepository.save(profileImage);
         }
-
-
     }
 
     @Override

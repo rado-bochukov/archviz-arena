@@ -3,6 +3,8 @@ package com.example.archvizarena.model.service;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.Objects;
+
 public class ReportSubmitServiceModel {
     private Long reportedProjectId;
 
@@ -46,4 +48,6 @@ public class ReportSubmitServiceModel {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

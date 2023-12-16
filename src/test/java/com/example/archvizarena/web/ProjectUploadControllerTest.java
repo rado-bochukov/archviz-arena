@@ -2,7 +2,6 @@ package com.example.archvizarena.web;
 
 import com.example.archvizarena.model.entity.PictureEntity;
 import com.example.archvizarena.model.entity.UserEntity;
-import com.example.archvizarena.model.view.PictureUploadViewModel;
 import com.example.archvizarena.testConfig.TestConfig;
 import com.example.archvizarena.testUtils.TestDataUtil;
 import com.example.archvizarena.testUtils.UserTestDataUtil;
@@ -114,8 +113,7 @@ class ProjectUploadControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/projects/add")
                         .with(csrf())
-                ).andExpect(model().attributeExists("links"))
-                .andExpect(model().attributeExists("uploadedPictures"));
+                ).andExpect(model().attributeExists("links"));
     }
 
 }

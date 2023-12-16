@@ -56,7 +56,7 @@ class ApplicationServiceImplTest {
                 applicationRepository,
                 jobPublicationRepository,
                 userRepository,
-               new UserMapper(new ModelMapper())
+               new UserMapper()
         );
 
         jobPublication = createJobPublication();

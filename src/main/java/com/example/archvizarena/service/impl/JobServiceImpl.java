@@ -8,6 +8,7 @@ import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import com.example.archvizarena.repository.*;
+import com.example.archvizarena.repository.specification.JobSpecification;
 import com.example.archvizarena.service.JobService;
 import com.example.archvizarena.service.exception.ObjectNotFoundException;
 import com.example.archvizarena.util.mapper.JobPublicationMapper;
@@ -29,20 +30,15 @@ public class JobServiceImpl implements JobService {
 
     private final JobPublicationRepository jobPublicationRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
     private final JobPublicationMapper jobPublicationMapper;
     private final ApplicationRepository applicationRepository;
 
     public JobServiceImpl(JobPublicationRepository jobPublicationRepository,
                           UserRepository userRepository,
-                          ModelMapper modelMapper,
                           JobPublicationMapper jobPublicationMapper, ApplicationRepository applicationRepository) {
         this.jobPublicationRepository = jobPublicationRepository;
         this.userRepository = userRepository;
-        this.modelMapper = modelMapper;
         this.jobPublicationMapper = jobPublicationMapper;
-
-
         this.applicationRepository = applicationRepository;
     }
 
@@ -56,7 +52,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void addJob(JobPublicationAddServiceModel jobToBeAdded, String username) {
-        JobPublicationEntity job=modelMapper.map(jobToBeAdded,JobPublicationEntity.class);
+        JobPublicationEntity job=jobPublicationMapper.mapFromJobServiceModel(jobToBeAdded);
         UserEntity buyer=userRepository.findByUsername(username).orElseThrow();
         job.setBuyer(buyer);
         job.setPublishedOn(LocalDateTime.now());
@@ -95,6 +91,7 @@ public class JobServiceImpl implements JobService {
     @Override
     @Transactional
     public void deleteJob(Long id, Long userId) {
+
         JobPublicationEntity jobToBeDeleted = this.lookForTheJob(id);
 
         UserEntity user = userRepository.findById(userId).orElseThrow();
@@ -102,14 +99,12 @@ public class JobServiceImpl implements JobService {
         userRepository.save(user);
 
         jobPublicationRepository.delete(jobToBeDeleted);
-
     }
 
     @Override
     public void activateJob(Long id) {
 
         JobPublicationEntity jobToBeActivated = this.lookForTheJob(id);
-
         jobToBeActivated.setActive(true);
         jobPublicationRepository.save(jobToBeActivated);
     }
@@ -124,7 +119,6 @@ public class JobServiceImpl implements JobService {
     @Override
     public boolean isViewerTheOwner(Long jobId, ArchVizArenaUserDetails viewer) {
         return isOwner(jobId, viewer, userRepository);
-
     }
 
 //    @Override
@@ -140,7 +134,6 @@ public class JobServiceImpl implements JobService {
     public Page<JobPublicationViewModel> findAllActiveJobs(Pageable pageable) {
         return jobPublicationRepository.findAllByIsActiveTrue(pageable)
                 .map(jobPublicationMapper::mapToJobViewModel);
-
     }
 
     @Override

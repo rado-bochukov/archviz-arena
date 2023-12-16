@@ -20,7 +20,6 @@ import java.util.List;
 public class ReportServiceImpl implements ReportService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
-
     private final ReportRepository reportRepository;
 
     public ReportServiceImpl(ProjectRepository projectRepository, UserRepository userRepository, ReportRepository reportRepository) {
@@ -78,10 +77,6 @@ public class ReportServiceImpl implements ReportService {
         reportRepository.save(reportEntity);
     }
 
-    private ReportEntity getReportEntity(Long id) {
-        return reportRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Oops, the report you are looking for does not exist!"));
-    }
 
     @Override
     public ReportViewModel findById(Long id) {
@@ -105,6 +100,10 @@ public class ReportServiceImpl implements ReportService {
                 });
     }
 
+    private ReportEntity getReportEntity(Long id) {
+        return reportRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Oops, the report you are looking for does not exist!"));
+    }
     private ReportViewModel mapFromEntityToView(ReportEntity reportEntity) {
 
         ReportViewModel report=new ReportViewModel();

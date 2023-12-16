@@ -67,7 +67,7 @@ class UserServiceImplTest {
                 modelMapper,
                 new ProjectMapper(),
                 jobPublicationMapper,
-                new UserMapper(new ModelMapper()),
+                new UserMapper(),
                 workInProgressService,
                 mockPictureRepository);
     }

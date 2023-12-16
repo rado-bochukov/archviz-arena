@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserEditController {
@@ -23,13 +25,12 @@ public class UserEditController {
     private final UserService userService;
     private final CloudinaryService cloudinaryService;
 
-    private final LinkHolder linkHolder;
+    private List<String> profileImageLink  ;
     private final PictureService pictureService;
 
-    public UserEditController(UserService userService, CloudinaryService cloudinaryService, LinkHolder linkHolder, PictureService pictureService) {
+    public UserEditController(UserService userService, CloudinaryService cloudinaryService, PictureService pictureService) {
         this.userService = userService;
         this.cloudinaryService = cloudinaryService;
-        this.linkHolder = linkHolder;
         this.pictureService = pictureService;
     }
 
@@ -47,7 +48,7 @@ public class UserEditController {
                                  @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
 
 
-        model.addAttribute("links",linkHolder);
+        model.addAttribute("links",profileImageLink);
         model.addAttribute("profileId",id);
 
         return "edit-user";
@@ -61,7 +62,7 @@ public class UserEditController {
         try {
 
             String imageUrl = cloudinaryService.uploadFile(file);
-            linkHolder.getImagesLink().add(imageUrl);
+           profileImageLink.add(imageUrl);
             pictureService.savePicture(imageUrl);
 
             return "redirect:/users/edit-profile/"+id;
@@ -105,15 +106,13 @@ public class UserEditController {
             return "redirect:/users/edit-profile/" + id;
         }
 
-        if(!linkHolder.getImagesLink().isEmpty()){
-            userEditBindingModel.setProfilePicture(linkHolder.getImagesLink().get(0));
+        if(!profileImageLink.isEmpty()){
+            userEditBindingModel.setProfilePicture(profileImageLink.get(0));
         }
 
         userService.editProfile(userEditBindingModel);
-
         userService.updateThePrincipalAuthenticationToken(userEditBindingModel.getUsername(),userDetails);
-
-        linkHolder.clear();
+        profileImageLink.clear();
 
         return String.format("redirect:/users/edit-profile/%d/success",id);
     }

@@ -1,6 +1,7 @@
 package com.example.archvizarena.util.mapper;
 
 import com.example.archvizarena.model.entity.JobPublicationEntity;
+import com.example.archvizarena.model.service.JobPublicationAddServiceModel;
 import com.example.archvizarena.model.view.JobPublicationViewModel;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +9,16 @@ import java.util.List;
 
 @Component
 public class JobPublicationMapper  {
+
+    public  JobPublicationEntity mapFromJobServiceModel(JobPublicationAddServiceModel jobToBeAdded){
+        JobPublicationEntity job=new JobPublicationEntity();
+        job.setTitle(jobToBeAdded.getTitle());
+        job.setDescription(jobToBeAdded.getDescription());
+        job.setCategory(jobToBeAdded.getCategory());
+        job.setBudget(jobToBeAdded.getBudget());
+
+        return job;
+    }
 
     public JobPublicationViewModel mapToJobViewModel(JobPublicationEntity jobPublicationEntity) {
 

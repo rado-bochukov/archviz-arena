@@ -1,14 +1,11 @@
 package com.example.archvizarena.web;
 
-import com.example.archvizarena.model.binding.PictureBindingModel;
 import com.example.archvizarena.model.binding.PortfolioProjectBindingModel;
 import com.example.archvizarena.model.service.PortfolioProjectServiceModel;
 import com.example.archvizarena.model.user.ArchVizArenaUserDetails;
-import com.example.archvizarena.model.view.PictureUploadViewModel;
 import com.example.archvizarena.service.CloudinaryService;
 import com.example.archvizarena.service.PictureService;
 import com.example.archvizarena.service.ProjectService;
-import com.example.archvizarena.util.LinkHolder;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,23 +26,16 @@ public class ProjectUploadController {
     private final CloudinaryService cloudinaryService;
     private final ProjectService projectService;
     private final PictureService pictureService;
-    private List<PictureUploadViewModel> pictures;
+    private List<String> imageLinks=new ArrayList<>();
     private final ModelMapper modelMapper;
-    private final LinkHolder linkHolder;
 
-    public ProjectUploadController(CloudinaryService cloudinaryService1, ProjectService projectService, PictureService pictureService, List<PictureUploadViewModel> pictures, ModelMapper modelMapper, LinkHolder linkHolder) {
+    public ProjectUploadController(CloudinaryService cloudinaryService1, ProjectService projectService, PictureService pictureService,  ModelMapper modelMapper) {
         this.cloudinaryService = cloudinaryService1;
         this.projectService = projectService;
         this.pictureService = pictureService;
-        this.pictures = pictures;
         this.modelMapper = modelMapper;
-        this.linkHolder = linkHolder;
     }
 
-    @ModelAttribute
-    public List<PictureUploadViewModel> pictures() {
-        return new ArrayList<>();
-    }
 
     @ModelAttribute
     public PortfolioProjectBindingModel portfolioProjectBindingModel() {
@@ -55,26 +45,20 @@ public class ProjectUploadController {
 
     @GetMapping("/add")
     public String getProjectUpload(Model model) {
-        if (pictures == null) {
-            pictures = new ArrayList<>();
-        }
-        model.addAttribute("uploadedPictures", pictures);
-        model.addAttribute("links",linkHolder);
+
+        model.addAttribute("links",imageLinks);
 
         return "project-add";
     }
 
     @PostMapping("/add/upload-images")
-    public String uploadProject(@RequestParam("file") MultipartFile file,
-                                @AuthenticationPrincipal ArchVizArenaUserDetails userDetails) {
+    public String uploadProject(@RequestParam("file") MultipartFile file) {
         try {
             // Upload the image to Cloudinary
             String imageUrl = cloudinaryService.uploadFile(file);
 
-            linkHolder.getImagesLink().add(imageUrl);
-            pictures.add(new PictureUploadViewModel(file.getOriginalFilename()));
+            imageLinks.add(imageUrl);
             pictureService.savePicture(imageUrl);
-
             return "redirect:/projects/add";
 
         } catch (Exception e) {
@@ -95,11 +79,10 @@ public class ProjectUploadController {
             return "redirect:/projects/add";
         }
 
-        portfolioProjectBindingModel.setPicturesUrl(linkHolder.getImagesLink());
+        portfolioProjectBindingModel.setPicturesUrl(imageLinks);
         projectService.saveProject(modelMapper.map(portfolioProjectBindingModel,
                 PortfolioProjectServiceModel.class),userDetails.getUsername());
-        pictures.clear();
-        linkHolder.clear();
+        imageLinks.clear();
 
         return "redirect:/";
     }

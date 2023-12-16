@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="~{fragments/head}">
+    <head th:replace="~{fragments/head}">
 
-</head>
-<body>
-<header>
-    <div th:replace="~{fragments/navbar}">Navbar</div>
-</header>
+    </head>
+    <body>
+    <header>
+        <div th:replace="~{fragments/navbar}">Navbar</div>
+    </header>
 
-<div class="container " style="max-width: 550px;" >
-    <h3 class="text-left text-topics pl-3 mb-0">Work in progress</h3>
+    <div class="container " style="max-width: 550px;">
+        <h3 class="text-left text-topics pl-3 mb-0">Work in progress</h3>
 
-    <div class="card-deck">
-        <div class="card mt-5"
-             th:object="${wip}">
-            <div class="card-header"><h4 th:text="*{job.title}">Need 4 exterior images</h4></div>
-            <div class="card-body">
+        <div class="card-deck">
+            <div class="card mt-5"
+                 th:object="${wip}">
+                <div class="card-header"><h4 th:text="*{job.title}">Need 4 exterior images</h4></div>
+                <div class="card-body">
 
-                <div class="text-left mt-2">Category: <strong th:text="*{job.category}"/></div>
-                <div class="text-left mt-2">Budget: <strong th:text="'€'+*{job.budget}"/></div>
-                <div class="text-left mt-2">Buyer: <strong th:text="*{buyerName}"/></div>
-                <div class="text-left mt-2">Artist: <strong th:text="*{artistName}"/></div>
+                    <div class="text-left mt-2">Category: <strong th:text="*{job.category}"/></div>
+                    <div class="text-left mt-2">Budget: <strong th:text="'€'+*{job.budget}"/></div>
+                    <div class="text-left mt-2">Buyer: <strong th:text="*{buyerName}"/></div>
+                    <div class="text-left mt-2">Artist: <strong th:text="*{artistName}"/></div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container " th:object="${wip}" style="max-width: 750px;">
-    <h5 class="text-left  ">Messages</h5>
-    <div class="card mt-4 " th:each="m : *{messages}">
-        <div class="card-header" >
-            By <strong th:text="${m.authorName}"/> on: <strong th:text="${m.created}"/>
-        </div>
-        <div class="card-body">
-            <p class="card-text" th:text="${m.textContent}" style="white-space: pre-line;">
+    <div class="container " th:object="${wip}" style="max-width: 750px;">
+        <h5 class="text-left  ">Messages</h5>
+        <div class="card mt-4 " th:each="m : *{messages}">
+            <div class="card-header">
+                By <strong th:text="${m.authorName}"/> on: <strong th:text="${m.created}"/>
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="${m.textContent}" style="white-space: pre-line;">
 
-            </p>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <form th:method="post"
-          th:action="@{/work-in-progress/{id}/messages/add (id=${wip.id})}"
-          th:object="${messageAddBindingModel}">
-        <div class="form-group ml-3 mr-3">
-            <label for="exampleFormControlTextarea1">Leave a message</label>
-            <textarea th:field="*{textContent}"
-                      th:errorclass="is-invalid"
-                      class="form-control" id="exampleFormControlTextarea1"
-                      rows="3"></textarea>
-            <p class="invalid-feedback errors alert alert-danger">
-                Message can not be empty!
-            </p>
-        </div>
-        <button type="submit" class="btn btn-info ml-3">Leave a message</button>
-    </form>
-</div>
+    <div class="container">
+        <form th:method="post"
+              th:action="@{/work-in-progress/{id}/messages/add (id=${wip.id})}"
+              th:object="${messageAddBindingModel}">
+            <div class="form-group ml-3 mr-3">
+                <label for="exampleFormControlTextarea1">Leave a message</label>
+                <textarea th:field="*{textContent}"
+                          th:errorclass="is-invalid"
+                          class="form-control" id="exampleFormControlTextarea1"
+                          rows="3"></textarea>
+                <p class="invalid-feedback errors alert alert-danger">
+                    Message can not be empty!
+                </p>
+            </div>
+            <button type="submit" class="btn btn-info ml-3">Leave a message</button>
+        </form>
+    </div>
 
-<footer th:replace="~{fragments/footer}"></footer>
-</body>
+    <footer th:replace="~{fragments/footer}"></footer>
+    </body>
 
 </html>

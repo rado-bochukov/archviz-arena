@@ -1,4 +1,4 @@
-package com.example.archvizarena.repository;
+package com.example.archvizarena.repository.specification;
 
 import com.example.archvizarena.model.binding.ProjectSearchBindingModel;
 import com.example.archvizarena.model.entity.PortfolioProjectEntity;

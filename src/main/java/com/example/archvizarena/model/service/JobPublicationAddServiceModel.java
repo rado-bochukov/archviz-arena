@@ -20,7 +20,6 @@ public class JobPublicationAddServiceModel {
     }
 
 
-
     public String getTitle() {
         return title;
     }

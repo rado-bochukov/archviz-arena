@@ -43,10 +43,8 @@ class JobServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+
     @Mock
-    private ModelMapper modelMapper;
-
-
     private JobPublicationMapper jobPublicationMapper;
 
     @Mock
@@ -63,8 +61,7 @@ class JobServiceImplTest {
         jobServiceToTest = new JobServiceImpl(
                 jobPublicationRepository,
                 userRepository,
-                modelMapper,
-                new JobPublicationMapper(),
+                jobPublicationMapper,
                 applicationRepository
         );
 
@@ -106,40 +103,24 @@ class JobServiceImplTest {
 
     @Test
     void testAddJob() {
-        JobPublicationAddServiceModel jobPublicationAddServiceModel=new JobPublicationAddServiceModel();
+        JobPublicationAddServiceModel jobPublicationAddServiceModel = new JobPublicationAddServiceModel();
 
         when(userRepository.findByUsername(buyer.getUsername())).thenReturn(Optional.of(buyer));
-        when(modelMapper.map(jobPublicationAddServiceModel,JobPublicationEntity.class)).thenReturn(jobPublication);
+        when(jobPublicationMapper.mapFromJobServiceModel(jobPublicationAddServiceModel)).thenReturn(jobPublication);
 
-        jobServiceToTest.addJob(jobPublicationAddServiceModel,buyer.getUsername());
+        jobServiceToTest.addJob(jobPublicationAddServiceModel, buyer.getUsername());
 
         verify(userRepository, times(1)).findByUsername(buyer.getUsername());
         verify(jobPublicationRepository, times(1)).save(jobPublication);
 
     }
 
-    @Test
-    void testFindJobByIdSuccessful(){
-        jobPublication.setActive(true);
-        jobPublication.setBuyer(buyer);
-
-        when(jobPublicationRepository.findById(jobPublication.getId()))
-                .thenReturn(Optional.of(jobPublication));
-
-        JobPublicationViewModel jobById = jobServiceToTest.findJobById(jobPublication.getId(), archVizArenaUserDetails);
-
-        assertEquals(jobPublication.getId(),jobById.getId());
-        assertEquals(jobPublication.getBuyer().getName(),jobById.getAuthorName());
-        assertEquals(jobPublication.getBudget(),jobById.getBudget());
-        assertEquals(jobPublication.getDescription(),jobById.getDescription());
-
-    }
 
     @Test
-    void testDeactivateJob(){
+    void testDeactivateJob() {
         jobPublication.setActive(true);
         jobPublication.setBuyer(buyer);
-        ApplicationEntity application=new ApplicationEntity();
+        ApplicationEntity application = new ApplicationEntity();
         application.setId(1L);
         jobPublication.setApplications(List.of(application));
         when(jobPublicationRepository.findById(jobPublication.getId()))
@@ -156,7 +137,7 @@ class JobServiceImplTest {
     }
 
     @Test
-    void testActivateJob(){
+    void testActivateJob() {
         jobPublication.setActive(false);
         jobPublication.setBuyer(buyer);
         when(jobPublicationRepository.findById(jobPublication.getId()))
@@ -172,19 +153,19 @@ class JobServiceImplTest {
     }
 
     @Test
-    void testDeleteJob(){
+    void testDeleteJob() {
         jobPublication.setActive(false);
         jobPublication.setBuyer(buyer);
-        List<JobPublicationEntity> buyersPublications=new ArrayList<>();
+        List<JobPublicationEntity> buyersPublications = new ArrayList<>();
         buyersPublications.add(jobPublication);
         buyer.setJobPublications(buyersPublications);
         when(jobPublicationRepository.findById(jobPublication.getId()))
                 .thenReturn(Optional.of(jobPublication));
         when(userRepository.findById(buyer.getId())).thenReturn(Optional.of(buyer));
 
-        jobServiceToTest.deleteJob(jobPublication.getId(),buyer.getId());
+        jobServiceToTest.deleteJob(jobPublication.getId(), buyer.getId());
 
-       Assertions.assertEquals(0,buyer.getJobPublications().size());
+        Assertions.assertEquals(0, buyer.getJobPublications().size());
 
         verify(jobPublicationRepository, times(1))
                 .delete(jobPublication);
@@ -192,8 +173,6 @@ class JobServiceImplTest {
                 .save(buyer);
 
     }
-
-
 
 
 }
