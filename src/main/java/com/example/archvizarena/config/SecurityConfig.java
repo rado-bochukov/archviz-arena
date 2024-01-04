@@ -70,7 +70,7 @@ public class SecurityConfig {
 
 
     @Bean
-    //енкодър за пароли за да не се запазват като плейн текст
+
     public PasswordEncoder passwordEncoder() {
         return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
@@ -80,7 +80,7 @@ public class SecurityConfig {
         return new ArchVizArenaUserDetailService(userRepository);
     }
 
-    //Така се справяме с редиректа след логин заради грешка 999
+    //handling with the error 999 after redirect
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
